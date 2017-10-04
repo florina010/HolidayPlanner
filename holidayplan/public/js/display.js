@@ -16,6 +16,7 @@ function weekend(d1,d2){
 }
 
 $(document).ready( function () {
+
   var theUser = JSON.parse(sessionStorage.getItem('user')),
       token = sessionStorage.getItem('token'),
       currentDate = moment(),
