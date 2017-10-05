@@ -403,24 +403,8 @@ date.setDate(date.getDate());
           } else {
               callback(options);
           }
-          if (data.length > 0){
-             var dataId = data[0].id ;
-            //  var tr = $("<tr>");
-            //  tr.addClass("danger");
-            //  var index = parseInt($("#userTable tbody tr").last().find("td").first().text()) + 1;
-            //  console.log($("#userTable tbody tr").last().find("td").first().text());
-            //  tr.append("<td class='sorting_1'>"+ index +"</td>").css("backgroundColor", "rgb(242, 222, 222)");
-            //  tr.append("<td>" + options.managerName +"</td>");
-            //  tr.append("<td>" + options.duration + "</td>");
-            //  tr.append("<td>"+  moment(options.stdate).format("DD/MM/YYYY") +"</td>");
-            //  tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
-            //  tr.append("<td>"+ options.vacationtype +"</td>");
-            //  tr.append("<td>"+ options.comment +"</td>");
-            //  tr.append("<td>" + 0 + "</td>");
-            //  tr.append("<td>" + 0 + "</td>");
-            //  tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ dataId +')"></i>' +"</td>");
-            //  $("#userTable tbody").append(tr);
-          }else if(data.length == 0){
+
+          if(data.length == 0){
             var tr = $("<tr>");
             tr.addClass("danger");
             var index = parseInt($("#userTable tbody tr").last().find("td").first().text());
