@@ -1,7 +1,6 @@
 window.appNameSpace = window.appNameSpace || { };
 window.sessionInvalid = false;
-var token = sessionStorage.getItem('token');
-var theUser = sessionStorage.getItem('user');
+var token = sessionStorage.getItem('token'), theUser = JSON.parse(sessionStorage.getItem('user'));
 
 $(function () {
 	$("a[name='addUser']").click(function(){
@@ -113,7 +112,7 @@ function fillUpdateUserForm (){
 			});
 		}
 		else {
-			var userid = theUser.userID;
+			var userid = JSON.parse(sessionStorage.getItem('user')).userID;
 			 $.get(appConfig.url + appConfig.api + 'getManagerUsers?token=' + token + '&userId=' + userid , function (users) {
 				if ( users.code == 110 ){
 					if (!appConfig.sessionInvalid) {
@@ -499,13 +498,11 @@ function updateUser (){
 			if(passwordUser != ''){
 				var passwordUser = hashObj.getHash("HEX");
 			}
-
-		    theUser.name = userName;
+			theUser.name = userName;
 			theUser.age = age;
 			theUser.phone = phone;
 			theUser.picture = pictureUser;
 			sessionStorage.setItem('user', JSON.stringify(theUser));
-
 			$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, age : age, phone : phone, password : passwordUser , picture : pictureUser, userId : userid, token : token }).done(function( data ) {
 				if ( data.code == 110 ){
 					if (!appConfig.sessionInvalid) {

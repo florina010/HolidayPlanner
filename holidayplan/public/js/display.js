@@ -5,7 +5,7 @@ window.sessionInvalid = false;
 function weekend(d1,d2){
   var we = 0,
       days = d2.diff(d1,"days") + 1;
-  while (d1 <= d2){
+  while (d1 < d2){
     if (d1.days() == 0 || d1.days() == 6){
       we++;
     }
@@ -16,7 +16,6 @@ function weekend(d1,d2){
 }
 
 $(document).ready( function () {
-
   var theUser = JSON.parse(sessionStorage.getItem('user')),
       token = sessionStorage.getItem('token'),
       currentDate = moment(),
@@ -33,57 +32,65 @@ $(document).ready( function () {
         manId = 1;
       }
       $.get(appConfig.url + appConfig.api + 'getFreeDays?token=' + token + '&userID=' + theUser.userID, function (data) {
-          out (data.code);
-          $("[name=mName]").val(manager);
-          $("#avatar").attr("src", theUser.picture);
-          $("[name=name]").val(theUser.name);
-          $("[name=age]").val(theUser.age);
-          $("[name=email]").val(theUser.email);
-          $("[name=phone]").val(theUser.phone);
-          $("[name=position]").val(theUser.position);
-          var fDate = moment(theUser.startDate).format("YYYY/MM/DD");
-          $("[name=sDate]").val(fDate);
-          $("[name=timeSpent]").val(moment().diff(theUser.startDate, 'months',false) + " months");
-          window.theUser = theUser;
-          if(data.length == 0 ) {
-            sum = 0;
-          }
-          else {
-            for (var i = 0; i < data.length; i++){
-                if ( data[i].approved == true )
-                  sum += data[i].days;
+        if ( data.code == 110 ){
+          if (!appConfig.sessionInvalid) {
+            appConfig.sessionInvalid = true;
+            alert('Session expired');
+            $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email}).done(function( data ) {
+           });
+            window.location.href = 'login.html';
           }
         }
-          var work = moment().diff(theUser.startDate, 'months', false);
-          var restM = 12 - currentDate.month();
-          $("[name=avDays]").val(Math.floor(21/12*restM - sum + theUser.bonus));
-          if (currentDate.month() == 0 && currentDate.date() == 1 ) {
-            $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
+      $("[name=mName]").val(manager);
+      $("#avatar").attr("src", theUser.picture);
+      $("[name=name]").val(theUser.name);
+      $("[name=age]").val(theUser.age);
+      $("[name=email]").val(theUser.email);
+      $("[name=phone]").val(theUser.phone);
+      $("[name=position]").val(theUser.position);
+      var fDate = moment(theUser.startDate).format("YYYY-MM-DD");
+      $("[name=sDate]").val(fDate);
+      $("[name=timeSpent]").val(moment().diff(theUser.startDate, 'months',false) + " months");
+      window.theUser = theUser;
+      if(data.length == 0 ) {
+        sum = 0;
+      }
+      else {
+        for (var i = 0; i < data.length; i++){
+            if ( data[i].approved == true )
+              sum += data[i].days;
+      }
+    }
+      var work = moment().diff(theUser.startDate, 'months', false);
+      var restM = 12 - currentDate.month();
+      $("[name=avDays]").val(Math.floor(21/12*restM - sum + theUser.bonus));
+      if (currentDate.month() == 0 && currentDate.date() == 1 ) {
+        $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
+      }
+      if ($("[name=avDays]").val() <= 0)
+      {
+		$("[name=avDays]").val(0);
+        $("#holiday").css("display", 'none');
+      }
+      $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userID=' + theUser.userID + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
+        if ( data.code == 110 ){
+          if (!appConfig.sessionInvalid) {
+            appConfig.sessionInvalid = true;
+            alert('Session expired');
+            $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email}).done(function( data ) {
+           });
+            window.location.href = 'login.html';
           }
-          if ($("[name=avDays]").val() <= 0)
-          {
-    		$("[name=avDays]").val(0);
-            $("#holiday").css("display", 'none');
-          }
-          $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userID=' + theUser.userID + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
-            if ( data.code == 110 ){
-              if (!appConfig.sessionInvalid) {
-                appConfig.sessionInvalid = true;
-                alert('Session expired');
-                $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email}).done(function( data ) {
-               });
-                window.location.href = 'login.html';
-              }
-            }
-        });
-          if (theUser.admin == 2) {
-            $("[name=add]").parent().css('display', 'none');
-            $("[name=addUser]").parent().css('display', 'block');
-            $("#tabs li:not(:last)").css('display', 'none');
-            $("#calendar").css('display', 'none');
-            $("[name=mName]").val('admin');
-            $("[name=avDays]").val(0);
-          }
+        }
+    });
+      if (theUser.admin == 2) {
+        $("[name=add]").parent().css('display', 'none');
+        $("[name=addUser]").parent().css('display', 'block');
+        $("#tabs li:not(:last)").css('display', 'none');
+        $("#calendar").css('display', 'none');
+        $("[name=mName]").val('admin');
+        $("[name=avDays]").val(0);
+      }
     });
   });
 }
@@ -266,10 +273,9 @@ date.setDate(date.getDate());
                    enddate = moment($("#enddate").val());
 
                var from, to, duration;
-               from = moment(stdate, 'YYYY/MM/DD');
-               to = moment(enddate, 'YYYY/MM/DD');
+               from = moment(stdate, 'YYYY-MM-DD');
+               to = moment(enddate, 'YYYY-MM-DD');
                duration = weekend(from, to);
-
 
                //$.post(appConfig.url + appConfig.api+ 'getManagerDetails', { managerId: manId}).done(function( data ) {
    						 //});
@@ -296,28 +302,38 @@ date.setDate(date.getDate());
    function getFreeDays () {
        $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token='+token + "&userID=" + theUser.userID, function (data) {
            for (var i = 0; i < data.length; i++){
-               dates.push(moment(data[i].startDate).format("YYYY/MM/DD"));
+               dates.push(moment(data[i].startDate).format("YYYY-MM-DD"));
            }
        });
    };
 
    function addHoliday(options) {
+      console.log("Options" + options);
        if (options.avDays >= options.duration) {
+         console.log("Options" + options);
            $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
                vacationtype: options.vacationtype,
                comment: options.comment,
-               stdate: moment(options.stdate).format("YYYY/MM/DD"),
-               enddate: moment(options.enddate).format("YYYY/MM/DD"),
+               stdate: moment(options.stdate).format("YYYY-MM-DD"),
+               enddate: moment(options.enddate).format("YYYY-MM-DD"),
                userID: theUser.userID,
                days: options.duration,
                approverID: options.manag
            }, function( data ) {
-               out (data.code);
+             console.log("Data is: "+ data);
+               if ( data.code == 110 ){
+                   if (!appConfig.sessionInvalid) {
+                       appConfig.sessionInvalid = true;
+                       alert('Session expired');
+                       $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email});
+                       window.location.href = 'login.html';
+                   }
+               }
                // Insert event into calendar.
                var event = {
                  title: 'pending: ' + options.comment,
-                 start:  moment(options.stdate).format("YYYY/MM/DD"),
-                 end:  moment(options.enddate).format("YYYY/MM/DD"),
+                 start:  moment(options.stdate).format("YYYY-MM-DD"),
+                 end:  moment(options.enddate).format("YYYY-MM-DD"),
                };
                $('#calendar').fullCalendar( 'renderEvent', event, true);
 
@@ -340,16 +356,60 @@ date.setDate(date.getDate());
        reloadJs('../js/calendar.js');
    }
   function check(startString, endString, options, callback) {
+    console.log(options);
       getFreeDays();
-      var start = moment(startString).format("YYYY/MM/DD"),
-          end = moment(endString).format("YYYY/MM/DD");
+      var start = moment(startString).format("YYYY-MM-DD"),
+          end = moment(endString).format("YYYY-MM-DD");
       var isOk = true;
       $.get(appConfig.url + appConfig.api + 'getFreeDays?token=' + token + '&userID=' + theUser.userID, function (data) {
-          out (data.code);
+          if ( data.code == 110 ){
+              if (!appConfig.sessionInvalid) {
+                  appConfig.sessionInvalid = true;
+                  alert('Session expired');
+                  $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email});
+                  window.location.href = 'login.html';
+              }
+          }
+        /*  if (data.length > 0){
+             var dataId = data[0].id ;
+             var tr = $("<tr>");
+             tr.addClass("danger");
+             var index = parseInt($("#userTable tbody tr").last().find("td").first().text()) + 1;
+             console.log($("#userTable tbody tr").last().find("td").first().text());
+             tr.append("<td class='sorting_1'>"+ index +"</td>").css("backgroundColor", "rgb(242, 222, 222)");
+             tr.append("<td>" + options.managerName +"</td>");
+             tr.append("<td>" + options.duration + "</td>");
+             tr.append("<td>"+  moment(options.stdate).format("DD/MM/YYYY") +"</td>");
+             tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
+             tr.append("<td>"+ options.vacationtype +"</td>");
+             tr.append("<td>"+ options.comment +"</td>");
+             tr.append("<td>" + 0 + "</td>");
+             tr.append("<td>" + 0 + "</td>");
+             tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ dataId +')"></i>' +"</td>");
+             $("#userTable tbody").append(tr);
+          }else*/ if(data.length == 0){
+            var tr = $("<tr>");
+            tr.addClass("danger");
+            var index = parseInt($("#userTable tbody tr").last().find("td").first().text());
+            console.log($("#userTable tbody tr").last().find("td").first().text());
+            tr.append("<td class='sorting_1'>"+ 1 +"</td>").css("backgroundColor", "rgb(242, 222, 222)");
+            tr.append("<td>" + options.managerName +"</td>");
+            tr.append("<td>" + options.duration + "</td>");
+            tr.append("<td>"+  moment(options.stdate).format("DD/MM/YYYY") +"</td>");
+            tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
+            tr.append("<td>"+ options.vacationtype +"</td>");
+            tr.append("<td>"+ options.comment +"</td>");
+            tr.append("<td>" + 0 + "</td>");
+            tr.append("<td>" + 0 + "</td>");
+            tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ 0 +')"></i>' +"</td>");
+            $("#userTable tbody").append(tr);
+          }
+
+
           if(data.length > 0 ) {
               for (var i = 0; i < data.length; i++) {
-                  var st = moment(data[i].startDate).format("YYYY/MM/DD"),
-                    ends = moment(data[i].endDate).format("YYYY/MM/DD"),
+                  var st = moment(data[i].startDate).format("YYYY-MM-DD"),
+                    ends = moment(data[i].endDate).format("YYYY-MM-DD"),
                     start2 = start, end2 = end,
                     dateArray = new Array();
                   if ( moment(start).isBetween(st,ends) || moment(end).isBetween(st,ends) || start == st || start == ends || end == st || end == ends) {
@@ -359,29 +419,28 @@ date.setDate(date.getDate());
                       $('#myModal').modal('toggle');
                       isOk = false;
                       break;
-                  }
-                  else {
-                      var dataId = data[0].id ;
-                      var tr = $("<tr>");
-                      tr.addClass("danger");
-                      var index = parseInt($("#userTable tbody tr").last().find("td").first().text()) + 1;
-                      console.log($("#userTable tbody tr").last().find("td").first().text());
-                      tr.append("<td class='sorting_1'>"+ index +"</td>").css("backgroundColor", "rgb(242, 222, 222)");
-                      tr.append("<td>" + options.managerName +"</td>");
-                      tr.append("<td>" + options.duration + "</td>");
-                      tr.append("<td>"+  moment(options.stdate).format("DD/MM/YYYY") +"</td>");
-                      tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
-                      tr.append("<td>"+ options.vacationtype +"</td>");
-                      tr.append("<td>"+ options.comment +"</td>");
-                      tr.append("<td>" + 0 + "</td>");
-                      tr.append("<td>" + 0 + "</td>");
-                      tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ dataId +')"></i>' +"</td>");
-                      $("#userTable tbody").append(tr);
+                  }else{
+                    var dataId = data[0].id ;
+                    var tr = $("<tr>");
+                    tr.addClass("danger");
+                    var index = parseInt($("#userTable tbody tr").last().find("td").first().text()) + 1;
+                    console.log($("#userTable tbody tr").last().find("td").first().text());
+                    tr.append("<td class='sorting_1'>"+ index +"</td>").css("backgroundColor", "rgb(242, 222, 222)");
+                    tr.append("<td>" + options.managerName +"</td>");
+                    tr.append("<td>" + options.duration + "</td>");
+                    tr.append("<td>"+  moment(options.stdate).format("DD/MM/YYYY") +"</td>");
+                    tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
+                    tr.append("<td>"+ options.vacationtype +"</td>");
+                    tr.append("<td>"+ options.comment +"</td>");
+                    tr.append("<td>" + 0 + "</td>");
+                    tr.append("<td>" + 0 + "</td>");
+                    tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ dataId +')"></i>' +"</td>");
+                    $("#userTable tbody").append(tr);
                   }
                   while (start2 <= end2) {
                       dateArray.push(start2);
                       var duration = moment.duration({'days' : 1});
-                      start2 = moment(start2, "YYYY/MM/DD").add(duration).format('YYYY/MM/DD');
+                      start2 = moment(start2, "YYYY-MM-DD").add(duration).format('YYYY-MM-DD');
                   }
                   for (var j = 0; j < dateArray.length; j++) {
                       if (dateArray[i] == st || dateArray[i] == ends) {
@@ -394,56 +453,21 @@ date.setDate(date.getDate());
                       }
                   }
               }
-              options.duration = checkArrays (dateArray, dates, options.duration);
+              for(var l = 0; l < dateArray.length; l++) {
+                  for(var d = 0; d < dates.length; d++) {
+                      if (dateArray[l] == dates[d]) {
+                          options.duration--;
+                      }
+                  }
+              }
               if (isOk) {
                   callback(options);
               } else {
-                  console.log('else');
+                  console.log(2);
               }
           } else {
               callback(options);
           }
-
-          if(data.length == 0){
-            var tr = $("<tr>");
-            tr.addClass("danger");
-            var index = parseInt($("#userTable tbody tr").last().find("td").first().text());
-            console.log($("#userTable tbody tr").last().find("td").first().text());
-            tr.append("<td class='sorting_1'>"+ index +"</td>").css("backgroundColor", "rgb(242, 222, 222)");
-            tr.append("<td>" + options.managerName +"</td>");
-            tr.append("<td>" + options.duration + "</td>");
-            tr.append("<td>"+  moment(options.stdate).format("DD/MM/YYYY") +"</td>");
-            tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
-            tr.append("<td>"+ options.vacationtype +"</td>");
-            tr.append("<td>"+ options.comment +"</td>");
-            tr.append("<td>" + 0 + "</td>");
-            tr.append("<td>" + 0 + "</td>");
-            tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ 0 +')"></i>' +"</td>");
-            $("#userTable tbody").append(tr);
-          }
       });
-  }
-
-  function checkArrays (arr1, arr2, options) {
-      for(var l = 0; l < arr1.length; l++) {
-          for(var d = 0; d < arr2.length; d++) {
-              if (arr1[l] == arr2[d]) {
-                  options--;
-              }
-          }
-      }
-      console.log(options);
-      return options;
-  }
-
-  function out (data) {
-      if ( data == 110 ){
-          if (!appConfig.sessionInvalid) {
-              appConfig.sessionInvalid = true;
-              alert('Session expired');
-              $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email});
-              window.location.href = 'login.html';
-          }
-      }
   }
 });

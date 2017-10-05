@@ -288,6 +288,7 @@ function prepareUserForm() {
 						window.location.href = 'login.html';
 					}
 				}
+
 				$('#myModalUser').find('form')[0].reset();
 				$("#add-user-form").data('formValidation').resetForm();
 				$('#myModalUser').modal('toggle');
