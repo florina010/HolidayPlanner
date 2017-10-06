@@ -1,7 +1,6 @@
 
 var d=[];
 
-
    var theUser = JSON.parse(sessionStorage.getItem('user')),
         user = sessionStorage.getItem('user'), sum = 0, manager,
         token = sessionStorage.getItem('token');
@@ -49,7 +48,7 @@ var d=[];
 
        fillDate();
 
-       function reloadJs(src) {
+ function reloadJs(src) {
     src = $('script[src$="' + src + '"]').attr("src");
     $('script[src$="' + src + '"]').remove();
     $('<script/>').attr('src', src).appendTo('body');

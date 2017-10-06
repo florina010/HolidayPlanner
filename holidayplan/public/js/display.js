@@ -15,7 +15,17 @@ function weekend(d1,d2){
   return days-we;
 }
 
+$('#tabClick a').click(function(){
+  //main();
+  //$(this).addClass("active");
+  console.log($(this).attr("class"));
+  $("#calendar").empty();
+  reloadJs('../js/calendar.js');
+  reloadJs('../js/fullCalendar.js');
+});
+
 $(document).ready( function () {
+  $('#tabClick').addClass("active");
   var theUser = JSON.parse(sessionStorage.getItem('user')),
       token = sessionStorage.getItem('token'),
       currentDate = moment(),
@@ -90,6 +100,8 @@ $(document).ready( function () {
         $("#calendar").css('display', 'none');
         $("[name=mName]").val('admin');
         $("[name=avDays]").val(0);
+        $("[data-toggle='tab']").attr('aria-expanded','true');
+        $("[data-toggle='tab']").parent().attr('class','active');
       }
     });
   });
@@ -114,10 +126,10 @@ if ( sessionStorage.getItem('admin') != null ) {
       thP = $("<th>Position</th>"),
       thE = $("<th>Email</th>"),
       thD = $("<th>Start Date</th>"),
-  thDa = $("<th>End Date</th>"),
+      thDa = $("<th>End Date</th>"),
       thDy = $("<th>Days</th>"),
-  thTy = $("<th>Type</th>"),
-  thCo = $("<th>Comment</th>"),
+      thTy = $("<th>Type</th>"),
+      thCo = $("<th>Comment</th>"),
       thAd = $("<th>Approved</th>"),
       thAp = $("<th>Approve</th>");
   $(tr).append($(th));
@@ -125,10 +137,10 @@ if ( sessionStorage.getItem('admin') != null ) {
   $(tr).append($(thP));
   $(tr).append($(thE));
   $(tr).append($(thD));
-$(tr).append($(thDa));
+  $(tr).append($(thDa));
   $(tr).append($(thDy));
-$(tr).append($(thTy));
-$(tr).append($(thCo));
+  $(tr).append($(thTy));
+  $(tr).append($(thCo));
   $(tr).append($(thAd));
   $(tr).append($(thAp));
   $(thead).append($(tr));
@@ -308,9 +320,7 @@ date.setDate(date.getDate());
    };
 
    function addHoliday(options) {
-      console.log("Options" + options);
        if (options.avDays >= options.duration) {
-         console.log("Options" + options);
            $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
                vacationtype: options.vacationtype,
                comment: options.comment,
@@ -320,7 +330,6 @@ date.setDate(date.getDate());
                days: options.duration,
                approverID: options.manag
            }, function( data ) {
-             console.log("Data is: "+ data);
                if ( data.code == 110 ){
                    if (!appConfig.sessionInvalid) {
                        appConfig.sessionInvalid = true;
@@ -348,15 +357,14 @@ date.setDate(date.getDate());
          $('.modal-body> div:first-child').css('display','none');
          $('.modal-body> div:nth-child(2)').css('display','block');
        }
-
        $('#myModal').find('form')[0].reset();
        $("#eventForm").data('formValidation').resetForm();
        $('#myModal').modal('toggle');
        $('#calendar').empty();
        reloadJs('../js/calendar.js');
    }
+
   function check(startString, endString, options, callback) {
-    console.log(options);
       getFreeDays();
       var start = moment(startString).format("YYYY-MM-DD"),
           end = moment(endString).format("YYYY-MM-DD");
@@ -370,8 +378,8 @@ date.setDate(date.getDate());
                   window.location.href = 'login.html';
               }
           }
-        /*  if (data.length > 0){
-             var dataId = data[0].id ;
+          if (data.length > 0){
+          /*   var dataId = data[0].id ;
              var tr = $("<tr>");
              tr.addClass("danger");
              var index = parseInt($("#userTable tbody tr").last().find("td").first().text()) + 1;
@@ -387,11 +395,11 @@ date.setDate(date.getDate());
              tr.append("<td>" + 0 + "</td>");
              tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ dataId +')"></i>' +"</td>");
              $("#userTable tbody").append(tr);
-          }else*/ if(data.length == 0){
+             */
+          }else if(data.length == 0){
+            $(".dataTables_empty").css("display", "none");
             var tr = $("<tr>");
             tr.addClass("danger");
-            var index = parseInt($("#userTable tbody tr").last().find("td").first().text());
-            console.log($("#userTable tbody tr").last().find("td").first().text());
             tr.append("<td class='sorting_1'>"+ 1 +"</td>").css("backgroundColor", "rgb(242, 222, 222)");
             tr.append("<td>" + options.managerName +"</td>");
             tr.append("<td>" + options.duration + "</td>");
@@ -419,23 +427,23 @@ date.setDate(date.getDate());
                       $('#myModal').modal('toggle');
                       isOk = false;
                       break;
-                  }else{
+                  }else {
                     var dataId = data[0].id ;
-                    var tr = $("<tr>");
-                    tr.addClass("danger");
-                    var index = parseInt($("#userTable tbody tr").last().find("td").first().text()) + 1;
-                    console.log($("#userTable tbody tr").last().find("td").first().text());
-                    tr.append("<td class='sorting_1'>"+ index +"</td>").css("backgroundColor", "rgb(242, 222, 222)");
-                    tr.append("<td>" + options.managerName +"</td>");
-                    tr.append("<td>" + options.duration + "</td>");
-                    tr.append("<td>"+  moment(options.stdate).format("DD/MM/YYYY") +"</td>");
-                    tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
-                    tr.append("<td>"+ options.vacationtype +"</td>");
-                    tr.append("<td>"+ options.comment +"</td>");
-                    tr.append("<td>" + 0 + "</td>");
-                    tr.append("<td>" + 0 + "</td>");
-                    tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ dataId +')"></i>' +"</td>");
-                    $("#userTable tbody").append(tr);
+                      var tr = $("<tr>");
+                      tr.addClass("danger");
+                      var index = parseInt($("#userTable tbody tr").last().find("td").first().text()) + 1;
+                      console.log($("#userTable tbody tr").last().find("td").first().text());
+                      tr.append("<td class='sorting_1'>"+ index +"</td>").css("backgroundColor", "rgb(242, 222, 222)");
+                      tr.append("<td>" + options.managerName +"</td>");
+                      tr.append("<td>" + options.duration + "</td>");
+                      tr.append("<td>"+  moment(options.stdate).format("DD/MM/YYYY") +"</td>");
+                      tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
+                      tr.append("<td>"+ options.vacationtype +"</td>");
+                      tr.append("<td>"+ options.comment +"</td>");
+                      tr.append("<td>" + 0 + "</td>");
+                      tr.append("<td>" + 0 + "</td>");
+                      tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ dataId +')"></i>' +"</td>");
+                      $("#userTable tbody").append(tr);
                   }
                   while (start2 <= end2) {
                       dateArray.push(start2);
@@ -463,11 +471,11 @@ date.setDate(date.getDate());
               if (isOk) {
                   callback(options);
               } else {
-                  console.log(2);
               }
           } else {
               callback(options);
           }
       });
   }
+
 });
