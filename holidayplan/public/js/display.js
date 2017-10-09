@@ -21,7 +21,7 @@ $('#tabClickCalendar').click(function(){
     console.log("tabClickCalendar");
     $("#calendar").empty();
     reloadJs('../js/calendar.js');
-  }, 100);
+  }, 400);
 });
 
 $(document).ready( function () {
