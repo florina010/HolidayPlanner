@@ -25,11 +25,10 @@ $('#tabClick a').click(function(){
 });
 
 $(document).ready( function () {
-  $('#tabClick').addClass("active");
   var theUser = JSON.parse(sessionStorage.getItem('user')),
       token = sessionStorage.getItem('token'),
       currentDate = moment(),
-      sum = 0, manager, manId, dates = new Array();
+      sum = 0, manager, manId, dates = new Array(), isOk = true;
 
   if ( theUser != null ) {
     $.post(appConfig.url + appConfig.api, { id: theUser.userID }).done(function( data ) {
@@ -42,20 +41,7 @@ $(document).ready( function () {
         manId = 1;
       }
       $.get(appConfig.url + appConfig.api + 'getFreeDays?token=' + token + '&userID=' + theUser.userID, function (data) {
-        if ( data.code == 110 ){
-          if (!appConfig.sessionInvalid) {
-            appConfig.sessionInvalid = true;
-            alert('Session expired');
-            $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email}).done(function( data ) {
-           });
-            window.location.href = 'login.html';
-          }
-          else {
-            manager = 'admin';
-            manId = 1;
-          }
-          $.get(appConfig.url + appConfig.api + 'getFreeDays?token=' + token + '&userID=' + theUser.userID, function (data) {
-            out (data.code);
+          out (data.code);
           $("[name=mName]").val(manager);
           $("#avatar").attr("src", theUser.picture);
           $("[name=name]").val(theUser.name);
@@ -110,43 +96,6 @@ $(document).ready( function () {
 if ( sessionStorage.getItem('admin') != null ) {
   $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
   var li = $("<li></li>"),
-      a = $("<a data-toggle='tab' href='#management'></a>"),
-      i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Management</i>"),
-      div =$("<div id='management' class='tab-pane fade'></div>"),
-      table = $("<table id='manager-table' class='table display' cellspacing='0' width='100%'></table>"),
-      thead = $("<thead class='thead-inverse'></thead>"),
-      tr = $("<tr></tr>"),
-      th = $("<th>#</th>"),
-      thN = $("<th>Name</th>"),
-      thP = $("<th>Position</th>"),
-      thE = $("<th>Email</th>"),
-      thD = $("<th>Start Date</th>"),
-      thDa = $("<th>End Date</th>"),
-      thDy = $("<th>Days</th>"),
-      thTy = $("<th>Type</th>"),
-      thCo = $("<th>Comment</th>"),
-      thAd = $("<th>Approved</th>"),
-      thAp = $("<th>Approve</th>");
-  $(tr).append($(th));
-  $(tr).append($(thN));
-  $(tr).append($(thP));
-  $(tr).append($(thE));
-  $(tr).append($(thD));
-  $(tr).append($(thDa));
-  $(tr).append($(thDy));
-  $(tr).append($(thTy));
-  $(tr).append($(thCo));
-  $(tr).append($(thAd));
-  $(tr).append($(thAp));
-  $(thead).append($(tr));
-  $(table).append($(thead));
-  $(div).append($(table));
-  $(".tab-content").append($(div));
-  $(a).append($(i)),
-  $(li).append($(a));
-  $("#tabs").append($(li));
-
- var li = $("<li></li>"),
       a = $("<a data-toggle='tab' href='#users-list'></a>"),
       i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Managed Users</i>"),
       div =$("<div id='users-list' class='tab-pane fade'></div>"),
@@ -183,45 +132,6 @@ if ( sessionStorage.getItem('admin') != null ) {
   $(li).append($(a));
   $("#tabs").append($(li));
 }
-
-     var li = $("<li></li>"),
-          a = $("<a data-toggle='tab' href='#users-list'></a>"),
-          i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Managed Users</i>"),
-          div =$("<div id='users-list' class='tab-pane fade'></div>"),
-          table = $("<table id='users-list-table' class='table display' cellspacing='0' width='100%'></table>"),
-          thead = $("<thead class='thead-inverse'></thead>"),
-          tr = $("<tr></tr>"),
-          th = $("<th>#</th>"),
-          thN = $("<th>Name</th>"),
-          thP = $("<th>Position</th>"),
-          thE = $("<th>Email</th>"),
-          thD = $("<th>Start Date</th>"),
-      thPh = $("<th>Phone</th>"),
-      thAc = $("<th>Active</th>"),
-      thPic = $("<th>Picture</th>"),
-      thAg = $("<th>Age</th>"),
-      thBo = $("<th>Bonus</th>"),
-      thAct = $("<th>Actions</th>");
-      $(tr).append($(th));
-      $(tr).append($(thN));
-      $(tr).append($(thP));
-      $(tr).append($(thE));
-      $(tr).append($(thD));
-      $(tr).append($(thPh));
-      $(tr).append($(thAc));
-      $(tr).append($(thPic));
-      $(tr).append($(thAg));
-      $(tr).append($(thBo));
-      $(tr).append($(thAct));
-      $(thead).append($(tr));
-      $(table).append($(thead));
-      $(div).append($(table));
-      $(".tab-content").append($(div));
-      $(a).append($(i)),
-      $(li).append($(a));
-      $("#tabs").append($(li));
-    }
-
 
     $('#logout').click( function () {
       sessionStorage.clear();
@@ -484,8 +394,6 @@ if ( sessionStorage.getItem('admin') != null ) {
       }
 
       function checkArrays (arr1, arr2, options) {
-          console.log(arr1);
-          console.log(arr2);
        for(var l = 0; l < arr1.length; l++) {
            for(var d = 0; d < arr2.length; d++) {
                if (arr1[l] == arr2[d]) {
