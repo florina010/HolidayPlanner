@@ -25,6 +25,7 @@ $('#tabClick a').click(function(){
 });
 
 $(document).ready( function () {
+    $('#tabClick').addClass('active');
   var theUser = JSON.parse(sessionStorage.getItem('user')),
       token = sessionStorage.getItem('token'),
       currentDate = moment(),
@@ -93,45 +94,82 @@ $(document).ready( function () {
       window.location.href = "login.html";
     }
 
-if ( sessionStorage.getItem('admin') != null ) {
-  $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
-  var li = $("<li></li>"),
-      a = $("<a data-toggle='tab' href='#users-list'></a>"),
-      i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Managed Users</i>"),
-      div =$("<div id='users-list' class='tab-pane fade'></div>"),
-      table = $("<table id='users-list-table' class='table display' cellspacing='0' width='100%'></table>"),
-      thead = $("<thead class='thead-inverse'></thead>"),
-      tr = $("<tr></tr>"),
-      th = $("<th>#</th>"),
-      thN = $("<th>Name</th>"),
-      thP = $("<th>Position</th>"),
-      thE = $("<th>Email</th>"),
-      thD = $("<th>Start Date</th>"),
-  thPh = $("<th>Phone</th>"),
-  thAc = $("<th>Active</th>"),
-  thPic = $("<th>Picture</th>"),
-  thAg = $("<th>Age</th>"),
-  thBo = $("<th>Bonus</th>"),
-  thAct = $("<th>Actions</th>");
-  $(tr).append($(th));
-  $(tr).append($(thN));
-  $(tr).append($(thP));
-  $(tr).append($(thE));
-  $(tr).append($(thD));
-  $(tr).append($(thPh));
-  $(tr).append($(thAc));
-  $(tr).append($(thPic));
-  $(tr).append($(thAg));
-  $(tr).append($(thBo));
-  $(tr).append($(thAct));
-  $(thead).append($(tr));
-  $(table).append($(thead));
-  $(div).append($(table));
-  $(".tab-content").append($(div));
-  $(a).append($(i)),
-  $(li).append($(a));
-  $("#tabs").append($(li));
-}
+    if ( sessionStorage.getItem('admin') != null ) {
+      $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
+      var li = $("<li></li>"),
+          a = $("<a data-toggle='tab' href='#management'></a>"),
+          i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Management</i>"),
+          div =$("<div id='management' class='tab-pane fade'></div>"),
+          table = $("<table id='manager-table' class='table display' cellspacing='0' width='100%'></table>"),
+          thead = $("<thead class='thead-inverse'></thead>"),
+          tr = $("<tr></tr>"),
+          th = $("<th>#</th>"),
+          thN = $("<th>Name</th>"),
+          thP = $("<th>Position</th>"),
+          thE = $("<th>Email</th>"),
+          thD = $("<th>Start Date</th>"),
+      thDa = $("<th>End Date</th>"),
+          thDy = $("<th>Days</th>"),
+      thTy = $("<th>Type</th>"),
+      thCo = $("<th>Comment</th>"),
+          thAd = $("<th>Approved</th>"),
+          thAp = $("<th>Approve</th>");
+      $(tr).append($(th));
+      $(tr).append($(thN));
+      $(tr).append($(thP));
+      $(tr).append($(thE));
+      $(tr).append($(thD));
+    $(tr).append($(thDa));
+      $(tr).append($(thDy));
+    $(tr).append($(thTy));
+    $(tr).append($(thCo));
+      $(tr).append($(thAd));
+      $(tr).append($(thAp));
+      $(thead).append($(tr));
+      $(table).append($(thead));
+      $(div).append($(table));
+      $(".tab-content").append($(div));
+      $(a).append($(i)),
+      $(li).append($(a));
+      $("#tabs").append($(li));
+
+     var li = $("<li></li>"),
+          a = $("<a data-toggle='tab' href='#users-list'></a>"),
+          i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Managed Users</i>"),
+          div =$("<div id='users-list' class='tab-pane fade'></div>"),
+          table = $("<table id='users-list-table' class='table display' cellspacing='0' width='100%'></table>"),
+          thead = $("<thead class='thead-inverse'></thead>"),
+          tr = $("<tr></tr>"),
+          th = $("<th>#</th>"),
+          thN = $("<th>Name</th>"),
+          thP = $("<th>Position</th>"),
+          thE = $("<th>Email</th>"),
+          thD = $("<th>Start Date</th>"),
+      thPh = $("<th>Phone</th>"),
+      thAc = $("<th>Active</th>"),
+      thPic = $("<th>Picture</th>"),
+      thAg = $("<th>Age</th>"),
+      thBo = $("<th>Bonus</th>"),
+      thAct = $("<th>Actions</th>");
+      $(tr).append($(th));
+      $(tr).append($(thN));
+      $(tr).append($(thP));
+      $(tr).append($(thE));
+      $(tr).append($(thD));
+      $(tr).append($(thPh));
+      $(tr).append($(thAc));
+      $(tr).append($(thPic));
+      $(tr).append($(thAg));
+      $(tr).append($(thBo));
+      $(tr).append($(thAct));
+      $(thead).append($(tr));
+      $(table).append($(thead));
+      $(div).append($(table));
+      $(".tab-content").append($(div));
+      $(a).append($(i)),
+      $(li).append($(a));
+      $("#tabs").append($(li));
+    }
 
     $('#logout').click( function () {
       sessionStorage.clear();
