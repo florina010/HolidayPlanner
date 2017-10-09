@@ -74,7 +74,7 @@ $(document).ready( function () {
     		$("[name=avDays]").val(0);
             $("#holiday").css("display", 'none');
           }
-          $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userID=' + theUser.userID + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
+          $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
             out (data.code);
         });
           if (theUser.admin == 2) {
@@ -84,6 +84,10 @@ $(document).ready( function () {
             $("#calendar").css('display', 'none');
             $("[name=mName]").val('admin');
             $("[name=avDays]").val(0);
+          }
+          else if (theUser.admin == 0) {
+              $("#holiday").parent().css("display", 'block');
+              $("[name=addUser]").parent().css('display', 'none');
           }
         });
       });
@@ -108,10 +112,11 @@ $(document).ready( function () {
           thP = $("<th>Position</th>"),
           thE = $("<th>Email</th>"),
           thD = $("<th>Start Date</th>"),
-      thDa = $("<th>End Date</th>"),
+          thDa = $("<th>End Date</th>"),
           thDy = $("<th>Days</th>"),
-      thTy = $("<th>Type</th>"),
-      thCo = $("<th>Comment</th>"),
+          thTy = $("<th>Type</th>"),
+          thCo = $("<th>Comment</th>"),
+          thAv = $("<th>Free days</th>"),
           thAd = $("<th>Approved</th>"),
           thAp = $("<th>Approve</th>");
       $(tr).append($(th));
@@ -119,10 +124,11 @@ $(document).ready( function () {
       $(tr).append($(thP));
       $(tr).append($(thE));
       $(tr).append($(thD));
-    $(tr).append($(thDa));
+      $(tr).append($(thDa));
       $(tr).append($(thDy));
-    $(tr).append($(thTy));
-    $(tr).append($(thCo));
+      $(tr).append($(thTy));
+      $(tr).append($(thCo));
+      $(tr).append($(thAv));
       $(tr).append($(thAd));
       $(tr).append($(thAp));
       $(thead).append($(tr));
@@ -452,4 +458,4 @@ $(document).ready( function () {
            }
        }
    }
-    });
+});
