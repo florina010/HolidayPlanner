@@ -15,13 +15,13 @@ function weekend(d1,d2){
   return days-we;
 }
 
-$('#tabClick a').click(function(){
-  //main();
-  //$(this).addClass("active");
-  console.log($(this).attr("class"));
-  $("#calendar").empty();
-  reloadJs('../js/calendar.js');
-  reloadJs('../js/fullCalendar.js');
+$('#tabClickCalendar').click(function(){
+  setTimeout(function(){
+    console.log($("#tabClickCalendar").attr("class"));
+    console.log("tabClickCalendar");
+    $("#calendar").empty();
+    reloadJs('../js/calendar.js');
+  }, 100);
 });
 
 $(document).ready( function () {
