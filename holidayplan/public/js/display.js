@@ -328,7 +328,6 @@ $(document).ready( function () {
                    e.preventDefault();
                    $('#myModal').find('form')[0].reset();
                    $("#eventForm").data('formValidation').resetForm();
-
                });
                $('.modal-body> div:first-child').css('display','block');
                $('.modal-body> div:nth-child(2)').css('display','none');
