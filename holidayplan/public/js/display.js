@@ -75,7 +75,7 @@ $(document).ready( function () {
     		$("[name=avDays]").val(0);
             $("#holiday").css("display", 'none');
           }
-          $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userID=' + theUser.userID + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
+          $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
             out (data.code);
         });
           if (theUser.admin == 2) {
@@ -85,6 +85,10 @@ $(document).ready( function () {
             $("#calendar").css('display', 'none');
             $("[name=mName]").val('admin');
             $("[name=avDays]").val(0);
+          }
+          else if (theUser.admin == 0) {
+              $("#holiday").parent().css("display", 'block');
+              $("[name=addUser]").parent().css('display', 'none');
           }
         });
       });
@@ -455,4 +459,4 @@ $(document).ready( function () {
            }
        }
    }
-    });
+});

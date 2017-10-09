@@ -184,7 +184,7 @@ function getManagerFreeDays(req,res) {
           return;
         }
 		var token = req.query.token;
-        connection.query("SELECT user.name, user.position, user.email, freedays.startDate, freedays.endDate, freedays.days, freedays.type, freedays.comment,  user.avfreedays ,freedays.approved, freedays.id FROM freedays JOIN management ON freedays.userID = management.userID AND management.managerID = (SELECT user.userID FROM user WHERE user.token='" + token + "') JOIN user ON user.userID=freedays.userID ORDER BY freedays.startDate DESC",function(err,rows){
+        connection.query("SELECT  user.name, user.position, user.email, freedays.startDate, freedays.endDate, freedays.days, freedays.type, freedays.comment, user.avfreedays, freedays.approved, freedays.id FROM freedays JOIN management ON freedays.userID = management.userID AND management.managerID = (SELECT user.userID FROM user WHERE user.token='" + token + "') JOIN user ON user.userID=freedays.userID ORDER BY freedays.startDate DESC",function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -534,7 +534,7 @@ function updateFreeDays(req, res){
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-		connection.query("UPDATE user SET avfreedays = '" + params.avfreedays + "' WHERE userID = '" + params.userID + "';",function(err,rows){
+		connection.query("UPDATE user SET avfreedays = '" + params.avfreedays + "' WHERE email = '" + params.email + "';",function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -788,6 +788,10 @@ router.get("/updateFreeDays", function(req,res){
     console.log(error);
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
   });
+});
+
+router.get("/updateAvFreeDays", function(req,res){
+    updateFreeDays(req,res);
 });
 
 // Tell express to use this router with /api before.
