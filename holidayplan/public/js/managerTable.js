@@ -68,6 +68,7 @@ function fillUpdateUserForm (){
 				freeDays[i].days,
 				freeDays[i].type,
 				freeDays[i].comment,
+				freeDays[i].avfreedays,
 				freeDaysStatus,
 				approveButtons
 			] ).draw( false )
@@ -165,7 +166,7 @@ function displayApproveModal(elem, id, action){
 
 function approveFreeDays() {
 	var tr = $("#manager-table tr.activeModal");
-	var td = tr.find("td").eq(10);
+	var td = tr.find("td").eq(11);
 	var id = $("#approve-freedays-modal").attr("approveId");
 	var approved = parseInt($("#approve-freedays-modal").attr("approve-action"));
 	var approvedText = (approved == 2) ? "Not Approved" : "Approved";

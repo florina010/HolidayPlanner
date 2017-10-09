@@ -33,11 +33,13 @@ var d=[];
               }
 
            }
-            $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token='+token + "&userID=" + theUser.userID, function (data) {
+          $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function (data) {
+             for (var i in data){
+                 if(data[i].type == "public"){
+                   d.push({start:new Date(data[i].start),title:'+ '+ data[i].name});
+                };
+            };
 
-           for (var i=0;i<data.length;i++){
-             d.push({start:new Date(data[i].startDate),title:'+ '+data[i].name});
-             }
            });
           main ();
           colorEvents ();

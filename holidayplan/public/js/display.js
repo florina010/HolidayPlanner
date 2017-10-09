@@ -19,6 +19,7 @@ $('#tabClickCalendar').click(function(){
   setTimeout(function(){
     console.log($("#tabClickCalendar").attr("class"));
     console.log("tabClickCalendar");
+
     $("#calendar").empty();
     reloadJs('../js/calendar.js');
   }, 400);
@@ -108,10 +109,11 @@ $(document).ready( function () {
           thP = $("<th>Position</th>"),
           thE = $("<th>Email</th>"),
           thD = $("<th>Start Date</th>"),
-      thDa = $("<th>End Date</th>"),
+          thDa = $("<th>End Date</th>"),
           thDy = $("<th>Days</th>"),
-      thTy = $("<th>Type</th>"),
-      thCo = $("<th>Comment</th>"),
+          thTy = $("<th>Type</th>"),
+          thCo = $("<th>Comment</th>"),
+          thAf = $("<th>Free days</th>"),
           thAd = $("<th>Approved</th>"),
           thAp = $("<th>Approve</th>");
       $(tr).append($(th));
@@ -119,10 +121,11 @@ $(document).ready( function () {
       $(tr).append($(thP));
       $(tr).append($(thE));
       $(tr).append($(thD));
-    $(tr).append($(thDa));
+      $(tr).append($(thDa));
       $(tr).append($(thDy));
-    $(tr).append($(thTy));
-    $(tr).append($(thCo));
+      $(tr).append($(thTy));
+      $(tr).append($(thCo));
+      $(tr).append($(thAf));
       $(tr).append($(thAd));
       $(tr).append($(thAp));
       $(thead).append($(tr));
