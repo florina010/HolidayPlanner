@@ -24,7 +24,9 @@ $('#tabClickCalendar').click(function(){
     reloadJs('../js/calendar.js');
   }, 400);
 });
-
+//$("#save").click(function(){
+//  location.reload();
+//});
 $(document).ready( function () {
     $('#tabClick').addClass('active');
   var theUser = JSON.parse(sessionStorage.getItem('user')),
@@ -293,6 +295,8 @@ $(document).ready( function () {
                    }
 
                    check(stdate, enddate, holidayOptions, addHoliday);
+
+
           }
         });
 
@@ -458,4 +462,13 @@ $(document).ready( function () {
            }
        }
    }
+
+   $("#close").click(function(){
+     location.reload();
+   });
+   $("#save").click(function(){
+       setTimeout(function(){
+         location.reload();
+       },1000);
+   });
 });
