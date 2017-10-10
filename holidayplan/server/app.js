@@ -318,8 +318,9 @@ function upload(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-        var sampleFile = req.files.profileImage;
-        connection.query("UPDATE user SET picture ="+ sampleFile.data +" WHERE userID = " + 4,function(err,rows){
+        var sampleFile = req.files.profileImage.data;
+        console.log(sampleFile);
+        connection.query("UPDATE user SET picture ="+ 'sampleFile' +" WHERE userID = " + 4,function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -662,7 +663,7 @@ router.post('/upload', function(req, res) {
 
   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
   upload(req,res);
-  let sampleFile = req.files.profileImage;
+  let sampleFile = req.files.profileImage.data;
   // Use the mv() method to place the file somewhere on your server
   console.log(sampleFile);
 });
