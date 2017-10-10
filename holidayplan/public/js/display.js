@@ -46,13 +46,12 @@ $(document).ready( function () {
                     $('<p/>').text(file.name).appendTo('#files');
                 });
             }
+
         }).prop('disabled', !$.support.fileInput)
             .parent().addClass($.support.fileInput ? undefined : 'disabled');
             var userid = JSON.parse(sessionStorage.getItem('user')).userID;
 
-            $.post(appConfig.url + appConfig.api + 'upload').done(function( data ) {
-                console.log("data");
-            });
+
     //file upload
 
   if ( theUser != null ) {
