@@ -34,6 +34,27 @@ $(document).ready( function () {
       currentDate = moment(),
       sum = 0, manager, manId, dates = new Array(), isOk = true;
 
+
+
+
+//file upload
+        $('#fileupload').fileupload({
+            url: appConfig.url + appConfig.api + 'upload',
+            dataType: 'json',
+            done: function (e, data) {
+                $.each(data.result.files, function (index, file) {
+                    $('<p/>').text(file.name).appendTo('#files');
+                });
+            }
+        }).prop('disabled', !$.support.fileInput)
+            .parent().addClass($.support.fileInput ? undefined : 'disabled');
+            var userid = JSON.parse(sessionStorage.getItem('user')).userID;
+
+            $.post(appConfig.url + appConfig.api + 'upload').done(function( data ) {
+                console.log("data");
+            });
+    //file upload
+
   if ( theUser != null ) {
     $.post(appConfig.url + appConfig.api, { id: theUser.userID }).done(function( data ) {
       if (data.length != 0) {
