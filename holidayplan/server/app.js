@@ -318,7 +318,7 @@ function upload(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-        var sampleFile = req.files.profileImage.data;
+        var sampleFile = req.files.profileImage.data.toString("base64");
         console.log(sampleFile);
         connection.query("UPDATE user SET picture ='"+ sampleFile +"' WHERE userID = " + 4,function(err,rows){
             connection.release();
