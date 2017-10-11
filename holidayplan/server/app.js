@@ -428,6 +428,7 @@ function addUser(req,res) {
 }
 
 function getAllUsers(req,res) {
+    console.log(123123123123123);
   var params = req.query;
     pool.getConnection(function(err,connection){
         if (err) {
@@ -740,6 +741,8 @@ router.get("/getAllManagers",function(req,res){
 
 router.get("/getAllUsers", function(req,res){
   var token = req.query.token;
+  console.log(token);
+  console.log(121312312312);
   isValidToken(token).then(function(result) {
     getAllUsers(req,res);
   }, function(error){
