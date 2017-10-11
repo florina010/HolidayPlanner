@@ -311,7 +311,7 @@ function getManagerDetails(req,res) {
 }
 
 function upload(req,res) {
-    //var params = req.body;
+    var params = req.body;
     console.log("a");
     pool.getConnection(function(err,connection){
         if (err) {
@@ -320,7 +320,8 @@ function upload(req,res) {
         }
         var sampleFile = req.files.profileImage.data.toString("base64");
         console.log(sampleFile);
-        connection.query("UPDATE user SET picture ='"+ sampleFile +"' WHERE userID = " + 4,function(err,rows){
+        console.log(params);
+        connection.query("UPDATE user SET picture ='"+ sampleFile +"' WHERE userID = " + params.id,function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -658,26 +659,17 @@ router.get("/getFreeDays",function(req,res){
 
 router.post('/upload', function(req, res) {
   var token = req.query.token;
-  if (!req.files)
-    return res.status(400).send('No files were uploaded.');
+  console.log(req.body);
+   if (!req.files)
+     return res.status(400).send('No files were uploaded.');
 
-  // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-  upload(req,res);
-  let sampleFile = req.files.profileImage.data;
-  // Use the mv() method to place the file somewhere on your server
-  console.log(sampleFile);
+   // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+   upload(req,res);
+   let sampleFile = req.files.profileImage.data;
+   // Use the mv() method to place the file somewhere on your server
+   console.log(token);
 });
 
-/*router.get("/getLegalFreeDays",function(req,res){
-  var token = req.query.token;
-  isValidToken(token).then(function(result) {
-    getLegalFreeDays(req,res);
-  }, function(error){
-    console.log(error);
-      res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
-  });
-});
-*/
 router.post("/",function(req,res){
   getManagerName(req,res);
 });

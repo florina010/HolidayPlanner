@@ -24,9 +24,7 @@ $('#tabClickCalendar').click(function(){
     reloadJs('../js/calendar.js');
   }, 400);
 });
-//$("#save").click(function(){
-//  location.reload();
-//});
+
 $(document).ready( function () {
     $('#tabClick').addClass('active');
   var theUser = JSON.parse(sessionStorage.getItem('user')),
@@ -35,11 +33,16 @@ $(document).ready( function () {
       sum = 0, manager, manId, dates = new Array(), isOk = true;
 
 
-
-
 //file upload
+//$.post(appConfig.url + appConfig.api+ 'getManagerDetails', { managerId: manId}).done(function( data ) {
+//});
+
         $('#fileupload').fileupload({
             url: appConfig.url + appConfig.api + 'upload',
+            formData: {
+              id: theUser.userID,
+              token: token
+            },
             dataType: 'json',
             done: function (e, data) {
                 $.each(data.result.files, function (index, file) {
@@ -48,7 +51,7 @@ $(document).ready( function () {
             }
         });
     //file upload
-
+console.log(theUser.userID);
   if ( theUser != null ) {
     $.post(appConfig.url + appConfig.api, { id: theUser.userID }).done(function( data ) {
       if (data.length != 0) {
@@ -321,11 +324,11 @@ $(document).ready( function () {
        });
 
        function getFreeDays () {
-           $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token='+token + "&userID=" + theUser.userID, function (data) {
-               for (var i = 0; i < data.length; i++){
-                   dates.push(moment(data[i].startDate).format("YYYY/MM/DD"));
-               }
-           });
+          // $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token='+token + "&userID=" + theUser.userID, function (data) {
+          //     for (var i = 0; i < data.length; i++){
+          //         dates.push(moment(data[i].startDate).format("YYYY/MM/DD"));
+          //     }
+           //});
        };
 
        function addHoliday(options) {
