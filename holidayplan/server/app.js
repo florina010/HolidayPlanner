@@ -321,8 +321,9 @@ function upload(req,res) {
 
         connection.query("UPDATE user SET picture ='"+ sampleFile +"' WHERE userID = " + params.id,function(err,rows){
             connection.release();
+
             if(!err) {
-                res.json(rows);
+                res.json(sampleFile);
             }
         });
         connection.on('error', function(err) {
