@@ -2,7 +2,7 @@ window.appNameSpace = window.appNameSpace || { };
 window.sessionInvalid = false;
 var token = sessionStorage.getItem('token'), theUser = JSON.parse(sessionStorage.getItem('user'));
 
-if (theUser.admin == 1 ) {
+if (theUser.admin != 0 ) {
 	$(function () {
 		$("a[name='addUser']").click(function(){
 			$("#myModalUser").load("addUserForm.html", function(){
@@ -31,8 +31,9 @@ if (theUser.admin == 1 ) {
 		populateTable();
 
 		 // Managed Users Table
-			 if (theUser.admin == 2) {
+			 if (sessionStorage.getItem('admin') == 2) {
 				$.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
+
 					out (users.code);
 					var userstable = $('#users-list-table').DataTable();
 					var j = 1;
