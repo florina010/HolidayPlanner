@@ -53,7 +53,6 @@ $(document).ready( function () {
       }
   });
 
-//console.log(theUser.picture);
 //file upload
 
   if ( theUser != null ) {
@@ -491,9 +490,12 @@ $(document).ready( function () {
    $("#close").click(function(){
      location.reload();
    });
-   // $("#save").click(function(){
-   //     setTimeout(function(){
-   //       location.reload();
-   //     },1000);
-   // });
+   $(".close").click(function(){
+     location.reload();
+   });
+    $("#save").click(function(){
+        setTimeout(function(){
+          location.reload();
+        },1000);
+    });
 });
