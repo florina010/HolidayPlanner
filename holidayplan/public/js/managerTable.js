@@ -47,7 +47,6 @@ if (theUser.admin != 0 ) {
 							moment(users[i].startDate).format("DD/MM/Y"),
 							users[i].phone,
 							users[i].isActive,
-							users[i].picture,
 							users[i].age,
 							users[i].bonus,
 							'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
@@ -72,7 +71,6 @@ if (theUser.admin != 0 ) {
 							moment(users[i].startDate).format("DD/MM/Y"),
 							users[i].phone,
 							users[i].isActive,
-							users[i].picture,
 							users[i].age,
 							users[i].bonus,
 							'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
