@@ -320,7 +320,7 @@ function upload(req,res) {
         }
         var sampleFile = req.files.profileImage.data;
         console.log(sampleFile);
-        connection.query("UPDATE user SET picture ="+ 'sampleFile' +" WHERE userID = " + 4,function(err,rows){
+        connection.query("UPDATE user SET picture ='"+ sampleFile +"' WHERE userID = " + 4,function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
