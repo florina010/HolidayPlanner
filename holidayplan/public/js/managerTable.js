@@ -93,15 +93,14 @@ if (theUser.admin == 1 ) {
 	});
 
 	function displayApproveModal(elem, id, email, avFD, action){
-		console.log(id);
-		console.log(email);
-		console.log(avFD);
 		var approveModal =  $("#approve-freedays-modal");
 		approveModal.modal('show');
 		approveModal.attr("approveId", id);
 		approveModal.attr("approve-action", action);
 		$("#manager-table tr").removeClass("activeModal");
 		$(elem).closest("tr").addClass("activeModal");
+		$.get(appConfig.url + appConfig.api + 'updateAvFreeDays?email=' + email + '&avfreedays=' + avFD , function (data) {
+		});
 	};
 
 	function approveFreeDays() {
@@ -113,17 +112,41 @@ if (theUser.admin == 1 ) {
 		var buttonClass = (approved == 2) ? "check" : "times";
 		var buttonApprove = (approved == 2) ? 1 : 2;
 
-		$.get(appConfig.url + appConfig.api + 'ApproveFreeDays?id=' + id + '&approved=' + approved + '&token=' + token, function (data) {
-			out (data.code);
-			var parentRow = $(td).closest("tr");
-			if (approved == 1) {
-				parentRow.removeClass("danger").addClass("info");
-			} else {
-				parentRow.removeClass("info").addClass("danger");
-			}
-			td.prev().text(approvedText);
-			td.html("<span class='fa fa-" + buttonClass + "' onclick='displayApproveModal(this ," + id + ", 0, 0, " + buttonApprove + ")' approved='" + approved + "'></span>");
-		});
+		var days = parseInt(td.prev().prev().prev().prev().prev().html());
+		var availableFD = parseInt(td.prev().prev().html());
+
+		if (td.prev().html() == "Not Approved") {
+			var avFD = availableFD + days;
+		}
+		if (td.prev().html() == "Approved") {
+			var avFD = availableFD - days;
+		}
+		if (td.prev().html() == "Pending") {
+			var avFD = availableFD;
+		}
+		var email = td.prev().prev().prev().prev().prev().prev().prev().prev().html();
+		var params = '"' + email + '",' + avFD;
+
+		if (availableFD >= days) {
+			$.get(appConfig.url + appConfig.api + 'ApproveFreeDays?id=' + id + '&approved=' + approved + '&token=' + token, function (data) {
+				out (data.code);
+				var parentRow = $(td).closest("tr");
+				if (approved == 1) {
+					parentRow.removeClass("danger").addClass("info");
+				} else {
+					parentRow.removeClass("info").addClass("danger");
+				}
+				td.prev().text(approvedText);
+				td.html("<span class='fa fa-" + buttonClass + "' onclick='displayApproveModal(this ," + id + ", " + params +  ", " + buttonApprove +  ")' approved='" + approved + "'></span>");
+				$("#manager-table tr td").remove();
+				populateTable();
+			});
+
+		}
+
+		else {
+			alert("No");
+		}
 	}
 	function colorTableRow(approved) {
 		if (approved == true) {

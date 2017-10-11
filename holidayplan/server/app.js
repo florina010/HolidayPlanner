@@ -829,6 +829,7 @@ router.get("/updateFreeDays", function(req,res){
 });
 
 router.get("/updateAvFreeDays", function(req,res){
+    console.log('am ajuns aici');
     updateFreeDays(req,res);
 });
 
