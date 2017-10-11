@@ -312,15 +312,13 @@ function getManagerDetails(req,res) {
 
 function upload(req,res) {
     var params = req.body;
-    console.log("a");
     pool.getConnection(function(err,connection){
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
         var sampleFile = req.files.profileImage.data.toString("base64");
-        console.log(sampleFile);
-        console.log(params);
+
         connection.query("UPDATE user SET picture ='"+ sampleFile +"' WHERE userID = " + params.id,function(err,rows){
             connection.release();
             if(!err) {
@@ -357,14 +355,11 @@ function getManagerName(req,res) {
 function handle_dateupdate(req,res) {
 
     var params = req.query;
-    console.log(params);
     pool.getConnection(function(err,connection){
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-        console.log('connected as id ' + connection.threadId);
-        console.log('am intrat in add');
         var q = "INSERT INTO freedays (isActive, startDate, endDate, days, approved, userID, approverID,type, comment) VALUES ( '0', '"+params.stdate+"', '"+params.enddate+"', '"+params.days+"', '0', '"+params.userID+"' , '"+params.approverID+"' , '"+params.vacationtype+"' , '" + params.comment + "')";
         connection.query(q, function(err,rows){
             connection.release();

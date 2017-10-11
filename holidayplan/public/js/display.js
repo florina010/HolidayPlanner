@@ -34,24 +34,25 @@ $(document).ready( function () {
 
 
 //file upload
-//$.post(appConfig.url + appConfig.api+ 'getManagerDetails', { managerId: manId}).done(function( data ) {
-//});
+function uploadAvatar(){
+  $('#fileupload').fileupload({
+      url: appConfig.url + appConfig.api + 'upload',
+      formData: {
+        id: theUser.userID,
+        token: token
+      },
+      dataType: 'json',
+      done: function (e, data) {
+          $.each(data.result.files, function (index, file) {
+              $('<p/>').text(file.name).appendTo('#files');
+          });
+      }
+  });
+  
+}
+uploadAvatar();
+//file upload
 
-        $('#fileupload').fileupload({
-            url: appConfig.url + appConfig.api + 'upload',
-            formData: {
-              id: theUser.userID,
-              token: token
-            },
-            dataType: 'json',
-            done: function (e, data) {
-                $.each(data.result.files, function (index, file) {
-                    $('<p/>').text(file.name).appendTo('#files');
-                });
-            }
-        });
-    //file upload
-console.log(theUser.userID);
   if ( theUser != null ) {
     $.post(appConfig.url + appConfig.api, { id: theUser.userID }).done(function( data ) {
       if (data.length != 0) {
@@ -65,7 +66,7 @@ console.log(theUser.userID);
       $.get(appConfig.url + appConfig.api + 'getFreeDays?token=' + token + '&userID=' + theUser.userID, function (data) {
           out (data.code);
           $("[name=mName]").val(manager);
-          $("#avatar").attr("src", 'data:image/png;base64,'+theUser.picture);
+          $("#avatar").attr("src", 'data:image/png;base64,'+ theUser.picture);
           $("[name=name]").val(theUser.name);
           $("[name=age]").val(theUser.age);
           $("[name=email]").val(theUser.email);
@@ -175,7 +176,6 @@ console.log(theUser.userID);
           thD = $("<th>Start Date</th>"),
       thPh = $("<th>Phone</th>"),
       thAc = $("<th>Active</th>"),
-      thPic = $("<th>Picture</th>"),
       thAg = $("<th>Age</th>"),
       thBo = $("<th>Bonus</th>"),
       thAct = $("<th>Actions</th>");
@@ -186,7 +186,6 @@ console.log(theUser.userID);
       $(tr).append($(thD));
       $(tr).append($(thPh));
       $(tr).append($(thAc));
-      $(tr).append($(thPic));
       $(tr).append($(thAg));
       $(tr).append($(thBo));
       $(tr).append($(thAct));
