@@ -22,7 +22,6 @@ if (theUser.admin != 0 ) {
 		var currentName = JSON.parse(sessionStorage.getItem('user')).name;
 		var currentAge = JSON.parse(sessionStorage.getItem('user')).age;
 		var currentPhone = JSON.parse(sessionStorage.getItem('user')).phone;
-		document.getElementById("userPicture").value = currentPicture;
 		document.getElementById("username").value = currentName;
 		document.getElementById("ageUser").value = currentAge;
 		document.getElementById("phoneUser").value = currentPhone;
@@ -387,7 +386,6 @@ if (theUser.admin != 0 ) {
 				var age = formWrapper.find("input[name = 'ageUser']").val();
 				var phone = formWrapper.find("input[name = 'phoneUser']").val();
 				var bonus = formWrapper.find("input[name = 'bonusUser']").val();
-				var pictureUser = formWrapper.find("input[name = 'pictureUser']").val();
 				var userid = JSON.parse(sessionStorage.getItem('user')).userID;
 				var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
 				hashObj.update(passwordUser);
@@ -397,9 +395,8 @@ if (theUser.admin != 0 ) {
 				theUser.name = userName;
 				theUser.age = age;
 				theUser.phone = phone;
-				theUser.picture = pictureUser;
 				sessionStorage.setItem('user', JSON.stringify(theUser));
-				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, age : age, phone : phone, password : passwordUser , picture : pictureUser, userId : userid, token : token }).done(function( data ) {
+				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, age : age, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
 					if ( data.code == 110 ){
 						if (!appConfig.sessionInvalid) {
 							appConfig.sessionInvalid = true;

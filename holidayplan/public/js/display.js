@@ -34,7 +34,8 @@ $(document).ready( function () {
 
 
 //file upload
-function uploadAvatar(){
+  //$("#avatar").attr("src", 'data:image/png;base64,'+ theUser.picture);
+
   $('#fileupload').fileupload({
       url: appConfig.url + appConfig.api + 'upload',
       formData: {
@@ -46,11 +47,13 @@ function uploadAvatar(){
           $.each(data.result.files, function (index, file) {
               $('<p/>').text(file.name).appendTo('#files');
           });
+          theUser.picture = data.result;
+          sessionStorage.setItem('user', JSON.stringify(theUser));
+          $("#avatar").attr("src", 'data:image/png;base64,'+ theUser.picture);
       }
   });
-  
-}
-uploadAvatar();
+
+//console.log(theUser.picture);
 //file upload
 
   if ( theUser != null ) {
