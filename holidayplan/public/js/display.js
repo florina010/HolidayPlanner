@@ -95,6 +95,8 @@ console.log(theUser.userID);
     		$("[name=avDays]").val(0);
             $("#holiday").css("display", 'none');
           }
+          theUser.avfreedays = $("[name=avDays]").val();
+          sessionStorage.setItem('user', JSON.stringify(theUser));
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
             out (data.code);
         });
@@ -325,11 +327,13 @@ console.log(theUser.userID);
        });
 
        function getFreeDays () {
-          // $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token='+token + "&userID=" + theUser.userID, function (data) {
-          //     for (var i = 0; i < data.length; i++){
-          //         dates.push(moment(data[i].startDate).format("YYYY/MM/DD"));
-          //     }
-           //});
+           $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function (data) {
+               for (var i = 0; i < data.length; i++){
+                   if (data[i].type == 'public') {
+                       dates.push(moment(data[i].date).format("YYYY/MM/DD"));
+                   }
+               }
+           });
        };
 
        function addHoliday(options) {
@@ -485,9 +489,9 @@ console.log(theUser.userID);
    $("#close").click(function(){
      location.reload();
    });
-   $("#save").click(function(){
-       setTimeout(function(){
-         location.reload();
-       },1000);
-   });
+   // $("#save").click(function(){
+   //     setTimeout(function(){
+   //       location.reload();
+   //     },1000);
+   // });
 });
