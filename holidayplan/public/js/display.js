@@ -62,7 +62,7 @@ $(document).ready( function () {
       $.get(appConfig.url + appConfig.api + 'getFreeDays?token=' + token + '&userID=' + theUser.userID, function (data) {
           out (data.code);
           $("[name=mName]").val(manager);
-          $("#avatar").attr("src", theUser.picture);
+          $("#avatar").attr("src", 'data:image/png;base64,'+theUser.picture);
           $("[name=name]").val(theUser.name);
           $("[name=age]").val(theUser.age);
           $("[name=email]").val(theUser.email);
