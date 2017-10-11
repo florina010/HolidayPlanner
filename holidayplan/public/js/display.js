@@ -120,7 +120,8 @@ console.log(theUser.userID);
     }
 
     if ( sessionStorage.getItem('admin') != null ) {
-      $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
+        $('#navbar1 ul:first-of-type > li:nth-child(2)').css('display', 'block');
+     // $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
       var li = $("<li></li>"),
           a = $("<a data-toggle='tab' href='#management'></a>"),
           i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Management</i>"),
