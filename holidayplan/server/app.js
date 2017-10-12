@@ -824,7 +824,6 @@ router.get("/updateAvFreeDays", function(req,res){
     updateFreeDays(req,res);
 });
 
-
 app.use("/api",router);
 
 // Listen to this Port

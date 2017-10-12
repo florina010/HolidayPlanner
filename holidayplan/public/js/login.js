@@ -24,9 +24,14 @@ $(document).ready(function () {
           user['admin'] = data.admin;
           user['avfreedays'] = data.avfreedays;
           user['bonus'] = data.bonus;
+          console.log(data.login);
           if (data.admin > 0 ) {
             sessionStorage.setItem('admin', data.admin);
           }
+      if (user.admin == 2) {
+        alert("admin");
+
+        }
 		  if (data.isActive == 0 ) {
 			  alert("You don't work here");
 			  appConfig.sessionInvalid = true;
@@ -64,7 +69,6 @@ $(document).ready(function () {
    this.startDate = startDate;
    this.admin = admin;
    this.bonus = bonus;
-
  }
  appNameSpace.Manager = function(userID, password, isActive, picture, age, name, position, email, phone, startDate, admin, managerID) {
 	appNameSpace.User.call(this,userID, password, isActive, picture, age, name, position, email, phone, startDate, admin, managerID);

@@ -33,9 +33,6 @@ $(document).ready( function () {
       sum = 0, manager, manId, dates = new Array(), isOk = true;
 
 
-//file upload
-  //$("#avatar").attr("src", 'data:image/png;base64,'+ theUser.picture);
-
   $('#fileupload').fileupload({
       url: appConfig.url + appConfig.api + 'upload',
       formData: {
@@ -97,7 +94,7 @@ $(document).ready( function () {
           if ( work < 12 ){
               $("[name=avDays]").val(Math.floor(21/12*restM - sum));
           };
-
+          console.log(  $("[name=avDays]").val());
           //When user (super admin) logs in next year
           if (currentDate.month() == 0 && currentDate.date() == 1 ) {
             $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
@@ -111,8 +108,7 @@ $(document).ready( function () {
           sessionStorage.setItem('user', JSON.stringify(theUser));
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
             out (data.code);
-            console.log($("[name=avDays]").val());
-        });
+          });
           if (theUser.admin == 2) {
             $("[name=add]").parent().css('display', 'none');
             $("[name=addUser]").parent().css('display', 'block');
