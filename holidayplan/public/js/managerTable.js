@@ -2,7 +2,7 @@ window.appNameSpace = window.appNameSpace || { };
 window.sessionInvalid = false;
 var token = sessionStorage.getItem('token'), theUser = JSON.parse(sessionStorage.getItem('user'));
 
-if (theUser.admin != 0 ) {
+if (theUser.admin == 1 ) {
 	$(function () {
 		$("a[name='addUser']").click(function(){
 			$("#myModalUser").load("addUserForm.html", function(){
@@ -31,9 +31,8 @@ if (theUser.admin != 0 ) {
 		populateTable();
 
 		 // Managed Users Table
-			 if (sessionStorage.getItem('admin') == 2) {
+			 if (theUser.admin == 2) {
 				$.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
-
 					out (users.code);
 					var userstable = $('#users-list-table').DataTable();
 					var j = 1;
@@ -245,6 +244,28 @@ if (theUser.admin != 0 ) {
 		});
 
 		// Add user form.
+		$("input:checkbox").on('click', function() {
+		  var $box = $(this);
+		  if ($box.is(":checked")) {
+		    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+		    $(group).prop("checked", false);
+		    $box.prop("checked", true);
+		  } else {
+		    $box.prop("checked", false);
+		  }
+		});
+		$("#old").change(function(){
+				if ($(this).is(":checked")){
+					$("#avfree").show();
+				}else{
+					$("#avfree").hide();
+				};
+		});
+		$("#new").change(function(){
+				if ($(this).is(":checked")){
+					$("#avfree").hide();
+				};
+		});
 		$("#add-user-form").formValidation({
 			framework: 'bootstrap',
 			icon: {
@@ -268,10 +289,11 @@ if (theUser.admin != 0 ) {
 				var stwork = formWrapper.find("[name = 'stwork']").val();
 				var email = formWrapper.find("input[name = 'emailUser']").val();
 				var phone = formWrapper.find("input[name = 'phoneUser']").val();
+			  var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
 				var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
 				hashObj.update('avangarde');
 				var password = hashObj.getHash("HEX");
-				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork}).done(function( data ) {
+				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork, avfreedays: avfreedays}).done(function( data ) {
 					var userid = JSON.parse(sessionStorage.getItem('user')).userID;
 					$.post(appConfig.url + appConfig.api + 'modifyClass', { userID: data.insertId, managerID: userid, token: token}).done(function( data ) {
 						out (data.code);
