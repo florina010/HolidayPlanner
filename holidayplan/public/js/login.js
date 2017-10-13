@@ -30,7 +30,6 @@ $(document).ready(function () {
           }
       if (user.admin == 2) {
         alert("admin");
-
         }
 		  if (data.isActive == 0 ) {
 			  alert("You don't work here");
