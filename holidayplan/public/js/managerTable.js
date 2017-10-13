@@ -2,7 +2,7 @@ window.appNameSpace = window.appNameSpace || { };
 window.sessionInvalid = false;
 var token = sessionStorage.getItem('token'), theUser = JSON.parse(sessionStorage.getItem('user'));
 
-if (theUser.admin != 0 ) {
+if (theUser.admin >= 0 ) {
 	$(function () {
 		$("a[name='addUser']").click(function(){
 			$("#myModalUser").load("addUserForm.html", function(){
@@ -271,7 +271,8 @@ if (theUser.admin != 0 ) {
 				var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
 				hashObj.update('avangarde');
 				var password = hashObj.getHash("HEX");
-				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork}).done(function( data ) {
+				var freeDays = Math.floor(21/12*(12 - moment().month()));
+				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork, avfreedays : freeDays}).done(function( data ) {
 					var userid = JSON.parse(sessionStorage.getItem('user')).userID;
 					$.post(appConfig.url + appConfig.api + 'modifyClass', { userID: data.insertId, managerID: userid, token: token}).done(function( data ) {
 						out (data.code);

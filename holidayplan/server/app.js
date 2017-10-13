@@ -405,12 +405,12 @@ function addUser(req,res) {
           return;
         }
         if(params.position == 'Manager'){
-         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" + params.phone + "', '" + params.stwork + "', '" + 1 +"'";
+         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" + params.phone + "', '" + params.stwork + "', '" + 1  + "', '" + params.avfreedays  +"'";
        }
        else {
-         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" + params.phone + "', '" + params.stwork + "', '" + 0 +"'";
+         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" + params.phone + "', '" + params.stwork + "', '" + 0  + "', '" + params.avfreedays   +"'";
        }
-        connection.query("INSERT INTO user (email, password, name, age, position, phone, startDate, admin) VALUES ("+ columns +")",function(err,rows){
+        connection.query("INSERT INTO user (email, password, name, age, position, phone, startDate, admin, avfreedays) VALUES ("+ columns +")",function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -551,6 +551,7 @@ function updateUserManager(req,res) {
 
 function updateFreeDays(req, res){
     var params = req.query;
+    console.log(params);
     pool.getConnection(function(err,connection){
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
