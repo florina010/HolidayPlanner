@@ -294,16 +294,14 @@ managedUserTable();
 				var stwork = formWrapper.find("[name = 'stwork']").val();
 				var email = formWrapper.find("input[name = 'emailUser']").val();
 				var phone = formWrapper.find("input[name = 'phoneUser']").val();
-			  var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
+			  	var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
 				var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
 				hashObj.update('avangarde');
 				var password = hashObj.getHash("HEX");
-<<<<<<< HEAD
-				var freeDays = Math.floor(21/12*(12 - moment().month()));
-				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork, avfreedays : freeDays}).done(function( data ) {
-=======
+				if (!avfreedays.length ) {
+					avfreedays = Math.floor(21/12*(12 - moment().month()));
+				}
 				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork, avfreedays: avfreedays}).done(function( data ) {
->>>>>>> 32a158f3aacab116eb50bfd166fef8e3e0594ee1
 					var userid = JSON.parse(sessionStorage.getItem('user')).userID;
 					$.post(appConfig.url + appConfig.api + 'modifyClass', { userID: data.insertId, managerID: userid, token: token}).done(function( data ) {
 						out (data.code);
