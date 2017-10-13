@@ -87,23 +87,62 @@ $(document).ready( function () {
         }
 
           var work = moment().diff(theUser.startDate, 'months', false);
-          console.log(work);
+
           var restM = 12 - currentDate.month();
-          console.log(restM);
-          console.log($("[name=avDays]").val(Math.floor(21/12*restM - sum)));
           if ( work < 12 ){
               $("[name=avDays]").val(Math.floor(21/12*restM - sum));
           };
-          console.log(  $("[name=avDays]").val());
+
           //When user (super admin) logs in next year
-          if (currentDate.month() == 0 && currentDate.date() == 1 ) {
-            $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
-          }
+          var a =[2017, 2018, 2019];
+          var year = new Date().getFullYear();
+
+          function logInNextYear(value){
+            var usersArr = [], usersEm = [];
+            var j;
+            var avfreedays;
+            //avfreedays +=22;
+              if (theUser.admin == 2) {
+                for(i in a){
+                  if( value == a[i]){
+                     var x = $.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
+                       //alert("succes");
+                       for(j in users){
+                         usersArr.push(users[j].avfreedays);
+                         usersEm.push(users[j].email);
+                        }
+                        console.log(usersArr);
+                        console.log(usersEm[0]);
+                      })
+                      .done(function() {
+                        console.log('intra');
+                          for(var l = 0; l < usersEm.length; l++) {
+                          $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&userEmail=' + usersEm[l] + '&avfreedays=' + (usersArr[l] + 21), function (data) {
+                            out (data.code);
+                          });
+                        }
+                      });
+                    }
+                }
+              };
+
+
+            };
+
+          //  $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
+            //var a =   $("[name=avDays]").val();
+            //console.log("aa" + a);
+
+            var callbacks = $.Callbacks( "once" );
+            callbacks.add(logInNextYear);
+            callbacks.fire( 2017 );
+
           if ($("[name=avDays]").val() <= 0)
           {
-    		      $("[name=avDays]").val(0);
+    		    $("[name=avDays]").val(0);
             $("#holiday").css("display", 'none');
           }
+
           theUser.avfreedays = $("[name=avDays]").val();
           sessionStorage.setItem('user', JSON.stringify(theUser));
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
@@ -132,7 +171,7 @@ $(document).ready( function () {
 
     if ( sessionStorage.getItem('admin') != null ) {
         $('#navbar1 ul:first-of-type > li:nth-child(2)').css('display', 'block');
-      $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
+     // $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
       var li = $("<li></li>"),
           a = $("<a data-toggle='tab' href='#management'></a>"),
           i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Management</i>"),
