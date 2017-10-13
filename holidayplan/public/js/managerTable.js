@@ -2,7 +2,19 @@ window.appNameSpace = window.appNameSpace || { };
 window.sessionInvalid = false;
 var token = sessionStorage.getItem('token'), theUser = JSON.parse(sessionStorage.getItem('user'));
 
+$(document).ready(function () {
+            $('#users-list-table').dataTable({
+                "paging": false
+            });
+			$('#users-list-table').find('.dataTables_paginate, .dataTables_length, .dataTables_info').hide();
+        });
+
+
+
+
+
 if (theUser.admin >= 0 ) {
+
 	$(function () {
 		$("a[name='addUser']").click(function(){
 			$("#myModalUser").load("addUserForm.html", function(){
@@ -17,73 +29,19 @@ if (theUser.admin >= 0 ) {
 			});
 		});
 
-	function fillUpdateUserForm (){
-		var currentPicture = JSON.parse(sessionStorage.getItem('user')).picture;
-		var currentName = JSON.parse(sessionStorage.getItem('user')).name;
-		var currentAge = JSON.parse(sessionStorage.getItem('user')).age;
-		var currentPhone = JSON.parse(sessionStorage.getItem('user')).phone;
-		document.getElementById("username").value = currentName;
-		document.getElementById("ageUser").value = currentAge;
-		document.getElementById("phoneUser").value = currentPhone;
-	}
+		function fillUpdateUserForm (){
+			var currentPicture = JSON.parse(sessionStorage.getItem('user')).picture;
+			var currentName = JSON.parse(sessionStorage.getItem('user')).name;
+			var currentAge = JSON.parse(sessionStorage.getItem('user')).age;
+			var currentPhone = JSON.parse(sessionStorage.getItem('user')).phone;
+			document.getElementById("username").value = currentName;
+			document.getElementById("ageUser").value = currentAge;
+			document.getElementById("phoneUser").value = currentPhone;
+		}
 		var manager = new appNameSpace.Manager("userID", "password", "isActive", "picture", "age", "name", "position", "email", "phone", "startDate", "admin", "managerID");
 
 		populateTable();
-
-		 // Managed Users Table
-
-		function managedUserTable(){
-			if (sessionStorage.getItem('admin') == 2) {
- 			 $.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
-
- 				 out (users.code);
- 				 var userstable = $('#users-list-table').DataTable();
- 				 var j = 1;
- 			 for ( i=0; i < users.length; i++ ){
- 				 userstable.row.add( [
- 					 j,
- 					 users[i].name,
- 					 users[i].position,
- 					 users[i].email,
- 					 moment(users[i].startDate).format("DD/MM/Y"),
- 					 users[i].phone,
- 					 users[i].isActive,
- 					 users[i].age,
- 					 users[i].bonus,
- 					 '<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
- 					 //"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
- 				 ] ).draw( false );
- 				 j++;
- 			 }
- 		 });
- 	 }
- 			else {
- 				var userid = JSON.parse(sessionStorage.getItem('user')).userID;
- 				 $.get(appConfig.url + appConfig.api + 'getManagerUsers?token=' + token + '&userId=' + userid , function (users) {
- 					out (users.code);
- 					var userstable = $('#users-list-table').DataTable();
- 					var j = 1;
- 					for ( i=0; i < users.length; i++ ){
- 						userstable.row.add( [
- 							j,
- 							users[i].name,
- 							users[i].position,
- 							users[i].email,
- 							moment(users[i].startDate).format("DD/MM/Y"),
- 							users[i].phone,
- 							users[i].isActive,
- 							users[i].age,
- 							users[i].bonus,
- 							'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
- 							//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
- 						] ).draw( false );
- 						j++;
- 					}
- 			    });
- 			}
-		};
-
-managedUserTable();
+		managedUserTable();
 		$("#approve-modal-btn-yes").click(function(){
 			approveFreeDays();
 			$("#approve-freedays-modal").modal('hide');
@@ -140,7 +98,7 @@ managedUserTable();
 				}
 				td.prev().text(approvedText);
 				td.html("<span class='fa fa-" + buttonClass + "' onclick='displayApproveModal(this ," + id + ", " + params +  ", " + buttonApprove +  ")' approved='" + approved + "'></span>");
-				$("#manager-table tr td").remove();
+				$("#manager-table").DataTable().clear();
 				populateTable();
 			});
 
@@ -190,10 +148,10 @@ managedUserTable();
 			var active = userInfo.eq(6).text();
 			editUserForm.find("input[name='active']").val(active);
 
-			var age = userInfo.eq(8).text();
+			var age = userInfo.eq(7).text();
 			editUserForm.find("input[name='ageUser']").val(age);
 
-			var bonus = userInfo.eq(9).text();
+			var bonus = userInfo.eq(8).text();
 			editUserForm.find("input[name='bonusUser']").val(bonus);
 
 			var selectNewManager = editUserForm.find("select[name='new_manager']");
@@ -240,7 +198,7 @@ managedUserTable();
 
 	function prepareUserForm() {
 		var date = new Date();
-		date.setDate(date.getDate()-1);
+		date.setDate(date.getDate());
 		$('#stwork').datepicker({
 			endDate: date,
 			format: 'yyyy/mm/dd'
@@ -306,6 +264,10 @@ managedUserTable();
 					$.post(appConfig.url + appConfig.api + 'modifyClass', { userID: data.insertId, managerID: userid, token: token}).done(function( data ) {
 						out (data.code);
 					});
+					var userstable = $('#users-list-table').DataTable();
+					var j = userid;
+					$("#users-list-table").DataTable().clear();
+					managedUserTable();
 					$('.modal-body> div:first-child').css('display','block');
 					$('#myModalUser').find('form')[0].reset();
 				});
@@ -350,8 +312,8 @@ managedUserTable();
 					tr.find("td").eq(4).text(stwork);
 					tr.find("td").eq(5).text(phone);
 					tr.find("td").eq(6).text(isActive);
-					tr.find("td").eq(8).text(age);
-					tr.find("td").eq(9).text(bonus);
+					tr.find("td").eq(7).text(age);
+					tr.find("td").eq(8).text(bonus);
 					$('.modal-body> div:first-child').css('display','block');
 					$('.modal-body> div:nth-child(2)').css('display','none');
 
@@ -427,15 +389,7 @@ managedUserTable();
 				theUser.phone = phone;
 				sessionStorage.setItem('user', JSON.stringify(theUser));
 				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, age : age, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
-					if ( data.code == 110 ){
-						if (!appConfig.sessionInvalid) {
-							appConfig.sessionInvalid = true;
-							alert('Session expired');
-							$.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email}).done(function( data ) {
-							});
-							window.location.href = 'login.html';
-						}
-					}
+					out (data.code);
 				});
 				$('.modal-body> div:first-child').css('display','block');
 					e.preventDefault();
@@ -515,6 +469,65 @@ managedUserTable();
 				j++;
 			}
 	     });
+	}
 
+	function managedUserTable(){
+
+		if (sessionStorage.getItem('admin') == 2) {
+			getAllUsers();
+		}
+		else {
+			getManagerUsers();
+		}
+	}
+
+
+	function getAllUsers () {
+		$.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
+			out (users.code);
+			var userstable = $('#users-list-table').DataTable();
+			var j = 1;
+			for ( i=0; i < users.length; i++ ){
+				userstable.row.add( [
+					j,
+					users[i].name,
+					users[i].position,
+					users[i].email,
+					moment(users[i].startDate).format("DD/MM/Y"),
+					users[i].phone,
+					users[i].isActive,
+					users[i].age,
+					users[i].bonus,
+					'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
+					//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
+				] ).draw( false );
+				j++;
+			}
+		});
+	}
+
+	function getManagerUsers () {
+		var userid = JSON.parse(sessionStorage.getItem('user')).userID;
+		 $.get(appConfig.url + appConfig.api + 'getManagerUsers?token=' + token + '&userId=' + userid , function (users) {
+			out (users.code);
+			var userstable = $('#users-list-table').DataTable();
+			var j = 1;
+			for ( i=0; i < users.length; i++ ){
+				userstable.row.add( [
+					j,
+					users[i].name,
+					users[i].position,
+					users[i].email,
+					moment(users[i].startDate).format("DD/MM/Y"),
+					users[i].phone,
+					users[i].isActive,
+					users[i].age,
+					users[i].bonus,
+					'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
+					//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
+				] ).draw( false );
+				j++;
+			}
+		});
 	}
 }

@@ -75,7 +75,7 @@ $(document).ready( function () {
           $("[name=sDate]").val(fDate);
           $("[name=timeSpent]").val(moment().diff(theUser.startDate, 'months',false) + " months");
           window.theUser = theUser;
-          console.log(data);
+    
           if(data.length == 0 ) {
             sum = 0;
           }
@@ -87,14 +87,10 @@ $(document).ready( function () {
         }
 
           var work = moment().diff(theUser.startDate, 'months', false);
-          console.log(work);
           var restM = 12 - currentDate.month();
-          console.log(restM);
-          console.log($("[name=avDays]").val(Math.floor(21/12*restM - sum)));
           if ( work < 12 ){
               $("[name=avDays]").val(Math.floor(21/12*restM - sum));
           };
-          console.log(  $("[name=avDays]").val());
           //When user (super admin) logs in next year
           if (currentDate.month() == 0 && currentDate.date() == 1 ) {
             $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
