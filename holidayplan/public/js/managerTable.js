@@ -31,55 +31,59 @@ if (theUser.admin >= 0 ) {
 		populateTable();
 
 		 // Managed Users Table
-			 if (sessionStorage.getItem('admin') == 2) {
-				$.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
 
-					out (users.code);
-					var userstable = $('#users-list-table').DataTable();
-					var j = 1;
-					for ( i=0; i < users.length; i++ ){
-						userstable.row.add( [
-							j,
-							users[i].name,
-							users[i].position,
-							users[i].email,
-							moment(users[i].startDate).format("DD/MM/Y"),
-							users[i].phone,
-							users[i].isActive,
-							users[i].age,
-							users[i].bonus,
-							'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
-							//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
-						] ).draw( false );
-						j++;
-					}
-				});
-			}
-			else {
-				var userid = JSON.parse(sessionStorage.getItem('user')).userID;
-				 $.get(appConfig.url + appConfig.api + 'getManagerUsers?token=' + token + '&userId=' + userid , function (users) {
-					out (users.code);
-					var userstable = $('#users-list-table').DataTable();
-					var j = 1;
-					for ( i=0; i < users.length; i++ ){
-						userstable.row.add( [
-							j,
-							users[i].name,
-							users[i].position,
-							users[i].email,
-							moment(users[i].startDate).format("DD/MM/Y"),
-							users[i].phone,
-							users[i].isActive,
-							users[i].age,
-							users[i].bonus,
-							'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
-							//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
-						] ).draw( false );
-						j++;
-					}
-			    });
-			}
+		function managedUserTable(){
+			if (sessionStorage.getItem('admin') == 2) {
+ 			 $.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
 
+ 				 out (users.code);
+ 				 var userstable = $('#users-list-table').DataTable();
+ 				 var j = 1;
+ 			 for ( i=0; i < users.length; i++ ){
+ 				 userstable.row.add( [
+ 					 j,
+ 					 users[i].name,
+ 					 users[i].position,
+ 					 users[i].email,
+ 					 moment(users[i].startDate).format("DD/MM/Y"),
+ 					 users[i].phone,
+ 					 users[i].isActive,
+ 					 users[i].age,
+ 					 users[i].bonus,
+ 					 '<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
+ 					 //"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
+ 				 ] ).draw( false );
+ 				 j++;
+ 			 }
+ 		 });
+ 	 }
+ 			else {
+ 				var userid = JSON.parse(sessionStorage.getItem('user')).userID;
+ 				 $.get(appConfig.url + appConfig.api + 'getManagerUsers?token=' + token + '&userId=' + userid , function (users) {
+ 					out (users.code);
+ 					var userstable = $('#users-list-table').DataTable();
+ 					var j = 1;
+ 					for ( i=0; i < users.length; i++ ){
+ 						userstable.row.add( [
+ 							j,
+ 							users[i].name,
+ 							users[i].position,
+ 							users[i].email,
+ 							moment(users[i].startDate).format("DD/MM/Y"),
+ 							users[i].phone,
+ 							users[i].isActive,
+ 							users[i].age,
+ 							users[i].bonus,
+ 							'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
+ 							//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
+ 						] ).draw( false );
+ 						j++;
+ 					}
+ 			    });
+ 			}
+		};
+
+managedUserTable();
 		$("#approve-modal-btn-yes").click(function(){
 			approveFreeDays();
 			$("#approve-freedays-modal").modal('hide');
@@ -245,6 +249,28 @@ if (theUser.admin >= 0 ) {
 		});
 
 		// Add user form.
+		$("input:checkbox").on('click', function() {
+		  var $box = $(this);
+		  if ($box.is(":checked")) {
+		    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+		    $(group).prop("checked", false);
+		    $box.prop("checked", true);
+		  } else {
+		    $box.prop("checked", false);
+		  }
+		});
+		$("#old").change(function(){
+				if ($(this).is(":checked")){
+					$("#avfree").show();
+				}else{
+					$("#avfree").hide();
+				};
+		});
+		$("#new").change(function(){
+				if ($(this).is(":checked")){
+					$("#avfree").hide();
+				};
+		});
 		$("#add-user-form").formValidation({
 			framework: 'bootstrap',
 			icon: {
@@ -268,11 +294,16 @@ if (theUser.admin >= 0 ) {
 				var stwork = formWrapper.find("[name = 'stwork']").val();
 				var email = formWrapper.find("input[name = 'emailUser']").val();
 				var phone = formWrapper.find("input[name = 'phoneUser']").val();
+			  var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
 				var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
 				hashObj.update('avangarde');
 				var password = hashObj.getHash("HEX");
+<<<<<<< HEAD
 				var freeDays = Math.floor(21/12*(12 - moment().month()));
 				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork, avfreedays : freeDays}).done(function( data ) {
+=======
+				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork, avfreedays: avfreedays}).done(function( data ) {
+>>>>>>> 32a158f3aacab116eb50bfd166fef8e3e0594ee1
 					var userid = JSON.parse(sessionStorage.getItem('user')).userID;
 					$.post(appConfig.url + appConfig.api + 'modifyClass', { userID: data.insertId, managerID: userid, token: token}).done(function( data ) {
 						out (data.code);

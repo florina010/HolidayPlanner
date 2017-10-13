@@ -33,9 +33,6 @@ $(document).ready( function () {
       sum = 0, manager, manId, dates = new Array(), isOk = true;
 
 
-//file upload
-  //$("#avatar").attr("src", 'data:image/png;base64,'+ theUser.picture);
-
   $('#fileupload').fileupload({
       url: appConfig.url + appConfig.api + 'upload',
       formData: {
@@ -78,6 +75,7 @@ $(document).ready( function () {
           $("[name=sDate]").val(fDate);
           $("[name=timeSpent]").val(moment().diff(theUser.startDate, 'months',false) + " months");
           window.theUser = theUser;
+          console.log(data);
           if(data.length == 0 ) {
             sum = 0;
           }
@@ -87,22 +85,30 @@ $(document).ready( function () {
                   sum += data[i].days;
           }
         }
+
           var work = moment().diff(theUser.startDate, 'months', false);
+          console.log(work);
           var restM = 12 - currentDate.month();
-          $("[name=avDays]").val(Math.floor(21/12*restM - sum + theUser.bonus));
+          console.log(restM);
+          console.log($("[name=avDays]").val(Math.floor(21/12*restM - sum)));
+          if ( work < 12 ){
+              $("[name=avDays]").val(Math.floor(21/12*restM - sum));
+          };
+          console.log(  $("[name=avDays]").val());
+          //When user (super admin) logs in next year
           if (currentDate.month() == 0 && currentDate.date() == 1 ) {
             $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
           }
           if ($("[name=avDays]").val() <= 0)
           {
-    		$("[name=avDays]").val(0);
+    		      $("[name=avDays]").val(0);
             $("#holiday").css("display", 'none');
           }
           theUser.avfreedays = $("[name=avDays]").val();
           sessionStorage.setItem('user', JSON.stringify(theUser));
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
             out (data.code);
-        });
+          });
           if (theUser.admin == 2) {
             $("[name=add]").parent().css('display', 'none');
             $("[name=addUser]").parent().css('display', 'block');

@@ -404,11 +404,14 @@ function addUser(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
+        console.log(params);
         if(params.position == 'Manager'){
-         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" + params.phone + "', '" + params.stwork + "', '" + 1  + "', '" + params.avfreedays  +"'";
+         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" +
+          params.phone + "', '" + params.stwork + "', '" + 1 + "','" + params.avfreedays + "'";
        }
        else {
-         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" + params.phone + "', '" + params.stwork + "', '" + 0  + "', '" + params.avfreedays   +"'";
+         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" +
+         params.phone + "', '" + params.stwork + "', '" + 0 + "','" + params.avfreedays + "'";
        }
         connection.query("INSERT INTO user (email, password, name, age, position, phone, startDate, admin, avfreedays) VALUES ("+ columns +")",function(err,rows){
             connection.release();
@@ -424,7 +427,6 @@ function addUser(req,res) {
 }
 
 function getAllUsers(req,res) {
-    console.log(123123123123123);
   var params = req.query;
     pool.getConnection(function(err,connection){
         if (err) {
@@ -738,8 +740,6 @@ router.get("/getAllManagers",function(req,res){
 
 router.get("/getAllUsers", function(req,res){
   var token = req.query.token;
-  console.log(token);
-  console.log(121312312312);
   isValidToken(token).then(function(result) {
     getAllUsers(req,res);
   }, function(error){
@@ -824,7 +824,6 @@ router.get("/updateAvFreeDays", function(req,res){
     console.log('am ajuns aici');
     updateFreeDays(req,res);
 });
-
 
 app.use("/api",router);
 
