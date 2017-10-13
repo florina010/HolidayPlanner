@@ -92,19 +92,18 @@ $(document).ready( function () {
           if ( work < 12 ){
               $("[name=avDays]").val(Math.floor(21/12*restM - sum));
           };
-
           //When user (super admin) logs in next year
           var a =[2017, 2018, 2019];
           var year = new Date().getFullYear();
 
-          function logInNextYear(value){
+          function logInNextYear(){
             var usersArr = [], usersEm = [];
             var j;
             var avfreedays;
             //avfreedays +=22;
               if (theUser.admin == 2) {
                 for(i in a){
-                  if( value == a[i]){
+                  if( 2018 == a[i]){
                      var x = $.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
                        //alert("succes");
                        for(j in users){
@@ -115,27 +114,31 @@ $(document).ready( function () {
                         console.log(usersEm[0]);
                       })
                       .done(function() {
-                        console.log('intra');
                           for(var l = 0; l < usersEm.length; l++) {
-                          $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&userEmail=' + usersEm[l] + '&avfreedays=' + (usersArr[l] + 21), function (data) {
-                            out (data.code);
-                          });
+                            $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&userEmail=' + usersEm[l] + '&avfreedays=' + (usersArr[l] + 21), function (data) {
+                              out (data.code);
+                            });
                         }
                       });
                     }
                 }
               };
-
-
             };
 
+          //  function superAdmin(value){
+          //    $("#myModalUser").load("addUserForm.html", function(){
+        	//			prepareUserForm();
+        	//		});
+          //  }
           //  $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
             //var a =   $("[name=avDays]").val();
             //console.log("aa" + a);
 
-            var callbacks = $.Callbacks( "once" );
-            callbacks.add(logInNextYear);
-            callbacks.fire( 2017 );
+          //  var callbacks = $.Callbacks( "once" );
+          //  callbacks.add(superAdmin);
+        //    callbacks.fire( 2017 );
+            //make a form for super admin to appear in next year
+
 
           if ($("[name=avDays]").val() <= 0)
           {
