@@ -26,6 +26,7 @@ $('#tabClickCalendar').click(function(){
 });
 
 $(document).ready( function () {
+    var commentEn = 0;
     $('#tabClick').addClass('active');
   var theUser = JSON.parse(sessionStorage.getItem('user')),
       token = sessionStorage.getItem('token'),
@@ -75,7 +76,7 @@ $(document).ready( function () {
           $("[name=sDate]").val(fDate);
           $("[name=timeSpent]").val(moment().diff(theUser.startDate, 'months',false) + " months");
           window.theUser = theUser;
-    
+
           if(data.length == 0 ) {
             sum = 0;
           }
@@ -261,6 +262,16 @@ $(document).ready( function () {
                              }
                          }
                      },
+
+                     comment: {
+                         validators: {
+                             notEmpty: {
+                                 enabled: false,
+                                 message: 'The comment is required'
+                             }
+                         }
+                     },
+
                      startDate: {
                          validators: {
                              notEmpty: {
@@ -286,6 +297,19 @@ $(document).ready( function () {
                      }
                  }
              }).on('success.field.fv', function(e, data) {
+                 e.preventDefault();
+                 switch ($("[name=comment]").attr('name')) {
+                     case 'comment':
+                        if ($("#vacationtype").val() == 'Other') {
+                            data.fv.enableFieldValidators('comment', true);
+                            commentEn = 1;
+                            //data.fv.revalidateField('comment');
+                            break;
+                        }
+                        break;
+                    default:
+                        break;
+                    }
                  if (data.field === 'startDate' && !data.fv.isValidField('endDate')) {
                      // We need to revalidate the end date
                      data.fv.revalidateField('endDate');
@@ -305,8 +329,12 @@ $(document).ready( function () {
                    to = moment(enddate, 'YYYY/MM/DD');
                    duration = weekend(from, to);
 
+                   if ($('#vacationtype').val() =='Other'){
+                       duration = 0;
+                   }
                    //$.post(appConfig.url + appConfig.api+ 'getManagerDetails', { managerId: manId}).done(function( data ) {
        						 //});
+
                    var holidayOptions = {
                        managerName: manager,
                        manag: manId,
@@ -424,8 +452,6 @@ $(document).ready( function () {
                 options.duration = checkArrays (dateArray, dates, options.duration);
                   if (isOk) {
                       callback(options);
-                  } else {
-                      console.log(2);
                   }
               } else {
                   callback(options);
@@ -496,8 +522,17 @@ $(document).ready( function () {
      location.reload();
    });
     $("#save").click(function(){
-        setTimeout(function(){
-          location.reload();
-        },1000);
+        if (commentEn == 0) {
+            console.log(3333);
+            setTimeout(function(){
+                location.reload();
+            },1000);
+        }
+        else if ($('[name=comment]').val() && commentEn == 1) {
+            console.log(3333);
+            setTimeout(function(){
+                location.reload();
+            },1000);
+        }
     });
 });

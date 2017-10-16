@@ -53,6 +53,9 @@ if (theUser.admin >= 0 ) {
 	});
 
 	function displayApproveModal(elem, id, email, avFD, action){
+        console.log(elem);
+        console.log(id);
+        console.log(action);
 		var approveModal =  $("#approve-freedays-modal");
 		approveModal.modal('show');
 		approveModal.attr("approveId", id);
@@ -87,27 +90,41 @@ if (theUser.admin >= 0 ) {
 		var email = td.prev().prev().prev().prev().prev().prev().prev().prev().html();
 		var params = '"' + email + '",' + avFD;
 
-		if (availableFD >= days) {
-			$.get(appConfig.url + appConfig.api + 'ApproveFreeDays?id=' + id + '&approved=' + approved + '&token=' + token, function (data) {
-				out (data.code);
-				var parentRow = $(td).closest("tr");
-				if (approved == 1) {
-					parentRow.removeClass("danger").addClass("info");
-				} else {
-					parentRow.removeClass("info").addClass("danger");
-				}
-				td.prev().text(approvedText);
-				td.html("<span class='fa fa-" + buttonClass + "' onclick='displayApproveModal(this ," + id + ", " + params +  ", " + buttonApprove +  ")' approved='" + approved + "'></span>");
-				$("#manager-table").DataTable().clear();
-				populateTable();
-			});
-
-		}
-
-		else {
-			alert("Number of days is less than number of available free days. ");
-		}
+        if (approved == 1) {
+    		if (availableFD >= days) {
+    			approve(id, approved, token, params, email);
+            }
+            else{
+                alert("Number of days is less than number of available free days. ");
+            }
+        }
+        else {
+            approve(id, approved, token, params, email);
+        }
 	}
+
+    function  approve(id, approved, token, params, email) {
+        var tr = $("#manager-table tr.activeModal");
+		var td = tr.find("td").eq(11);
+        var id = $("#approve-freedays-modal").attr("approveId");
+		var approvedText = (approved == 2) ? "Not Approved" : "Approved";
+        var buttonClass = (approved == 2) ? "check" : "times";
+		var buttonApprove = (approved == 2) ? 1 : 2;
+        console.log(buttonApprove);
+        $.get(appConfig.url + appConfig.api + 'ApproveFreeDays?id=' + id + '&approved=' + approved + '&token=' + token, function (data) {
+            out (data.code);
+            var parentRow = $(td).closest("tr");
+            if (approved == 1) {
+                parentRow.removeClass("danger").addClass("info");
+            } else {
+                parentRow.removeClass("info").addClass("danger");
+            }
+            td.prev().text(approvedText);
+            td.html("<span class='fa fa-" + buttonClass + "' onclick='displayApproveModal(this ," + id + ", " + email +  ", " + buttonApprove +  ")' approved='" + approved + "'></span>");
+            $("#manager-table").DataTable().clear();
+            populateTable();
+        });
+    }
 	function colorTableRow(approved) {
 		if (approved == true) {
 			return "info";

@@ -183,7 +183,7 @@
                <div class="form-group">
                 <label class="col-xs-3 control-label">Vacation type</label>
                   <div class="col-xs-5 selectContainer">
-                    <select id="vacationtype"  name="vacationtype" class="form-control">
+                    <select id="vacationtype"  name="vacationtype" class="form-control" >
                       <option value=""></option>
                       <option >Vacation Leave</option>
                       <option >Sick Leave</option>
@@ -194,7 +194,7 @@
                 </div>
               </div>
                <div class="form-group">
-                 <label class="col-xs-3 control-label">Comments</label>
+                 <label class="col-xs-3 control-label" for="commentxt">Comments</label>
                  <div class="col-xs-5">
                      <textarea id="comment" name="comment" class="form-control" style="resize:none" rows="8" placeholder="Type here"></textarea>
                  </div>
@@ -233,9 +233,9 @@
         <h4 class="modal-title" id="myModalLabel">Are you sure ?</h4>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" id="delete-modal-btn-yes">Yes</button>
-        <button type="button" class="btn btn-primary" id="delete-modal-btn-no">No</button>
-      </div>
+        <input type="button" class="btn btn-default" id="delete-modal-btn-yes" value="Yes">
+        <input type="button" class="btn btn-primary" id="delete-modal-btn-no" value="No">
+    </div>
     </div>
   </div>
 </div>
