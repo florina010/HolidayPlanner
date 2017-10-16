@@ -97,7 +97,7 @@ $(document).ready( function () {
           var a =[2017, 2018, 2019];
           var year = new Date().getFullYear();
 
-          function logInNextYear(){
+        /*  function logInNextYear(){
               if (theUser.admin == 2) {
                   var avfreedays = 21;
                             $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
@@ -117,7 +117,7 @@ $(document).ready( function () {
             callbacks.add(logInNextYear);
             callbacks.fire( 2017 );
             //make a form for super admin to appear in next year
-
+            */
 
           if ($("[name=avDays]").val() <= 0)
           {

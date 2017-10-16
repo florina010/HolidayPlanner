@@ -16,7 +16,7 @@ if (theUser.admin >= 0 ) {
 				updateUser();
 			});
 		});
-		
+
 		$("a[name='newyearform']").click(function(){
 			$("#myModalOncePerYear").load("newyearform.html", function(){
 				prepareUserForm();
@@ -277,6 +277,8 @@ managedUserTable();
 					$("#avfree").hide();
 				};
 		});
+
+		//Add user form
 		$("#add-user-form").formValidation({
 			framework: 'bootstrap',
 			icon: {
@@ -287,7 +289,15 @@ managedUserTable();
 			fields: {
 				username: { validators: { notEmpty: {message: 'This is required'}}},
 				stwork: { validators: { notEmpty: { message: 'The start date is required'}}},
-				pos: { validators: { notEmpty: { message: 'This required'}}}
+				pos: { validators: { notEmpty: { message: 'This required'}}},
+				email: {
+                    validators: {
+                        regexp: {
+                            regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+                            message: 'The value is not a valid email address'
+                        }
+                    }
+                }
 			}
 		}).on('submit', function(e, data) {
 			if (e.isDefaultPrevented()) {
@@ -300,7 +310,7 @@ managedUserTable();
 				var stwork = formWrapper.find("[name = 'stwork']").val();
 				var email = formWrapper.find("input[name = 'emailUser']").val();
 				var phone = formWrapper.find("input[name = 'phoneUser']").val();
-			  	var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
+			  var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
 				var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
 				hashObj.update('avangarde');
 				var password = hashObj.getHash("HEX");
@@ -319,6 +329,24 @@ managedUserTable();
 			}
 		});
 
+		//New year update
+		$("#new-year-form").formValidation({
+			framework: 'bootstrap',
+			icon: {
+				valid: 'glyphicon glyphicon-ok',
+				invalid: 'glyphicon glyphicon-remove',
+				validating: 'glyphicon glyphicon-refresh'
+			},
+			fields: {
+			}
+		}).on('submit', function(e, data) {
+			var formWrapper = $("#new-year-form");
+			var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
+
+			$.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
+				out (data.code);
+			});
+		});
 		// Edit user form.
 		$("#edit-user-form").formValidation({
 			framework: 'bootstrap',
@@ -330,7 +358,15 @@ managedUserTable();
 			fields: {
 				username: { validators: { notEmpty: {message: 'This is required'}}},
 				stwork: { validators: { notEmpty: { message: 'The start date is required'}}},
-				pos: { validators: { notEmpty: { message: 'This required'}}}
+				pos: { validators: { notEmpty: { message: 'This required'}}},
+				email: {
+                validators: {
+                        regexp: {
+                            regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+                            message: 'The value is not a valid email address'
+                        }
+                    }
+                }
 			}
 		}).on('submit', function(e, data) {
 			if (e.isDefaultPrevented()) {
