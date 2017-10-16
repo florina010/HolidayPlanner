@@ -573,13 +573,13 @@ function updateFreeDays(req, res){
 }
 function updateAllFreeDays(req, res){
   var params = req.query;
-  console.log(params.userEmail);
   pool.getConnection(function(err,connection){
       if (err) {
         res.json({"code" : 100, "status" : "Error in connection database"});
         return;
       }
-  connection.query("UPDATE  user SET avfreedays = '" + params.avfreedays + "'WHERE email='" + params.userEmail + "';",function(err,rows){
+      console.log("aaa");
+      connection.query("UPDATE  user SET avfreedays = avfreedays + " + params.avfreedays, function(err,rows){
           connection.release();
           if(!err) {
               res.json(rows);

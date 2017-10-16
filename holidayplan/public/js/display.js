@@ -75,7 +75,7 @@ $(document).ready( function () {
           $("[name=sDate]").val(fDate);
           $("[name=timeSpent]").val(moment().diff(theUser.startDate, 'months',false) + " months");
           window.theUser = theUser;
-          console.log(data);
+          //console.log(data);
           if(data.length == 0 ) {
             sum = 0;
           }
@@ -92,51 +92,30 @@ $(document).ready( function () {
           if ( work < 12 ){
               $("[name=avDays]").val(Math.floor(21/12*restM - sum));
           };
+
           //When user (super admin) logs in next year
           var a =[2017, 2018, 2019];
           var year = new Date().getFullYear();
 
           function logInNextYear(){
-            var usersArr = [], usersEm = [];
-            var j;
-            var avfreedays;
-            //avfreedays +=22;
               if (theUser.admin == 2) {
-                for(i in a){
-                  if( 2018 == a[i]){
-                     var x = $.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
-                       //alert("succes");
-                       for(j in users){
-                         usersArr.push(users[j].avfreedays);
-                         usersEm.push(users[j].email);
-                        }
-                        console.log(usersArr);
-                        console.log(usersEm[0]);
-                      })
-                      .done(function() {
-                          for(var l = 0; l < usersEm.length; l++) {
-                            $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&userEmail=' + usersEm[l] + '&avfreedays=' + (usersArr[l] + 21), function (data) {
+                  var avfreedays = 21;
+                            $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
                               out (data.code);
                             });
-                        }
-                      });
-                    }
-                }
-              };
-            };
-
-          //  function superAdmin(value){
-          //    $("#myModalUser").load("addUserForm.html", function(){
-        	//			prepareUserForm();
-        	//		});
-          //  }
+                    };
+          };
+            function superAdmin(value){
+              $("#myModalOncePerYear").load("addUserForm.html", function(){
+        				prepareUserForm();
+        			});
+           }
           //  $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
             //var a =   $("[name=avDays]").val();
-            //console.log("aa" + a);
 
-          //  var callbacks = $.Callbacks( "once" );
-          //  callbacks.add(superAdmin);
-        //    callbacks.fire( 2017 );
+            var callbacks = $.Callbacks( "once" );
+            callbacks.add(logInNextYear);
+            callbacks.fire( 2017 );
             //make a form for super admin to appear in next year
 
 

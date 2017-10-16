@@ -16,6 +16,12 @@ if (theUser.admin >= 0 ) {
 				updateUser();
 			});
 		});
+		
+		$("a[name='newyearform']").click(function(){
+			$("#myModalOncePerYear").load("newyearform.html", function(){
+				prepareUserForm();
+			});
+		});
 
 	function fillUpdateUserForm (){
 		var currentPicture = JSON.parse(sessionStorage.getItem('user')).picture;
