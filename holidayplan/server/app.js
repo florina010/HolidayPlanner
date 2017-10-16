@@ -7,7 +7,7 @@ var sha256 = require('js-sha256');
 var Holidays = require('date-holidays');
 var year = new Date().getFullYear();
 var fileUpload = require('express-fileupload');
-hd = new Holidays('RO')
+hd = new Holidays('RO');
 
 // get all holidays for the year 2017
 hd.getHolidays(year);
@@ -20,6 +20,7 @@ var pool      =    mysql.createPool({
     database : 'holidayPlanner',
     debug    :  false
 });
+
 function legalFreeHolidays(req,res){
   hd = new Holidays('RO')
   hd.getHolidays(year);
