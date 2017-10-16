@@ -29,7 +29,7 @@ if (theUser.admin >= 0 ) {
 			});
 		});
 
-<<<<<<< HEAD
+
 		function fillUpdateUserForm (){
 			var currentPicture = JSON.parse(sessionStorage.getItem('user')).picture;
 			var currentName = JSON.parse(sessionStorage.getItem('user')).name;
@@ -39,7 +39,7 @@ if (theUser.admin >= 0 ) {
 			document.getElementById("ageUser").value = currentAge;
 			document.getElementById("phoneUser").value = currentPhone;
 		}
-=======
+
 		$("a[name='newyearform']").click(function(){
 			$("#myModalOncePerYear").load("newyearform.html", function(){
 				prepareUserForm();
@@ -55,7 +55,7 @@ if (theUser.admin >= 0 ) {
 		document.getElementById("ageUser").value = currentAge;
 		document.getElementById("phoneUser").value = currentPhone;
 	}
->>>>>>> task-newyear
+
 		var manager = new appNameSpace.Manager("userID", "password", "isActive", "picture", "age", "name", "position", "email", "phone", "startDate", "admin", "managerID");
 
 		populateTable();
