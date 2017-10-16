@@ -347,6 +347,7 @@ managedUserTable();
 				out (data.code);
 			});
 		});
+
 		// Edit user form.
 		$("#edit-user-form").formValidation({
 			framework: 'bootstrap',

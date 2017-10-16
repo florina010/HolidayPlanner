@@ -571,6 +571,7 @@ function updateFreeDays(req, res){
         });
   });
 }
+
 function updateAllFreeDays(req, res){
   var params = req.query;
   pool.getConnection(function(err,connection){
@@ -578,8 +579,30 @@ function updateAllFreeDays(req, res){
         res.json({"code" : 100, "status" : "Error in connection database"});
         return;
       }
-      console.log("aaa");
       connection.query("UPDATE  user SET avfreedays = avfreedays + " + params.avfreedays, function(err,rows){
+          connection.release();
+          if(!err) {
+              res.json(rows);
+          }
+      });
+      connection.on('error', function(err) {
+            res.json({"code" : 100, "status" : "Error in connection database"});
+            return;
+      });
+    });
+}
+
+function getLastSetup(req, res){
+  var params = req.query;
+  console.log(params.lastDate);
+    console.log(params.year);
+  pool.getConnection(function(err,connection){
+      if (err) {
+        res.json({"code" : 100, "status" : "Error in connection database"});
+        return;
+      }
+      connection.query("INSERT INTO yearsetup (lastDate, year) VALUES ('" + params.lastDate + "', "+ params.year +")", function(err,rows){
+        console.log(err);
           connection.release();
           if(!err) {
               res.json(rows);
@@ -679,7 +702,6 @@ router.get("/getFreeDays",function(req,res){
 
 router.post('/upload', function(req, res) {
   var token = req.query.token;
-  console.log(req.body);
    if (!req.files)
      return res.status(400).send('No files were uploaded.');
 
@@ -844,6 +866,16 @@ router.get("/updateAllFreeDays", function(req,res){
   var token = req.query.token;
   isValidToken(token).then(function(result) {
     updateAllFreeDays(req,res);
+  }, function(error){
+    console.log(error);
+      res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
+  });
+});
+
+router.get("/getLastSetup", function(req,res){
+  var token = req.query.token;
+  isValidToken(token).then(function(result) {
+    getLastSetup(req,res);
   }, function(error){
     console.log(error);
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})

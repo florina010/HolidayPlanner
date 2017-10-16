@@ -93,32 +93,6 @@ $(document).ready( function () {
               $("[name=avDays]").val(Math.floor(21/12*restM - sum));
           };
 
-          //When user (super admin) logs in next year
-          var a =[2017, 2018, 2019];
-          var year = new Date().getFullYear();
-
-        /*  function logInNextYear(){
-              if (theUser.admin == 2) {
-                  var avfreedays = 21;
-                            $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
-                              out (data.code);
-                            });
-                    };
-          };
-            function superAdmin(value){
-              $("#myModalOncePerYear").load("addUserForm.html", function(){
-        				prepareUserForm();
-        			});
-           }
-          //  $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
-            //var a =   $("[name=avDays]").val();
-
-            var callbacks = $.Callbacks( "once" );
-            callbacks.add(logInNextYear);
-            callbacks.fire( 2017 );
-            //make a form for super admin to appear in next year
-            */
-
           if ($("[name=avDays]").val() <= 0)
           {
     		    $("[name=avDays]").val(0);
