@@ -76,7 +76,11 @@ $(document).ready( function () {
           $("[name=sDate]").val(fDate);
           $("[name=timeSpent]").val(moment().diff(theUser.startDate, 'months',false) + " months");
           window.theUser = theUser;
+<<<<<<< HEAD
 
+=======
+          //console.log(data);
+>>>>>>> task-newyear
           if(data.length == 0 ) {
             sum = 0;
           }
@@ -88,19 +92,28 @@ $(document).ready( function () {
         }
 
           var work = moment().diff(theUser.startDate, 'months', false);
+<<<<<<< HEAD
+=======
+
+>>>>>>> task-newyear
           var restM = 12 - currentDate.month();
           if ( work < 12 ){
               $("[name=avDays]").val(Math.floor(21/12*restM - sum));
           };
+<<<<<<< HEAD
           //When user (super admin) logs in next year
           if (currentDate.month() == 0 && currentDate.date() == 1 ) {
             $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
           }
+=======
+
+>>>>>>> task-newyear
           if ($("[name=avDays]").val() <= 0)
           {
-    		      $("[name=avDays]").val(0);
+    		    $("[name=avDays]").val(0);
             $("#holiday").css("display", 'none');
           }
+
           theUser.avfreedays = $("[name=avDays]").val();
           sessionStorage.setItem('user', JSON.stringify(theUser));
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
@@ -129,7 +142,7 @@ $(document).ready( function () {
 
     if ( sessionStorage.getItem('admin') != null ) {
         $('#navbar1 ul:first-of-type > li:nth-child(2)').css('display', 'block');
-      $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
+     // $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
       var li = $("<li></li>"),
           a = $("<a data-toggle='tab' href='#management'></a>"),
           i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Management</i>"),
