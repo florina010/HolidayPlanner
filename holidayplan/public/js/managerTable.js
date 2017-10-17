@@ -30,21 +30,11 @@ if (theUser.admin >= 0 ) {
 		});
 
 
-		function fillUpdateUserForm (){
-			var currentPicture = JSON.parse(sessionStorage.getItem('user')).picture;
-			var currentName = JSON.parse(sessionStorage.getItem('user')).name;
-			var currentAge = JSON.parse(sessionStorage.getItem('user')).age;
-			var currentPhone = JSON.parse(sessionStorage.getItem('user')).phone;
-			document.getElementById("username").value = currentName;
-			document.getElementById("ageUser").value = currentAge;
-			document.getElementById("phoneUser").value = currentPhone;
-		}
-
-		$("a[name='newyearform']").click(function(){
-			$("#myModalOncePerYear").load("newyearform.html", function(){
-				prepareUserForm();
-			});
-		});
+		// $("a[name='newyearform']").click(function(){
+		// 	$("#myModalOncePerYear").load("newyearform.html", function(){
+		// 		newYearForm();
+		// 	});
+		// });
 
 	function fillUpdateUserForm (){
 		var currentPicture = JSON.parse(sessionStorage.getItem('user')).picture;
@@ -230,7 +220,27 @@ if (theUser.admin >= 0 ) {
 			}
 		});
 	}
-
+// function newYearForm(){
+//   //New year update
+//   $("#new-year-form").formValidation({
+//     framework: 'bootstrap',
+//     icon: {
+//       valid: 'glyphicon glyphicon-ok',
+//       invalid: 'glyphicon glyphicon-remove',
+//       validating: 'glyphicon glyphicon-refresh'
+//     },
+//     fields: {
+//     }
+//   }).on('submit', function(e, data) {
+//     alert('de altundeva');
+//     var formWrapper = $("#new-year-form");
+//     var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
+//
+//     $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
+//       out (data.code);
+//     });
+//   });
+// }
 	function prepareUserForm() {
 		var date = new Date();
 		date.setDate(date.getDate());
@@ -318,25 +328,6 @@ if (theUser.admin >= 0 ) {
 				});
 				e.preventDefault();
 			}
-		});
-
-		//New year update
-		$("#new-year-form").formValidation({
-			framework: 'bootstrap',
-			icon: {
-				valid: 'glyphicon glyphicon-ok',
-				invalid: 'glyphicon glyphicon-remove',
-				validating: 'glyphicon glyphicon-refresh'
-			},
-			fields: {
-			}
-		}).on('submit', function(e, data) {
-			var formWrapper = $("#new-year-form");
-			var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
-
-			$.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
-				out (data.code);
-			});
 		});
 
 		// Edit user form.
