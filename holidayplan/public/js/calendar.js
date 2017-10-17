@@ -13,47 +13,47 @@ var dd=[];
            });
 
            $.get(appConfig.url + appConfig.api + 'getFreeDays?token='+token + "&userID=" + theUser.userID, function (data) {
-             if ( data.code == 110 ){
-               if (!appConfig.sessionInvalid) {
-                 appConfig.sessionInvalid = true;
-                 alert('Session expired');
-                 $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email});
-                 window.location.href = 'login.html';
+               if ( data.code == 110 ){
+                 if (!appConfig.sessionInvalid) {
+                   appConfig.sessionInvalid = true;
+                   alert('Session expired');
+                   $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email});
+                   window.location.href = 'login.html';
+                 }
                }
+             for (var i=0;i<data.length;i++){
+                if(data[i].userID==theUser.userID && data[i].approved=='1'){
+                  d.push ({start:new Date (data[i].startDate),end:new Date(data[i].endDate),title:'approved: ' + data[i].type});
+                }
+                if(data[i].userID==theUser.userID && data[i].approved=='2'){
+                  d.push ({start:new Date (data[i].startDate),end:new Date(data[i].endDate),title:'rejected: ' + data[i].type});
+                }
+                if(data[i].userID==theUser.userID && data[i].approved=='0'){
+                  d.push ({start:new Date (data[i].startDate),end:new Date(data[i].endDate),title:'pending: ' + data[i].type});
+                }
+
              }
-           for (var i=0;i<data.length;i++){
-              if(data[i].userID==theUser.userID && data[i].approved=='1'){
-                d.push ({start:new Date (data[i].startDate),end:new Date(data[i].endDate),title:'approved: ' + data[i].type});
-              }
-              if(data[i].userID==theUser.userID && data[i].approved=='2'){
-                d.push ({start:new Date (data[i].startDate),end:new Date(data[i].endDate),title:'rejected: ' + data[i].type});
-              }
-              if(data[i].userID==theUser.userID && data[i].approved=='0'){
-                d.push ({start:new Date (data[i].startDate),end:new Date(data[i].endDate),title:'pending: ' + data[i].type});
-              }
-
-           }
-          $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token='+token + "&userID=" + theUser.userID, function (data) {
-                for (var i in data){
-                  dd.push({start:new Date(data[i].startDate),title:'+ '+ data[i].name});
-               };
-               $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function (data) {
+            $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token='+token + "&userID=" + theUser.userID, function (data) {
                   for (var i in data){
-                      if(data[i].type == "public"){
-                        d.push({start:new Date(data[i].start),title:'+ '+ data[i].name});
-                     };
+                    dd.push({start:new Date(data[i].startDate),title:'+ '+ data[i].name});
                  };
+                 $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function (data) {
+                    for (var i in data){
+                        if(data[i].type == "public"){
+                          d.push({start:new Date(data[i].start),title:'+ '+ data[i].name});
+                       };
+                   };
 
-                Array.prototype.push.apply(d,dd);
-                console.log(d);
+                  Array.prototype.push.apply(d,dd);
+                  console.log(d);
+                  main ();
+                  colorEvents ();
+               });
+
              });
-
-           });
-          main ();
-          colorEvents ();
          });
-       }
-   }
+      };
+  };
 
        fillDate();
 
