@@ -23,8 +23,8 @@ $(document).ready( function () {
   };
 
   // Load the New Year Days Off form on button click.
-  $("a[name='newyearform']").click(function(){
-    displayForm();
+  $("a[name='udpateinfo']").click(function(){
+    displayFormClick();
   });
 
   function newYearForm() {
@@ -32,7 +32,6 @@ $(document).ready( function () {
     var date = new Date();
     date.setDate(date.getDate());
     $('#stholi').datepicker({
-      endDate: date,
       format: 'yyyy-mm-dd'
     }).on('changeDate', function(e) {
       $('#new-year-form').formValidation('revalidateField', 'stholi');
@@ -48,7 +47,7 @@ $(document).ready( function () {
       fields: {
       }
     }).on('submit', function(e, data) {
-      //if (!e.isDefaultPrevented()) {
+      if (!e.isDefaultPrevented()) {
         var formWrapper = $("#new-year-form");
         var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
         var name = formWrapper.find("input[name ='newholiday']").val();
@@ -61,7 +60,8 @@ $(document).ready( function () {
         $.get(appConfig.url + appConfig.api + 'getNewHoliday?token=' + token + '&startDate=' + startDate + '&name=' + name, function (data) {
           out(data.code);
         });
-      //}
+      }
+      return;
       e.preventDefault();
       $('#myModalOncePerYear').modal('hide');
     });
@@ -106,7 +106,20 @@ $(document).ready( function () {
   };
 
   function displayForm(){
+    $('#myModalOncePerYear').modal({
+      backdrop: 'static',
+      keyboard: false
+    });
+
     $("#myModalOncePerYear").load("newyearform.html", function(){
+      newYearForm();
+      $('#myModalOncePerYear').modal('show');
+
+    });
+  };
+
+  function displayFormClick(){
+    $("#myModalOncePerYear").load("updateinfo.html", function(){
       newYearForm();
       $('#myModalOncePerYear').modal('show');
     });

@@ -1,7 +1,7 @@
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
 	    <div class="modal-header">
-			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
 			 <h3 class="modal-title" id="myModalLabel"> New year update </h3>
 	    </div>
 		<div class="modal-body" style="padding:40px 50px;">
@@ -9,21 +9,9 @@
 				 <strong>Success!</strong>
 			 </div>
 			<form role="form" id="new-year-form" method="POST">
-				<div class="form-group">
-				    <label for="username"><span class="glyphicon glyphicon-asterisk"></span> Available free days to all users </label>
+				<div class="form-group" id="avf">
+				    <label for="avfreedays"><span class="glyphicon glyphicon-asterisk"></span> Available free days to all users </label>
 					<input type="number" class="form-control" name="avfreedays" placeholder="Enter 21 free days" required>
-				</div>
-
-				<div class="form-group">
-				  <label for="newholiday"><span class="glyphicon glyphicon-pushpin"></span> Add new holiday </label>
-					<input type="text" class="form-control" name="newholiday" placeholder="Enter holidays" required>
-				</div>
-				<div class="form-group">
-					<label for="stholi"><i class="fa fa-calendar" aria-hidden="true"></i> Start date</label>
-					<div class="input-group input-append date" id="stholi">
-						<input id="dateval" type="text" class="form-control" name="stholi" />
-						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-					</div>
 				</div>
 				<button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-plus"></span> Add</button>
 			</form>
