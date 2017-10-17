@@ -10,7 +10,7 @@ $(document).ready( function () {
 
     function checkYearSetup(){
       $.get(appConfig.url + appConfig.api + 'selectLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
-        if(today == data[0].year){
+        if(today > data[0].year){
           displayForm();
         };
       });
@@ -29,6 +29,15 @@ $(document).ready( function () {
 
   function newYearForm() {
     //New year update
+    var date = new Date();
+    date.setDate(date.getDate());
+    $('#stholi').datepicker({
+      endDate: date,
+      format: 'yyyy-mm-dd'
+    }).on('changeDate', function(e) {
+      $('#new-year-form').formValidation('revalidateField', 'stholi');
+    });
+
     $("#new-year-form").formValidation({
       framework: 'bootstrap',
       icon: {
@@ -39,14 +48,20 @@ $(document).ready( function () {
       fields: {
       }
     }).on('submit', function(e, data) {
-      if (!e.isDefaultPrevented()) {
+      //if (!e.isDefaultPrevented()) {
         var formWrapper = $("#new-year-form");
         var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
+        var name = formWrapper.find("input[name ='newholiday']").val();
+        var startDate = formWrapper.find("input[name = 'stholi']").val();
 
         $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
           out (data.code);
         });
-      }
+
+        $.get(appConfig.url + appConfig.api + 'getNewHoliday?token=' + token + '&startDate=' + startDate + '&name=' + name, function (data) {
+          out(data.code);
+        });
+      //}
       e.preventDefault();
       $('#myModalOncePerYear').modal('hide');
     });
@@ -54,6 +69,15 @@ $(document).ready( function () {
 
   function prepareUserForm() {
     //New year update
+    var date = new Date();
+		date.setDate(date.getDate());
+		$('#stholi').datepicker({
+			endDate: date,
+			format: 'yyyy/mm/dd'
+		}).on('changeDate', function(e) {
+			$('#new-year-form').formValidation('revalidateField', 'stholi');
+		});
+
     $("#new-year-form").formValidation({
       framework: 'bootstrap',
       icon: {
@@ -67,10 +91,17 @@ $(document).ready( function () {
       var formWrapper = $("#new-year-form");
       alert("din year");
       var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
+      var name = formWrapper.find("input[name ='newholiday']").val();
+      var startDate = formWrapper.find("input[name = 'stholi']").val();
 
       $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
         out (data.code);
       });
+
+      $.get(appConfig.url + appConfig.api + 'getNewHoliday?token=' + token + '&startDate=' + startDate + '&name=' + name, function (data) {
+        out(data.code);
+      });
+
     });
   };
 

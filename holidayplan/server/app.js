@@ -26,10 +26,10 @@ function legalFreeHolidays(req,res){
   hd.getHolidays(year);
     res.json(hd.getHolidays(year));
   return;
-/*  connection.query("UPDATE legalholidays SET startDate = '" + hd.getHolidays(year).start + "'AND name='"+ hd.getHolidays(year).name +"' WHERE type = 'public'",function(err,rows){
+  connection.query("UPDATE legalholidays SET startDate = '" + hd.getHolidays(year).start + "'AND name='"+ hd.getHolidays(year).name +"' WHERE type = 'public'",function(err,rows){
       connection.release();
   });
-  */
+
 }
 
 function setToken (token, id) {
@@ -158,7 +158,7 @@ function getFreeDays(req,res) {
   });
 }
 
-/*function getLegalFreeDays(req,res) {
+function getLegalFreeDays(req,res) {
   var params = req.query;
     pool.getConnection(function(err,connection){
         if (err) {
@@ -178,7 +178,7 @@ function getFreeDays(req,res) {
         });
   });
 }
-*/
+
 function getManagerFreeDays(req,res) {
     pool.getConnection(function(err,connection){
         if (err) {
@@ -635,7 +635,27 @@ function selectLastSetup(req, res){
       });
     });
 };
-
+function getNewHoliday(req, res){
+  var params = req.query;
+  pool.getConnection(function(err,connection){
+      if (err) {
+        res.json({"code" : 100, "status" : "Error in connection database"});
+        return;
+      }
+      console.log(params.startDate);
+      connection.query("INSERT INTO legalholidays (startDate, name) VALUES ('" + params.startDate + "', '"+ params.name +"')", function(err,rows){
+        console.log(err);
+          connection.release();
+          if(!err) {
+              res.json(rows);
+          }
+      });
+      connection.on('error', function(err) {
+            res.json({"code" : 100, "status" : "Error in connection database"});
+            return;
+      });
+    });
+};
 function getAllManagers(req, res) {
 	var params = req.query;
     pool.getConnection(function(err,connection){
@@ -699,6 +719,16 @@ router.get("/updatedate",function(req,res){
     console.log(error);
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
   });
+});
+
+router.get("/getLegalFreeDays",function(req,res){
+   var token = req.query.token;
+   isValidToken(token).then(function(result) {
+     getLegalFreeDays(req,res);
+   }, function(error){
+     console.log(error);
+       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
+   });
 });
 
 router.get("/getFreeDaysApprover", function(req,res){
@@ -910,7 +940,15 @@ router.get("/getLastSetup", function(req,res){
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
   });
 });
-
+router.get("/getNewHoliday", function(req,res){
+  var token = req.query.token;
+  isValidToken(token).then(function(result) {
+    getNewHoliday(req,res);
+  }, function(error){
+    console.log(error);
+      res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
+  });
+});
 router.get("/updateAvFreeDays", function(req,res){
     console.log('am ajuns aici');
     updateFreeDays(req,res);

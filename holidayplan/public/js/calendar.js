@@ -1,6 +1,6 @@
 
 var d=[];
-
+var dd=[];
    var theUser = JSON.parse(sessionStorage.getItem('user')),
         user = sessionStorage.getItem('user'), sum = 0, manager,
         token = sessionStorage.getItem('token');
@@ -33,18 +33,25 @@ var d=[];
               }
 
            }
-          $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function (data) {
-             for (var i in data){
-                 if(data[i].type == "public"){
-                   d.push({start:new Date(data[i].start),title:'+ '+ data[i].name});
-                };
-            };
+          $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token='+token + "&userID=" + theUser.userID, function (data) {
+                for (var i in data){
+                  dd.push({start:new Date(data[i].startDate),title:'+ '+ data[i].name});
+               };
+               $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function (data) {
+                  for (var i in data){
+                      if(data[i].type == "public"){
+                        d.push({start:new Date(data[i].start),title:'+ '+ data[i].name});
+                     };
+                 };
+
+                Array.prototype.push.apply(d,dd);
+                console.log(d);
+             });
 
            });
           main ();
           colorEvents ();
          });
-
        }
    }
 

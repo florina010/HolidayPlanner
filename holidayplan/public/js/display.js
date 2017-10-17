@@ -362,11 +362,12 @@ $(document).ready( function () {
          });
        });
 
-       function getFreeDays () {
+       function getFreeDays() {
            $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function (data) {
                for (var i = 0; i < data.length; i++){
                    if (data[i].type == 'public') {
                        dates.push(moment(data[i].date).format("YYYY/MM/DD"));
+                       console.log(dates);
                    }
                }
            });
