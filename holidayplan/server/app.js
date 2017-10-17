@@ -592,11 +592,28 @@ function updateAllFreeDays(req, res){
       });
     });
 }
-
+function getLastYear(req,res){
+  var params = req.query;
+  pool.getConnection(function(err,connection){
+      if (err) {
+        res.json({"code" : 100, "status" : "Error in connection database"});
+        return;
+      }
+      connection.query("INSERT INTO yearset (year, isInitialized) VALUES ('" + params.year + "', "+ params.isInitialized +")", function(err,rows){
+        console.log(err);
+          connection.release();
+          if(!err) {
+              res.json(rows);
+          }
+      });
+      connection.on('error', function(err) {
+            res.json({"code" : 100, "status" : "Error in connection database"});
+            return;
+      });
+    });
+};
 function getLastSetup(req, res){
   var params = req.query;
-  console.log(params.lastDate);
-    console.log(params.year);
   pool.getConnection(function(err,connection){
       if (err) {
         res.json({"code" : 100, "status" : "Error in connection database"});
@@ -635,6 +652,28 @@ function selectLastSetup(req, res){
       });
     });
 };
+
+function selectLastYear(req,res){
+  var params = req.query;
+  pool.getConnection(function(err,connection){
+      if (err) {
+        res.json({"code" : 100, "status" : "Error in connection database"});
+        return;
+      }
+      connection.query("SELECT * FROM yearset ORDER BY year DESC LIMIT 1 ", function(err,rows){
+        console.log(err);
+          connection.release();
+          if(!err) {
+              res.json(rows);
+          }
+      });
+      connection.on('error', function(err) {
+            res.json({"code" : 100, "status" : "Error in connection database"});
+            return;
+      });
+    });
+};
+
 function getNewHoliday(req, res){
   var params = req.query;
   pool.getConnection(function(err,connection){
@@ -922,6 +961,7 @@ router.get("/updateAllFreeDays", function(req,res){
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
   });
 });
+
 router.get("/selectLastSetup", function(req,res){
   var token = req.query.token;
   isValidToken(token).then(function(result) {
@@ -931,6 +971,7 @@ router.get("/selectLastSetup", function(req,res){
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
   });
 });
+
 router.get("/getLastSetup", function(req,res){
   var token = req.query.token;
   isValidToken(token).then(function(result) {
@@ -940,6 +981,27 @@ router.get("/getLastSetup", function(req,res){
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
   });
 });
+
+router.get("/selectLastYear", function(req,res){
+  var token = req.query.token;
+  isValidToken(token).then(function(result) {
+    selectLastYear(req,res);
+  }, function(error){
+    console.log(error);
+      res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
+  });
+});
+
+router.get("/getLastYear", function(req,res){
+  var token = req.query.token;
+  isValidToken(token).then(function(result) {
+    getLastYear(req,res);
+  }, function(error){
+    console.log(error);
+      res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
+  });
+});
+
 router.get("/getNewHoliday", function(req,res){
   var token = req.query.token;
   isValidToken(token).then(function(result) {

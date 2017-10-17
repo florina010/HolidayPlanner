@@ -7,20 +7,35 @@ $(document).ready( function () {
     var date = ldate.format();
     var year = moment().year();
     var today = new Date().getFullYear();
+    var bool = "true";
 
-    function checkYearSetup(){
-      $.get(appConfig.url + appConfig.api + 'selectLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
+    function checkYear(){
+      $.get(appConfig.url + appConfig.api + 'selectLastYear?token=' + token + '&year=' + year, function (data) {
+        console.log(data[0].year);
         if(today > data[0].year){
+          bool = "false";
           displayForm();
+          $.get(appConfig.url + appConfig.api + 'getLastYear?token=' + token + '&year=' + today + '&isInitialized= '+ bool, function (data) {
+            out(data.code);
+          });
         };
       });
-
-      $.get(appConfig.url + appConfig.api + 'getLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
-        out(data.code);
-      });
     };
-    checkYearSetup();
-  };
+    checkYear();
+
+  //   function checkYearSetup(){
+  //     $.get(appConfig.url + appConfig.api + 'selectLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
+  //       if(today > data[0].year){
+  //         displayForm();
+  //       };
+  //     });
+  //
+  //     $.get(appConfig.url + appConfig.api + 'getLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
+  //       out(data.code);
+  //     });
+  //   };
+  //   checkYearSetup();
+   };
 
   // Load the New Year Days Off form on button click.
   $("a[name='udpateinfo']").click(function(){
@@ -61,7 +76,6 @@ $(document).ready( function () {
           out(data.code);
         });
       }
-      return;
       e.preventDefault();
       $('#myModalOncePerYear').modal('hide');
     });
