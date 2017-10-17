@@ -614,7 +614,27 @@ function getLastSetup(req, res){
             return;
       });
     });
-}
+};
+function selectLastSetup(req, res){
+  var params = req.query;
+  pool.getConnection(function(err,connection){
+      if (err) {
+        res.json({"code" : 100, "status" : "Error in connection database"});
+        return;
+      }
+      connection.query("SELECT * FROM yearsetup ORDER BY yearID DESC LIMIT 1 ", function(err,rows){
+        console.log(err);
+          connection.release();
+          if(!err) {
+              res.json(rows);
+          }
+      });
+      connection.on('error', function(err) {
+            res.json({"code" : 100, "status" : "Error in connection database"});
+            return;
+      });
+    });
+};
 
 function getAllManagers(req, res) {
 	var params = req.query;
@@ -872,7 +892,15 @@ router.get("/updateAllFreeDays", function(req,res){
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
   });
 });
-
+router.get("/selectLastSetup", function(req,res){
+  var token = req.query.token;
+  isValidToken(token).then(function(result) {
+    selectLastSetup(req,res);
+  }, function(error){
+    console.log(error);
+      res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
+  });
+});
 router.get("/getLastSetup", function(req,res){
   var token = req.query.token;
   isValidToken(token).then(function(result) {

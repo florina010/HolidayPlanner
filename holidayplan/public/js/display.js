@@ -28,7 +28,7 @@ $('#tabClickCalendar').click(function(){
 $(document).ready( function () {
     var commentEn = 0;
     $('#tabClick').addClass('active');
-  var theUser = JSON.parse(sessionStorage.getItem('user')),
+    var theUser = JSON.parse(sessionStorage.getItem('user')),
       token = sessionStorage.getItem('token'),
       currentDate = moment(),
       sum = 0, manager, manId, dates = new Array(), isOk = true;
@@ -118,9 +118,10 @@ $(document).ready( function () {
             $("[name=mName]").val('admin');
             $("[name=avDays]").val(0);
           }
-          else if (theUser.admin == 0) {
-              $("#holiday").parent().css("display", 'block');
+          else if (theUser.admin != 2) {
+              $("#holiday").css('display', 'block');
               $("[name=addUser]").parent().css('display', 'none');
+             $("#newyear").css("display", 'none');
           }
         });
       });

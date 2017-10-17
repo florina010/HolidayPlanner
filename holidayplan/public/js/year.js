@@ -6,13 +6,17 @@ $(document).ready( function () {
     var ldate = moment();
     var date = ldate.format();
     var year = moment().year();
+    var today = new Date().getFullYear();
 
     function checkYearSetup(){
-      $.get(appConfig.url + appConfig.api + 'getLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
-        out(data.code);
-        if(ldate.year() == year){
+      $.get(appConfig.url + appConfig.api + 'selectLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
+        if(today == data[0].year){
           displayForm();
         };
+      });
+
+      $.get(appConfig.url + appConfig.api + 'getLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
+        out(data.code);
       });
     };
     checkYearSetup();
