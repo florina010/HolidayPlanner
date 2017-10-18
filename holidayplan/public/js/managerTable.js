@@ -61,9 +61,6 @@ if (theUser.admin >= 0 ) {
 	});
 
 	function displayApproveModal(elem, id, email, avFD, action){
-        console.log(elem);
-        console.log(id);
-        console.log(action);
 		var approveModal =  $("#approve-freedays-modal");
 		approveModal.modal('show');
 		approveModal.attr("approveId", id);
@@ -118,7 +115,7 @@ if (theUser.admin >= 0 ) {
 		var approvedText = (approved == 2) ? "Not Approved" : "Approved";
         var buttonClass = (approved == 2) ? "check" : "times";
 		var buttonApprove = (approved == 2) ? 1 : 2;
-        console.log(buttonApprove);
+
         $.get(appConfig.url + appConfig.api + 'ApproveFreeDays?id=' + id + '&approved=' + approved + '&token=' + token, function (data) {
             out (data.code);
             var parentRow = $(td).closest("tr");

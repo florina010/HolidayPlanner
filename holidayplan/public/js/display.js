@@ -3,6 +3,7 @@ window.appNameSpace = window.appNameSpace || { };
 window.sessionInvalid = false;
 
 function weekend(d1,d2){
+
   var we = 0,
       days = d2.diff(d1,"days") + 1;
   while (d1 <= d2){
@@ -17,15 +18,24 @@ function weekend(d1,d2){
 
 $('#tabClickCalendar').click(function(){
   setTimeout(function(){
-    console.log($("#tabClickCalendar").attr("class"));
-    console.log("tabClickCalendar");
-
     $("#calendar").empty();
     reloadJs('../js/calendar.js');
   }, 400);
 });
 
 $(document).ready( function () {
+
+    $('.date').datepicker({
+        multidate: 2,
+        multidateSeparator: ";",
+        toggleActive: true,
+        startDate: new Date(),
+        clearBtn: true,
+        minViewMode: 0
+    });
+
+
+
     var commentEn = 0;
     $('#tabClick').addClass('active');
     var theUser = JSON.parse(sessionStorage.getItem('user')),
@@ -277,30 +287,6 @@ $(document).ready( function () {
                              }
                          }
                      },
-
-                     startDate: {
-                         validators: {
-                             notEmpty: {
-                                 message: 'The start date is required'
-                             },
-                             date: {
-                                 format: 'YYYY/MM/DD',
-                                 message: 'The start date is not a valid'
-                             }
-                         }
-                     },
-                     endDate: {
-                         validators: {
-                             notEmpty: {
-                                 message: 'The end date is required'
-                             },
-                             date: {
-                                 format: 'YYYY/MM/DD',
-                                 min: 'startDate',
-                                 message: 'The end date is not a valid'
-                             }
-                         }
-                     }
                  }
              }).on('success.field.fv', function(e, data) {
                  e.preventDefault();
@@ -316,25 +302,23 @@ $(document).ready( function () {
                     default:
                         break;
                     }
-                 if (data.field === 'startDate' && !data.fv.isValidField('endDate')) {
-                     // We need to revalidate the end date
-                     data.fv.revalidateField('endDate');
-                 }
-
-                 if (data.field === 'endDate' && !data.fv.isValidField('startDate')) {
-                     // We need to revalidate the start date
-                     data.fv.revalidateField('startDate');
-                 }
              }).on('submit', function(e, data) {
                if (!e.isDefaultPrevented()) {
-                   var stdate = moment($("#stdate").val()),
-                       enddate = moment($("#enddate").val());
+                   var date = $(".date").val().split(";"),
+                        stdate = date[0],
+                        enddate = date[1];
 
                    var from, to, duration;
-                   from = moment(stdate, 'YYYY/MM/DD');
-                   to = moment(enddate, 'YYYY/MM/DD');
-                   duration = weekend(from, to);
+                   from = moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
+                   if (!enddate){
+                       to =  moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
+                   }
+                   else {
+                       to = moment(enddate, 'MM/DD/YYYY').format('YYYY/MM/DD');
+                   }
 
+                   duration = weekend(moment(from), moment(to));
+                 //  let myDate:Date = moment(dateString,"YYYY-MM-DD").format("DD-MM-YYYY");
                    if ($('#vacationtype').val() =='Other'){
                        duration = 0;
                    }
@@ -347,12 +331,12 @@ $(document).ready( function () {
                        vacationtype: $("#vacationtype").val(),
                        comment: $("#comment").val(),
                        avDays: $("[name=avDays]").val(),
-                       stdate: stdate,
-                       enddate: enddate,
+                       stdate: from,
+                       enddate: to,
                        duration: duration
                    }
 
-                   check(stdate, enddate, holidayOptions, addHoliday);
+                   check(from, to, holidayOptions, addHoliday);
 
 
           }
@@ -368,7 +352,6 @@ $(document).ready( function () {
                for (var i = 0; i < data.length; i++){
                    if (data[i].type == 'public') {
                        dates.push(moment(data[i].date).format("YYYY/MM/DD"));
-                       console.log(dates);
                    }
                }
            });
@@ -414,6 +397,7 @@ $(document).ready( function () {
            $('#calendar').empty();
            reloadJs('../js/calendar.js');
        }
+
       function check(startString, endString, options, callback) {
           getFreeDays();
           var start = moment(startString).format("YYYY/MM/DD"),
@@ -530,13 +514,11 @@ $(document).ready( function () {
    });
     $("#save").click(function(){
         if (commentEn == 0) {
-            console.log(3333);
             setTimeout(function(){
                 location.reload();
             },1000);
         }
         else if ($('[name=comment]').val() && commentEn == 1) {
-            console.log(3333);
             setTimeout(function(){
                 location.reload();
             },1000);
