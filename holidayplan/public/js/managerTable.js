@@ -9,10 +9,6 @@ $(document).ready(function () {
 			$('#users-list-table').find('.dataTables_paginate, .dataTables_length, .dataTables_info').hide();
         });
 
-
-
-
-
 if (theUser.admin >= 0 ) {
 
 	$(function () {
@@ -28,13 +24,6 @@ if (theUser.admin >= 0 ) {
 				updateUser();
 			});
 		});
-
-
-		// $("a[name='newyearform']").click(function(){
-		// 	$("#myModalOncePerYear").load("newyearform.html", function(){
-		// 		newYearForm();
-		// 	});
-		// });
 
 	function fillUpdateUserForm (){
 		var currentPicture = JSON.parse(sessionStorage.getItem('user')).picture;
@@ -98,7 +87,7 @@ if (theUser.admin >= 0 ) {
 		var email = td.prev().prev().prev().prev().prev().prev().prev().prev().html();
 		var params = '"' + email + '",' + avFD;
 
-        if (approved == 1) {
+  if (approved == 1) {
     		if (availableFD >= days) {
     			approve(id, approved, token, params, email);
             }
@@ -109,14 +98,14 @@ if (theUser.admin >= 0 ) {
         else {
             approve(id, approved, token, params, email);
         }
-	}
+	};
 
-    function  approve(id, approved, token, params, email) {
-        var tr = $("#manager-table tr.activeModal");
+function  approve(id, approved, token, params, email) {
+    var tr = $("#manager-table tr.activeModal");
 		var td = tr.find("td").eq(11);
-        var id = $("#approve-freedays-modal").attr("approveId");
+    var id = $("#approve-freedays-modal").attr("approveId");
 		var approvedText = (approved == 2) ? "Not Approved" : "Approved";
-        var buttonClass = (approved == 2) ? "check" : "times";
+    var buttonClass = (approved == 2) ? "check" : "times";
 		var buttonApprove = (approved == 2) ? 1 : 2;
         console.log(buttonApprove);
         $.get(appConfig.url + appConfig.api + 'ApproveFreeDays?id=' + id + '&approved=' + approved + '&token=' + token, function (data) {
@@ -132,14 +121,15 @@ if (theUser.admin >= 0 ) {
             $("#manager-table").DataTable().clear();
             populateTable();
         });
-    }
+    };
+
 	function colorTableRow(approved) {
 		if (approved == true) {
 			return "info";
 		} else {
 			return "danger";
 		}
-	}
+	};
 	var editUserForm = $("#edit-user-form");
 
 	function managerEditUser(elem, userId) {
@@ -220,27 +210,7 @@ if (theUser.admin >= 0 ) {
 			}
 		});
 	}
-// function newYearForm(){
-//   //New year update
-//   $("#new-year-form").formValidation({
-//     framework: 'bootstrap',
-//     icon: {
-//       valid: 'glyphicon glyphicon-ok',
-//       invalid: 'glyphicon glyphicon-remove',
-//       validating: 'glyphicon glyphicon-refresh'
-//     },
-//     fields: {
-//     }
-//   }).on('submit', function(e, data) {
-//     alert('de altundeva');
-//     var formWrapper = $("#new-year-form");
-//     var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
-//
-//     $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
-//       out (data.code);
-//     });
-//   });
-// }
+
 	function prepareUserForm() {
 		var date = new Date();
 		date.setDate(date.getDate());
@@ -535,15 +505,13 @@ if (theUser.admin >= 0 ) {
 	}
 
 	function managedUserTable(){
-
 		if (sessionStorage.getItem('admin') == 2) {
 			getAllUsers();
 		}
 		else {
 			getManagerUsers();
 		}
-	}
-
+	};
 
 	function getAllUsers () {
 		$.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
@@ -562,12 +530,11 @@ if (theUser.admin >= 0 ) {
 					users[i].age,
 					users[i].bonus,
 					'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
-					//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
 				] ).draw( false );
 				j++;
 			}
 		});
-	}
+	};
 
 	function getManagerUsers () {
 		var userid = JSON.parse(sessionStorage.getItem('user')).userID;

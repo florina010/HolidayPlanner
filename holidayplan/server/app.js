@@ -11,7 +11,6 @@ hd = new Holidays('RO');
 
 // get all holidays for the year 2017
 hd.getHolidays(year);
-
 var pool      =    mysql.createPool({
     connectionLimit : 100, //important
     host     : 'localhost',
@@ -22,15 +21,35 @@ var pool      =    mysql.createPool({
 });
 
 function legalFreeHolidays(req,res){
-  hd = new Holidays('RO')
+  hd = new Holidays('RO');
   hd.getHolidays(year);
     res.json(hd.getHolidays(year));
   return;
-  connection.query("UPDATE legalholidays SET startDate = '" + hd.getHolidays(year).start + "'AND name='"+ hd.getHolidays(year).name +"' WHERE type = 'public'",function(err,rows){
-      connection.release();
-  });
+};
 
-}
+function legalHolidaysToDb(req, res){
+  pool.getConnection(function(err,connection){
+      if (err) {
+        res.json({"code" : 100, "status" : "Error in connection database"});
+        return;
+      };
+
+    hd = new Holidays('RO');
+    hd.getHolidays(year);
+    res.json(hd.getHolidays(year));
+
+      for(var i in hd.getHolidays(year)){
+        if(hd.getHolidays(year)[i].type == 'public'){
+          connection.query("INSERT INTO legalholidays(startDate, name, type) VALUES ('" + hd.getHolidays(year)[i].date + "', '"+
+              hd.getHolidays(year)[i].name + "','" + hd.getHolidays(year)[i].type +"')",function(err,rows){
+            //console.log(err);
+               connection.release();
+           });
+        };
+      };
+
+   });
+};
 
 function setToken (token, id) {
   pool.getConnection(function(err,connection){
@@ -38,7 +57,6 @@ function setToken (token, id) {
         res.json({"code" : 100, "status" : "Error in connection database"});
         return;
       }
-      console.log('connected as id ' + connection.threadId);
       connection.query("UPDATE user SET token = '" + token + "' WHERE userID = '" + id + "'",function(err,rows){
           connection.release();
       });
@@ -120,14 +138,12 @@ function deleteHoliday(req,res) {
         return;
       }
 	    var params = req.body;
-      console.log(params);
       connection.query("DELETE FROM `freedays` WHERE `id` = "+params.id+"",function(err,rows){
           connection.release();
           if(!err) {
               res.json(rows);
           }
           else {
-            console.log(err);
           }
       });
       connection.on('error', function(err) {
@@ -355,7 +371,6 @@ function getManagerName(req,res) {
 }
 
 function handle_dateupdate(req,res) {
-
     var params = req.query;
     pool.getConnection(function(err,connection){
         if (err) {
@@ -405,7 +420,6 @@ function addUser(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-        console.log(params);
         if(params.position == 'Manager'){
          var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" +
           params.phone + "', '" + params.stwork + "', '" + 1 + "','" + params.avfreedays + "'";
@@ -446,7 +460,27 @@ function getAllUsers(req,res) {
               return;
         });
   });
-}
+};
+
+function getAllHolidays(req,res) {
+  var params = req.query;
+    pool.getConnection(function(err,connection){
+        if (err) {
+          res.json({"code" : 100, "status" : "Error in connection database"});
+          return;
+        }
+        connection.query("SELECT * FROM legalholidays ",function(err,rows){
+            connection.release();
+            if(!err) {
+                res.json(rows);
+            }
+        });
+        connection.on('error', function(err) {
+              res.json({"code" : 100, "status" : "Error in connection database"});
+              return;
+        });
+  });
+};
 
 function isValidToken(token) {
   return new Promise((resolve, reject) => {
@@ -500,7 +534,6 @@ function updateRelationsFreedays(req,res) {
         }
 		connection.query("UPDATE freedays SET approverID = '" + params.managerId + "' WHERE approverId = '" + params.deletedUserId + "';",function(err,rows){
             connection.release();
-			console.log(rows);
             if(!err) {
                 res.json(rows);
             }
@@ -554,7 +587,6 @@ function updateUserManager(req,res) {
 
 function updateFreeDays(req, res){
     var params = req.query;
-    console.log(params);
     pool.getConnection(function(err,connection){
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
@@ -612,46 +644,6 @@ function getLastYear(req,res){
       });
     });
 };
-// function getLastSetup(req, res){
-//   var params = req.query;
-//   pool.getConnection(function(err,connection){
-//       if (err) {
-//         res.json({"code" : 100, "status" : "Error in connection database"});
-//         return;
-//       }
-//       connection.query("INSERT INTO yearsetup (lastDate, year) VALUES ('" + params.lastDate + "', "+ params.year +")", function(err,rows){
-//         console.log(err);
-//           connection.release();
-//           if(!err) {
-//               res.json(rows);
-//           }
-//       });
-//       connection.on('error', function(err) {
-//             res.json({"code" : 100, "status" : "Error in connection database"});
-//             return;
-//       });
-//     });
-// };
-// function selectLastSetup(req, res){
-//   var params = req.query;
-//   pool.getConnection(function(err,connection){
-//       if (err) {
-//         res.json({"code" : 100, "status" : "Error in connection database"});
-//         return;
-//       }
-//       connection.query("SELECT * FROM yearsetup ORDER BY yearID DESC LIMIT 1 ", function(err,rows){
-//         console.log(err);
-//           connection.release();
-//           if(!err) {
-//               res.json(rows);
-//           }
-//       });
-//       connection.on('error', function(err) {
-//             res.json({"code" : 100, "status" : "Error in connection database"});
-//             return;
-//       });
-//     });
-// };
 
 function selectLastYear(req,res){
   var params = req.query;
@@ -681,7 +673,6 @@ function getNewHoliday(req, res){
         res.json({"code" : 100, "status" : "Error in connection database"});
         return;
       }
-      console.log(params.startDate);
       connection.query("INSERT INTO legalholidays (startDate, name) VALUES ('" + params.startDate + "', '"+ params.name +"')", function(err,rows){
         console.log(err);
           connection.release();
@@ -742,6 +733,11 @@ router.use(function(req,res,next) {
 router.get("/legalFreeHolidays",function(req,res){
   legalFreeHolidays(req,res);
 });
+
+router.get("/legalHolidaysToDb",function(req,res){
+    legalHolidaysToDb(req,res);
+});
+
 router.post("/login",function(req,res){
   handle_database(req,res);
 });
@@ -765,7 +761,6 @@ router.get("/getLegalFreeDays",function(req,res){
    isValidToken(token).then(function(result) {
      getLegalFreeDays(req,res);
    }, function(error){
-     console.log(error);
        res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
    });
 });
@@ -880,6 +875,16 @@ router.get("/getAllUsers", function(req,res){
   });
 });
 
+router.get("/getAllHolidays", function(req,res){
+  var token = req.query.token;
+  isValidToken(token).then(function(result) {
+    getAllHolidays(req,res);
+  }, function(error){
+    console.log(error);
+      res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
+  });
+});
+
 router.post("/addUser", function(req,res){
   var token = req.query.token;
   isValidToken(token).then(function(result) {
@@ -962,26 +967,6 @@ router.get("/updateAllFreeDays", function(req,res){
   });
 });
 
-// router.get("/selectLastSetup", function(req,res){
-//   var token = req.query.token;
-//   isValidToken(token).then(function(result) {
-//     selectLastSetup(req,res);
-//   }, function(error){
-//     console.log(error);
-//       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
-//   });
-// });
-
-// router.get("/getLastSetup", function(req,res){
-//   var token = req.query.token;
-//   isValidToken(token).then(function(result) {
-//     getLastSetup(req,res);
-//   }, function(error){
-//     console.log(error);
-//       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
-//   });
-// });
-
 router.get("/selectLastYear", function(req,res){
   var token = req.query.token;
   isValidToken(token).then(function(result) {
@@ -1012,7 +997,6 @@ router.get("/getNewHoliday", function(req,res){
   });
 });
 router.get("/updateAvFreeDays", function(req,res){
-    console.log('am ajuns aici');
     updateFreeDays(req,res);
 });
 
