@@ -90,8 +90,6 @@ function handle_database(req,res) {
   }
 
 
-
-
 function getFreeDaysApprover(req,res) {
     pool.getConnection(function(err,connection){
       if (err) {
@@ -612,46 +610,6 @@ function getLastYear(req,res){
       });
     });
 };
-// function getLastSetup(req, res){
-//   var params = req.query;
-//   pool.getConnection(function(err,connection){
-//       if (err) {
-//         res.json({"code" : 100, "status" : "Error in connection database"});
-//         return;
-//       }
-//       connection.query("INSERT INTO yearsetup (lastDate, year) VALUES ('" + params.lastDate + "', "+ params.year +")", function(err,rows){
-//         console.log(err);
-//           connection.release();
-//           if(!err) {
-//               res.json(rows);
-//           }
-//       });
-//       connection.on('error', function(err) {
-//             res.json({"code" : 100, "status" : "Error in connection database"});
-//             return;
-//       });
-//     });
-// };
-// function selectLastSetup(req, res){
-//   var params = req.query;
-//   pool.getConnection(function(err,connection){
-//       if (err) {
-//         res.json({"code" : 100, "status" : "Error in connection database"});
-//         return;
-//       }
-//       connection.query("SELECT * FROM yearsetup ORDER BY yearID DESC LIMIT 1 ", function(err,rows){
-//         console.log(err);
-//           connection.release();
-//           if(!err) {
-//               res.json(rows);
-//           }
-//       });
-//       connection.on('error', function(err) {
-//             res.json({"code" : 100, "status" : "Error in connection database"});
-//             return;
-//       });
-//     });
-// };
 
 function selectLastYear(req,res){
   var params = req.query;
@@ -961,26 +919,6 @@ router.get("/updateAllFreeDays", function(req,res){
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
   });
 });
-
-// router.get("/selectLastSetup", function(req,res){
-//   var token = req.query.token;
-//   isValidToken(token).then(function(result) {
-//     selectLastSetup(req,res);
-//   }, function(error){
-//     console.log(error);
-//       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
-//   });
-// });
-
-// router.get("/getLastSetup", function(req,res){
-//   var token = req.query.token;
-//   isValidToken(token).then(function(result) {
-//     getLastSetup(req,res);
-//   }, function(error){
-//     console.log(error);
-//       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
-//   });
-// });
 
 router.get("/selectLastYear", function(req,res){
   var token = req.query.token;
