@@ -367,11 +367,16 @@ $(document).ready( function () {
                for (var i = 0; i < data.length; i++){
                    if (data[i].type == 'public') {
                        dates.push(moment(data[i].date).format("YYYY/MM/DD"));
+<<<<<<< HEAD
                    }
                }
+=======
+                   };
+
+               };
+>>>>>>> admin
            });
        };
-
        function addHoliday(options) {
            if (options.avDays >= options.duration) {
                $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {

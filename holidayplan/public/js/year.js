@@ -15,6 +15,9 @@ $(document).ready( function () {
           $.get(appConfig.url + appConfig.api + 'getLastYear?token=' + token + '&year=' + today, function (data) {
             out(data.code);
           });
+          $.get(appConfig.url + appConfig.api + 'legalHolidaysToDb', function (data) {
+            out(data.code);
+          });
         };
       });
     };
@@ -93,7 +96,28 @@ $(document).ready( function () {
       e.preventDefault();
       $('#myModalOncePerYear').modal('hide');
     });
+      getAllHolidays();
   };
+
+  function getAllHolidays () {
+   $.get(appConfig.url + appConfig.api + 'getAllHolidays?token='+token, function (data) {
+     out (data.code);
+     console.log( data);
+     var holidaytable = $('#example').DataTable();
+     var j = 1;
+     for ( var i= 0; i < data.length; i++ ){
+       holidaytable.row.add( [
+         j,
+         moment(data[i].startDate).format("DD/MM/YYYY"),
+         data[i].name,
+         data[i].type
+       ] ).draw( false );
+       j++;
+     };
+
+    });
+ };
+
 
   function prepareUserForm() {
     //New year update
