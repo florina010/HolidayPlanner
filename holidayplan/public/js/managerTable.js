@@ -594,6 +594,7 @@ if (theUser.admin >= 0 ) {
 					users[i].email,
 					moment(users[i].startDate).format("DD/MM/Y"),
 					users[i].phone,
+                    theUser.name,
 					users[i].isActive,
 					users[i].age,
 					users[i].bonus,

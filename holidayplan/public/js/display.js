@@ -3,7 +3,6 @@ window.appNameSpace = window.appNameSpace || { };
 window.sessionInvalid = false;
 
 function weekend(d1,d2){
-
   var we = 0,
       days = d2.diff(d1,"days") + 1;
   while (d1 <= d2){
@@ -23,6 +22,19 @@ $('#tabClickCalendar').click(function(){
 });
 
 $(document).ready( function () {
+    (function()
+    {console.log(12);
+      if( window.localStorage )
+      {
+        if( !localStorage.getItem('firstLoad') )
+        {
+          localStorage['firstLoad'] = true;
+          window.location.reload();
+        }
+        else
+          localStorage.removeItem('firstLoad');
+      }
+    })();
 
     $('.date').datepicker({
         multidate: 2,
