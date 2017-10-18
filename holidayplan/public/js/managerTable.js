@@ -511,7 +511,6 @@ function  approve(id, approved, token, params, email) {
 	};
 
 	function getAllUsers () {
-<<<<<<< HEAD
         $.when($.get(appConfig.url + appConfig.api + 'getManagerForUser?token=' + token, function (users) {
             out (users.code);
             arr = Array.prototype.slice.apply(users);
@@ -548,29 +547,8 @@ function  approve(id, approved, token, params, email) {
             });
         });
     }
-=======
-		$.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
-			out (users.code);
-			var userstable = $('#users-list-table').DataTable();
-			var j = 1;
-			for ( i=0; i < users.length; i++ ){
-				userstable.row.add( [
-					j,
-					users[i].name,
-					users[i].position,
-					users[i].email,
-					moment(users[i].startDate).format("DD/MM/Y"),
-					users[i].phone,
-					users[i].isActive,
-					users[i].age,
-					users[i].bonus,
-					'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
-				] ).draw( false );
-				j++;
-			}
-		});
-	};
->>>>>>> admin
+
+
 
 	function getManagerUsers () {
 		var userid = JSON.parse(sessionStorage.getItem('user')).userID;

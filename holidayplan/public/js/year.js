@@ -118,7 +118,6 @@ $(document).ready( function () {
     });
  };
 
-
   function prepareUserForm() {
     //New year update
     var date = new Date();

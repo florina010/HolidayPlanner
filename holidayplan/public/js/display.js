@@ -6,47 +6,26 @@ function weekend(d1,d2){
   var we = 0,
       days = d2.diff(d1,"days") + 1;
   while (d1 <= d2){
-      if (d1.days() == 0 || d1.days() == 6){
-          we++;
-      }
-      d1.add(1,"days");
+    if (d1.days() == 0 || d1.days() == 6){
+      we++;
+    }
+    d1.add(1,"days");
   }
+
   return days-we;
 }
 
 $('#tabClickCalendar').click(function(){
   setTimeout(function(){
+    console.log($("#tabClickCalendar").attr("class"));
+    console.log("tabClickCalendar");
+
     $("#calendar").empty();
     reloadJs('../js/calendar.js');
   }, 400);
 });
 
 $(document).ready( function () {
-    (function()
-    {console.log(12);
-      if( window.localStorage )
-      {
-        if( !localStorage.getItem('firstLoad') )
-        {
-          localStorage['firstLoad'] = true;
-          window.location.reload();
-        }
-        else
-          localStorage.removeItem('firstLoad');
-      }
-    })();
-
-    $('.date').datepicker({
-        multidate: 2,
-        multidateSeparator: ";",
-        toggleActive: true,
-        startDate: new Date(),
-        clearBtn: true,
-        minViewMode: 0,
-
-    });
-
-
     var commentEn = 0;
     $('#tabClick').addClass('active');
     var theUser = JSON.parse(sessionStorage.getItem('user')),
@@ -131,6 +110,20 @@ $(document).ready( function () {
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
             out (data.code);
           });
+
+          if (theUser.admin == 2) {
+            $("[name=add]").parent().css('display', 'none');
+            $("[name=addUser]").parent().css('display', 'block');
+            $("#tabs li:not(:last)").css('display', 'none');
+            $("#calendar").css('display', 'none');
+            $("[name=mName]").val('admin');
+            $("[name=avDays]").val(0);
+          }
+          else if (theUser.admin != 2) {
+              $("#holiday").css('display', 'block');
+              $("[name=addUser]").parent().css('display', 'block');
+             $("#newyear").css("display", 'none');
+          }
         });
       });
     }
@@ -183,7 +176,7 @@ $(document).ready( function () {
       $("#tabs").append($(li));
 
      var li = $("<li></li>"),
-          a = $("<a data-toggle='tab' href='#users-list' name='userst'></a>"),
+          a = $("<a data-toggle='tab' href='#users-list'></a>"),
           i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Managed Users</i>"),
           div =$("<div id='users-list' class='tab-pane fade'></div>"),
           table = $("<table id='users-list-table' class='table display' cellspacing='0' width='100%'></table>"),
@@ -195,7 +188,6 @@ $(document).ready( function () {
           thE = $("<th>Email</th>"),
           thD = $("<th>Start Date</th>"),
       thPh = $("<th>Phone</th>"),
-      thM = $("<th>Manager</th>"),
       thAc = $("<th>Active</th>"),
       thAg = $("<th>Age</th>"),
       thBo = $("<th>Bonus</th>"),
@@ -206,7 +198,6 @@ $(document).ready( function () {
       $(tr).append($(thE));
       $(tr).append($(thD));
       $(tr).append($(thPh));
-      $(tr).append($(thM));
       $(tr).append($(thAc));
       $(tr).append($(thAg));
       $(tr).append($(thBo));
@@ -218,23 +209,6 @@ $(document).ready( function () {
       $(a).append($(i)),
       $(li).append($(a));
       $("#tabs").append($(li));
-    }
-
-    if (theUser.admin == 2) {
-        $("[name=userst]").parent().addClass('active');
-        $("[name=userst]").attr('aria-expanded', true);
-        $("#users-list").addClass('active in');
-        $("[name=add]").parent().css('display', 'none');
-        $("[name=addUser]").parent().css('display', 'block');
-        $("#tabs li:not(:last)").css('display', 'none');
-        $("#calendar").css('display', 'none');
-        $("[name=mName]").val('admin');
-        $("[name=avDays]").val(0);
-    }
-    else if (theUser.admin != 2) {
-        $("#holiday").css('display', 'block');
-        $("[name=addUser]").parent().css('display', 'block');
-       $("#newyear").css("display", 'none');
     }
 
     $('#logout').click( function () {
@@ -303,6 +277,30 @@ $(document).ready( function () {
                              }
                          }
                      },
+
+                     startDate: {
+                         validators: {
+                             notEmpty: {
+                                 message: 'The start date is required'
+                             },
+                             date: {
+                                 format: 'YYYY/MM/DD',
+                                 message: 'The start date is not a valid'
+                             }
+                         }
+                     },
+                     endDate: {
+                         validators: {
+                             notEmpty: {
+                                 message: 'The end date is required'
+                             },
+                             date: {
+                                 format: 'YYYY/MM/DD',
+                                 min: 'startDate',
+                                 message: 'The end date is not a valid'
+                             }
+                         }
+                     }
                  }
              }).on('success.field.fv', function(e, data) {
                  e.preventDefault();
@@ -311,29 +309,32 @@ $(document).ready( function () {
                         if ($("#vacationtype").val() == 'Other') {
                             data.fv.enableFieldValidators('comment', true);
                             commentEn = 1;
+                            //data.fv.revalidateField('comment');
                             break;
                         }
                         break;
                     default:
                         break;
                     }
+                 if (data.field === 'startDate' && !data.fv.isValidField('endDate')) {
+                     // We need to revalidate the end date
+                     data.fv.revalidateField('endDate');
+                 }
+
+                 if (data.field === 'endDate' && !data.fv.isValidField('startDate')) {
+                     // We need to revalidate the start date
+                     data.fv.revalidateField('startDate');
+                 }
              }).on('submit', function(e, data) {
                if (!e.isDefaultPrevented()) {
-                   var date = $(".date").val().split(";"),
-                        stdate = date[0],
-                        enddate = date[1];
+                   var stdate = moment($("#stdate").val()),
+                       enddate = moment($("#enddate").val());
 
                    var from, to, duration;
-                   from = moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
-                   if (!enddate){
-                       to =  moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
-                   }
-                   else {
-                       to = moment(enddate, 'MM/DD/YYYY').format('YYYY/MM/DD');
-                   }
+                   from = moment(stdate, 'YYYY/MM/DD');
+                   to = moment(enddate, 'YYYY/MM/DD');
+                   duration = weekend(from, to);
 
-                   duration = weekend(moment(from), moment(to));
-                 //  let myDate:Date = moment(dateString,"YYYY-MM-DD").format("DD-MM-YYYY");
                    if ($('#vacationtype').val() =='Other'){
                        duration = 0;
                    }
@@ -346,12 +347,12 @@ $(document).ready( function () {
                        vacationtype: $("#vacationtype").val(),
                        comment: $("#comment").val(),
                        avDays: $("[name=avDays]").val(),
-                       stdate: from,
-                       enddate: to,
+                       stdate: stdate,
+                       enddate: enddate,
                        duration: duration
                    }
 
-                   check(from, to, holidayOptions, addHoliday);
+                   check(stdate, enddate, holidayOptions, addHoliday);
 
 
           }
@@ -367,14 +368,9 @@ $(document).ready( function () {
                for (var i = 0; i < data.length; i++){
                    if (data[i].type == 'public') {
                        dates.push(moment(data[i].date).format("YYYY/MM/DD"));
-<<<<<<< HEAD
-                   }
-               }
-=======
                    };
 
                };
->>>>>>> admin
            });
        };
        function addHoliday(options) {
@@ -417,7 +413,6 @@ $(document).ready( function () {
            $('#calendar').empty();
            reloadJs('../js/calendar.js');
        }
-
       function check(startString, endString, options, callback) {
           getFreeDays();
           var start = moment(startString).format("YYYY/MM/DD"),
@@ -534,11 +529,13 @@ $(document).ready( function () {
    });
     $("#save").click(function(){
         if (commentEn == 0) {
+            console.log(3333);
             setTimeout(function(){
                 location.reload();
             },1000);
         }
         else if ($('[name=comment]').val() && commentEn == 1) {
+            console.log(3333);
             setTimeout(function(){
                 location.reload();
             },1000);

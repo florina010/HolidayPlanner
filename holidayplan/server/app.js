@@ -669,12 +669,10 @@ function getNewHoliday(req, res){
         res.json({"code" : 100, "status" : "Error in connection database"});
         return;
       }
-<<<<<<< HEAD
-      connection.query("INSERT INTO legalholidays (startDate, name) VALUES ('" + params.startDate + "', '"+ params.name +"')", function(err,rows){;
-=======
+
       connection.query("INSERT INTO legalholidays (startDate, name) VALUES ('" + params.startDate + "', '"+ params.name +"')", function(err,rows){
         console.log(err);
->>>>>>> admin
+
           connection.release();
           if(!err) {
               res.json(rows);
