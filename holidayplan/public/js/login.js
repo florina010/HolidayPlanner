@@ -6,7 +6,6 @@ $(document).ready(function () {
     var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
     hashObj.update($("[name=password]").val());
     var password = hashObj.getHash("HEX");
-    console.log(password);
     var email = $("[name=email]").val(),
         user = new appNameSpace.User("", password, "", "", "", "", "", email, "", "", ""), found;
     var regexEmail=  /\w{1,30}\@[a-z0-9.-]+\.[a-z]{1,3}$/;
@@ -24,12 +23,10 @@ $(document).ready(function () {
           user['admin'] = data.admin;
           user['avfreedays'] = data.avfreedays;
           user['bonus'] = data.bonus;
-          console.log(data.login);
           if (data.admin > 0 ) {
             sessionStorage.setItem('admin', data.admin);
           }
       if (user.admin == 2) {
-        alert("admin");
         }
 		  if (data.isActive == 0 ) {
 			  alert("You don't work here");

@@ -371,9 +371,9 @@ if (theUser.admin >= 0 ) {
 					tr.find("td").eq(3).text(email);
 					tr.find("td").eq(4).text(stwork);
 					tr.find("td").eq(5).text(phone);
-					tr.find("td").eq(6).text(isActive);
-					tr.find("td").eq(7).text(age);
-					tr.find("td").eq(8).text(bonus);
+					tr.find("td").eq(7).text(isActive);
+					tr.find("td").eq(8).text(age);
+					tr.find("td").eq(9).text(bonus);
 					$('.modal-body> div:first-child').css('display','block');
 					$('.modal-body> div:nth-child(2)').css('display','none');
 
@@ -543,28 +543,42 @@ if (theUser.admin >= 0 ) {
 
 
 	function getAllUsers () {
-		$.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
-			out (users.code);
-			var userstable = $('#users-list-table').DataTable();
-			var j = 1;
-			for ( i=0; i < users.length; i++ ){
-				userstable.row.add( [
-					j,
-					users[i].name,
-					users[i].position,
-					users[i].email,
-					moment(users[i].startDate).format("DD/MM/Y"),
-					users[i].phone,
-					users[i].isActive,
-					users[i].age,
-					users[i].bonus,
-					'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
-					//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
-				] ).draw( false );
-				j++;
-			}
-		});
-	}
+        $.when($.get(appConfig.url + appConfig.api + 'getManagerForUser?token=' + token, function (users) {
+            out (users.code);
+            arr = Array.prototype.slice.apply(users);
+        })).done( function(arr) {
+    		$.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
+                console.log(arr);
+    			out (users.code);
+    			var userstable = $('#users-list-table').DataTable();
+    			var k = 1, usersArray = [], result;
+    			for ( i = 0; i < users.length; i++ ){
+                    console.log(users[i].userID + '  u');
+                    console.log(arr[i].userID + '  arr');
+                    for (var j = 0; j < arr.length; j++) {
+                        if (arr[j].userID == users[i].userID) {
+                            result = arr[j].name;
+                        }
+                    }
+                    userstable.row.add( [
+                        k,
+                        users[i].name,
+        				users[i].position,
+        				users[i].email,
+        				moment(users[i].startDate).format("DD/MM/Y"),
+        				users[i].phone,
+                        result,
+    					users[i].isActive,
+        				users[i].age,
+        				users[i].bonus,
+        				'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
+        				//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
+                    ] ).draw( false );
+                    k++;
+                }
+            });
+        });
+    }
 
 	function getManagerUsers () {
 		var userid = JSON.parse(sessionStorage.getItem('user')).userID;

@@ -7,12 +7,11 @@ function weekend(d1,d2){
   var we = 0,
       days = d2.diff(d1,"days") + 1;
   while (d1 <= d2){
-    if (d1.days() == 0 || d1.days() == 6){
-      we++;
-    }
-    d1.add(1,"days");
+      if (d1.days() == 0 || d1.days() == 6){
+          we++;
+      }
+      d1.add(1,"days");
   }
-
   return days-we;
 }
 
@@ -31,9 +30,9 @@ $(document).ready( function () {
         toggleActive: true,
         startDate: new Date(),
         clearBtn: true,
-        minViewMode: 0
-    });
+        minViewMode: 0,
 
+    });
 
 
     var commentEn = 0;
@@ -120,20 +119,6 @@ $(document).ready( function () {
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
             out (data.code);
           });
-
-          if (theUser.admin == 2) {
-            $("[name=add]").parent().css('display', 'none');
-            $("[name=addUser]").parent().css('display', 'block');
-            $("#tabs li:not(:last)").css('display', 'none');
-            $("#calendar").css('display', 'none');
-            $("[name=mName]").val('admin');
-            $("[name=avDays]").val(0);
-          }
-          else if (theUser.admin != 2) {
-              $("#holiday").css('display', 'block');
-              $("[name=addUser]").parent().css('display', 'block');
-             $("#newyear").css("display", 'none');
-          }
         });
       });
     }
@@ -186,7 +171,7 @@ $(document).ready( function () {
       $("#tabs").append($(li));
 
      var li = $("<li></li>"),
-          a = $("<a data-toggle='tab' href='#users-list'></a>"),
+          a = $("<a data-toggle='tab' href='#users-list' name='userst'></a>"),
           i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Managed Users</i>"),
           div =$("<div id='users-list' class='tab-pane fade'></div>"),
           table = $("<table id='users-list-table' class='table display' cellspacing='0' width='100%'></table>"),
@@ -198,6 +183,7 @@ $(document).ready( function () {
           thE = $("<th>Email</th>"),
           thD = $("<th>Start Date</th>"),
       thPh = $("<th>Phone</th>"),
+      thM = $("<th>Manager</th>"),
       thAc = $("<th>Active</th>"),
       thAg = $("<th>Age</th>"),
       thBo = $("<th>Bonus</th>"),
@@ -208,6 +194,7 @@ $(document).ready( function () {
       $(tr).append($(thE));
       $(tr).append($(thD));
       $(tr).append($(thPh));
+      $(tr).append($(thM));
       $(tr).append($(thAc));
       $(tr).append($(thAg));
       $(tr).append($(thBo));
@@ -219,6 +206,23 @@ $(document).ready( function () {
       $(a).append($(i)),
       $(li).append($(a));
       $("#tabs").append($(li));
+    }
+
+    if (theUser.admin == 2) {
+        $("[name=userst]").parent().addClass('active');
+        $("[name=userst]").attr('aria-expanded', true);
+        $("#users-list").addClass('active in');
+        $("[name=add]").parent().css('display', 'none');
+        $("[name=addUser]").parent().css('display', 'block');
+        $("#tabs li:not(:last)").css('display', 'none');
+        $("#calendar").css('display', 'none');
+        $("[name=mName]").val('admin');
+        $("[name=avDays]").val(0);
+    }
+    else if (theUser.admin != 2) {
+        $("#holiday").css('display', 'block');
+        $("[name=addUser]").parent().css('display', 'block');
+       $("#newyear").css("display", 'none');
     }
 
     $('#logout').click( function () {
@@ -295,7 +299,6 @@ $(document).ready( function () {
                         if ($("#vacationtype").val() == 'Other') {
                             data.fv.enableFieldValidators('comment', true);
                             commentEn = 1;
-                            //data.fv.revalidateField('comment');
                             break;
                         }
                         break;

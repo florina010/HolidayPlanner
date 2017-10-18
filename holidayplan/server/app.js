@@ -118,14 +118,12 @@ function deleteHoliday(req,res) {
         return;
       }
 	    var params = req.body;
-      console.log(params);
       connection.query("DELETE FROM `freedays` WHERE `id` = "+params.id+"",function(err,rows){
           connection.release();
           if(!err) {
               res.json(rows);
           }
           else {
-            console.log(err);
           }
       });
       connection.on('error', function(err) {
@@ -248,7 +246,6 @@ function ManagerEditUser(req,res) {
     var params = req.query;
 		connection.query("UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "', startDate='" + params.stwork + "', phone='" + params.phone + "', isActive='" + params.isActive + "', age='" + params.age + "', bonus='" + params.bonus +"' WHERE user.userID="+ params.userId,function(err,rows){
             connection.release();
-            console.log(err);
             if(!err) {
                 res.json(rows);
             }
@@ -353,7 +350,6 @@ function getManagerName(req,res) {
 }
 
 function handle_dateupdate(req,res) {
-
     var params = req.query;
     pool.getConnection(function(err,connection){
         if (err) {
@@ -396,6 +392,7 @@ function logout(req,res) {
         });
   });
 }
+
 function addUser(req,res) {
     var params = req.body;
     pool.getConnection(function(err,connection){
@@ -403,7 +400,6 @@ function addUser(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-        console.log(params);
         if(params.position == 'Manager'){
          var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" +
           params.phone + "', '" + params.stwork + "', '" + 1 + "','" + params.avfreedays + "'";
@@ -498,7 +494,6 @@ function updateRelationsFreedays(req,res) {
         }
 		connection.query("UPDATE freedays SET approverID = '" + params.managerId + "' WHERE approverId = '" + params.deletedUserId + "';",function(err,rows){
             connection.release();
-			console.log(rows);
             if(!err) {
                 res.json(rows);
             }
@@ -552,7 +547,6 @@ function updateUserManager(req,res) {
 
 function updateFreeDays(req, res){
     var params = req.query;
-    console.log(params);
     pool.getConnection(function(err,connection){
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
@@ -598,7 +592,6 @@ function getLastYear(req,res){
         return;
       }
       connection.query("INSERT INTO yearset (year) VALUES ('" + params.year + "')", function(err,rows){
-        console.log(err);
           connection.release();
           if(!err) {
               res.json(rows);
@@ -619,7 +612,6 @@ function selectLastYear(req,res){
         return;
       }
       connection.query("SELECT * FROM yearset ORDER BY year DESC LIMIT 1 ", function(err,rows){
-        console.log(err);
           connection.release();
           if(!err) {
               res.json(rows);
@@ -639,9 +631,7 @@ function getNewHoliday(req, res){
         res.json({"code" : 100, "status" : "Error in connection database"});
         return;
       }
-      console.log(params.startDate);
-      connection.query("INSERT INTO legalholidays (startDate, name) VALUES ('" + params.startDate + "', '"+ params.name +"')", function(err,rows){
-        console.log(err);
+      connection.query("INSERT INTO legalholidays (startDate, name) VALUES ('" + params.startDate + "', '"+ params.name +"')", function(err,rows){;
           connection.release();
           if(!err) {
               res.json(rows);
@@ -653,6 +643,7 @@ function getNewHoliday(req, res){
       });
     });
 };
+
 function getAllManagers(req, res) {
 	var params = req.query;
     pool.getConnection(function(err,connection){
@@ -672,7 +663,30 @@ function getAllManagers(req, res) {
               return;
         });
   });
+};
+
+function getManagerForUser (req, res) {
+    var params = req.query;
+    pool.getConnection(function(err,connection){
+        if (err) {
+          res.json({"code" : 100, "status" : "Error in connection database"});
+          return;
+        }
+        connection.query("SELECT management.userID, management.managerID, user.name FROM user INNER JOIN management ON management.managerID = user.userID" ,function(err,rows){
+            console.log(err);
+            connection.release();
+            if(!err) {
+                res.json(rows);
+            }
+        });
+        connection.on('error', function(err) {
+              res.json({"code" : 100, "status" : "Error in connection database"});
+              return;
+        });
+  });
 }
+
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -757,7 +771,6 @@ router.post('/upload', function(req, res) {
    upload(req,res);
    let sampleFile = req.files.profileImage.data;
    // Use the mv() method to place the file somewhere on your server
-   console.log(token);
 });
 
 router.post("/",function(req,res){
@@ -891,7 +904,6 @@ router.post("/updateUserManager", function(req,res){
 
 router.post("/deleteHoliday", function(req,res){
   var token = req.query.token;
-  console.log(token);
   isValidToken(token).then(function(result) {
 	deleteHoliday(req,res);
   }, function(error){
@@ -949,9 +961,20 @@ router.get("/getNewHoliday", function(req,res){
       res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
   });
 });
+
 router.get("/updateAvFreeDays", function(req,res){
     console.log('am ajuns aici');
     updateFreeDays(req,res);
+});
+
+router.get("/getManagerForUser", function(req,res){
+  var token = req.query.token;
+  isValidToken(token).then(function(result) {
+    getManagerForUser(req,res);
+  }, function(error){
+    console.log(error);
+      res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
+  });
 });
 
 app.use("/api",router);
