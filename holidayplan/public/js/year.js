@@ -96,47 +96,28 @@ $(document).ready( function () {
       e.preventDefault();
       $('#myModalOncePerYear').modal('hide');
     });
-
-    var li = $("<li></li>"),
-         a = $("<a data-toggle='tab' href='#update-list'></a>"),
-         i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Update </i>"),
-         div =$("<div id='update-list' class='tab-pane fade'></div>"),
-         table = $("<table id='update-holiday-list' class='table display' cellspacing='0'></table>"),
-         thead = $("<thead class='thead-inverse'></thead>"),
-         tr = $("<tr></tr>"),
-         th = $("<th>#</th>"),
-         thN = $("<th>Name</th>"),
-         thP = $("<th>Position</th>")
-     $(tr).append($(th));
-     $(tr).append($(thN));
-     $(tr).append($(thP));
-     $(table).append($(thead));
-     $(div).append($(table));
-     $(".tab-content").append($(div));
-     $(a).append($(i)),
-     $(li).append($(a));
-     $("#tabs").append($(li));
-
+      getAllHolidays();
   };
 
   function getAllHolidays () {
    $.get(appConfig.url + appConfig.api + 'getAllHolidays?token='+token, function (data) {
      out (data.code);
-     console.log(data);
-     var holidaytable = $('#update-holiday-list').DataTable();
+     console.log( data);
+     var holidaytable = $('#example').DataTable();
      var j = 1;
-     for ( i=0; i < data.length; i++ ){
+     for ( var i= 0; i < data.length; i++ ){
        holidaytable.row.add( [
          j,
-          moment(data[i].startDate).format("DD/MM/Y"),
+         moment(data[i].startDate).format("DD/MM/YYYY"),
          data[i].name,
-         data[i].public
+         data[i].type
        ] ).draw( false );
        j++;
-     }
-   });
+     };
+
+    });
  };
- // getAllHolidays();
+
 
   function prepareUserForm() {
     //New year update

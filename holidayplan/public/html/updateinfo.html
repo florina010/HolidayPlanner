@@ -9,23 +9,21 @@
 				 <strong>Success!</strong>
 			 </div>
 			<form role="form" id="new-year-form" method="POST">
-
-				<div id="update-list" class="tab-pane fade">
-					<table id="update-holiday-list" class="display stripe" cellspacing="0" width="100%">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Start time</th>
-								<th>Name</th>
-								<th>Type</th>
-							</tr>
-						</thead>
-						<tbody>
-
-						</tbody>
-					</table>
-				</div>
-
+ 			<div id="table" class="tab-pane fade active in">
+				<table id="example" class="display stripe" cellspacing="0" width="100%">
+				        <thead class="thead-inverse">
+				            <tr>
+				                <th>#</th>
+				                <th>Start time </th>
+				                <th>Name </th>
+				                <th>Type </th>
+				            </tr>
+				        </thead>
+								<tbody>
+								</tbody>
+				</table>
+			</div>
+				<br/>
 				<div class="form-group">
 				  <label for="newholiday"><span class="glyphicon glyphicon-pushpin"></span> Add new holiday </label>
 					<input type="text" class="form-control" name="newholiday" placeholder="Enter holidays" required>
