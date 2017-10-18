@@ -121,7 +121,7 @@ $(document).ready( function () {
           }
           else if (theUser.admin != 2) {
               $("#holiday").css('display', 'block');
-              $("[name=addUser]").parent().css('display', 'none');
+              $("[name=addUser]").parent().css('display', 'block');
              $("#newyear").css("display", 'none');
           }
         });
