@@ -110,6 +110,7 @@ $(document).ready( function () {
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
             out (data.code);
           });
+
           if (theUser.admin == 2) {
             $("[name=add]").parent().css('display', 'none');
             $("[name=addUser]").parent().css('display', 'block');

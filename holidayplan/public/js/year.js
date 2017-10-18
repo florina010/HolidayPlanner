@@ -7,12 +7,10 @@ $(document).ready( function () {
     var date = ldate.format();
     var year = moment().year();
     var today = new Date().getFullYear();
-  //  var bool = "true";
 
     function checkYear(){
       $.get(appConfig.url + appConfig.api + 'selectLastYear?token=' + token + '&year=' + year, function (data) {
         if((data.length == 0) || (today > data[0].year)){
-        //  bool = "false";
           displayForm();
           $.get(appConfig.url + appConfig.api + 'getLastYear?token=' + token + '&year=' + today, function (data) {
             out(data.code);
@@ -21,20 +19,6 @@ $(document).ready( function () {
       });
     };
     checkYear();
-
-  //   function checkYearSetup(){
-  //     $.get(appConfig.url + appConfig.api + 'selectLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
-  //       if(today > data[0].year){
-  //         displayForm();
-  //       };
-  //     });
-  //
-  //     $.get(appConfig.url + appConfig.api + 'getLastSetup?token=' + token + '&lastDate=' + date + '&year=' + year, function (data) {
-  //       out(data.code);
-  //     });
-  //   };
-  //   checkYearSetup();
-
    };
 
   // Load the New Year Days Off form on button click.
@@ -79,7 +63,7 @@ $(document).ready( function () {
       e.preventDefault();
       $('#myModalOncePerYear').modal('hide');
     });
-  }
+  };
 
   function prepareUserForm() {
     //New year update
