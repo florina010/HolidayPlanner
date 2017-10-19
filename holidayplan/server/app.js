@@ -43,7 +43,6 @@ function legalHolidaysToDb(req, res){
           connection.query("INSERT INTO legalholidays(startDate, name, type) VALUES ('" + hd.getHolidays(year)[i].date + "', '"+
               hd.getHolidays(year)[i].name + "','" + hd.getHolidays(year)[i].type +"')",function(err,rows){
             //console.log(err);
-               connection.release();
            });
         };
       };
@@ -284,6 +283,7 @@ function updateAllHolidays(req,res) {
 
         connection.query("UPDATE legalholidays SET startDate='" + params.startDate + "', name='" + params.name + "', type='" + params.type +"' WHERE id="+ params.id,function(err,rows){
                 connection.release();
+                console.log(err);
                 if(!err) {
                     res.json(rows);
                 }
@@ -462,14 +462,14 @@ function addUser(req,res) {
           return;
         }
         if(params.position == 'Manager'){
-         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" +
+         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.position + "', '" +
           params.phone + "', '" + params.stwork + "', '" + 1 + "','" + params.avfreedays + "'";
        }
        else {
-         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.age + "', '" + params.position + "', '" +
+         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.position + "', '" +
          params.phone + "', '" + params.stwork + "', '" + 0 + "','" + params.avfreedays + "'";
        }
-        connection.query("INSERT INTO user (email, password, name, age, position, phone, startDate, admin, avfreedays) VALUES ("+ columns +")",function(err,rows){
+        connection.query("INSERT INTO user (email, password, name, position, phone, startDate, admin, avfreedays) VALUES ("+ columns +")",function(err,rows){
             connection.release();
             console.log(err);
             if(!err) {
