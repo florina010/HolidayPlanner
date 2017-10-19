@@ -150,10 +150,7 @@ function  approve(id, approved, token, params, email) {
 			var active = userInfo.eq(7).text();
 			editUserForm.find("input[name='active']").val(active);
 
-			var age = userInfo.eq(7).text();
-			editUserForm.find("input[name='ageUser']").val(age);
-
-			var bonus = userInfo.eq(8).text();
+			var bonus = userInfo.eq(9).text();
 			editUserForm.find("input[name='bonusUser']").val(bonus);
 
             if (position == "Manager") {

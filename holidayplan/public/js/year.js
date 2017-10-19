@@ -147,7 +147,7 @@ $(document).ready( function () {
        ] ).draw( false );
        j++;
      };
-
+     console.log(data);
      $('#example tbody tr').click( function() {
           var str = $(this).text();
           id = parseInt(str[0]);
