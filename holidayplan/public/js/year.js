@@ -138,6 +138,7 @@ $(document).ready( function () {
      out (data.code);
      var holidaytable = $('#example').DataTable();
      var j = 1;
+     console.log(data);
      for ( var i= 0; i < data.length; i++ ){
        holidaytable.row.add( [
          j,
@@ -147,7 +148,7 @@ $(document).ready( function () {
        ] ).draw( false );
        j++;
      };
-     console.log(data);
+
      $('#example tbody tr').click( function() {
           var str = $(this).text();
           id = parseInt(str[0]);
