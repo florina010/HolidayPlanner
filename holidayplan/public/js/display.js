@@ -1,5 +1,18 @@
 "use strict";
-window.appNameSpace = window.appNameSpace || { };
+(function()
+{console.log(12);
+  if( window.localStorage )
+  {
+    if( !localStorage.getItem('firstLoad') )
+    {
+      localStorage['firstLoad'] = true;
+      window.location.reload();
+    }
+    else
+      localStorage.removeItem('firstLoad');
+  }
+})();
+//window.appNameSpace = window.appNameSpace || { };
 window.sessionInvalid = false;
 
 function weekend(d1,d2){
