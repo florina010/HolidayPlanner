@@ -7,7 +7,7 @@ $(document).ready( function () {
     var date = ldate.format();
     var year = moment().year();
     var today = new Date().getFullYear();
-
+    var id;
     function checkYear(){
       $.get(appConfig.url + appConfig.api + 'selectLastYear?token=' + token + '&year=' + year, function (data) {
         if((data.length == 0) || (today > data[0].year)){
@@ -99,10 +99,44 @@ $(document).ready( function () {
       getAllHolidays();
   };
 
+  function updateHolidayForm(){
+    //Update holidays
+    var date = new Date();
+    date.setDate(date.getDate());
+    $('#stholi').datepicker({
+      format: 'yyyy-mm-dd'
+    }).on('changeDate', function(e) {
+      $('#edit-holiday-form').formValidation('revalidateField', 'stholi');
+    });
+
+    $("#edit-holiday-form").formValidation({
+      framework: 'bootstrap',
+      icon: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+      },
+      fields: {
+      }
+    }).on('submit', function(e, data) {
+      if (!e.isDefaultPrevented()) {
+        var formWrapper = $("#edit-holiday-form");
+        var name = formWrapper.find("input[name ='name']").val();
+        var type = formWrapper.find("input[name ='typeh']").val();
+        var startDate = formWrapper.find("input[name = 'stholi']").val();
+
+        $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id='+ id +'&startDate='+ startDate + '&name=' + name + '&type=public' , function (datah) {
+          //out (data.code);
+        });
+      }
+      e.preventDefault();
+      $('#myModalOncePerYear').modal('hide');
+    });
+  };
+
   function getAllHolidays () {
    $.get(appConfig.url + appConfig.api + 'getAllHolidays?token='+token, function (data) {
      out (data.code);
-     console.log( data);
      var holidaytable = $('#example').DataTable();
      var j = 1;
      for ( var i= 0; i < data.length; i++ ){
@@ -115,6 +149,13 @@ $(document).ready( function () {
        j++;
      };
 
+     $('#example tbody tr').click( function() {
+          var str = $(this).text();
+          id = parseInt(str[0]);
+          var datahol= str.slice(1,11);
+          var nume = str.slice(11);
+         displayFormOnUpdateClick();
+     });
     });
  };
 
@@ -172,6 +213,13 @@ $(document).ready( function () {
   function displayFormClick(){
     $("#myModalOncePerYear").load("updateinfo.html", function(){
       newHolidayForm();
+      $('#myModalOncePerYear').modal('show');
+    });
+  };
+
+  function displayFormOnUpdateClick(){
+    $("#myModalOncePerYear").load("editholiday.html", function(){
+      updateHolidayForm();
       $('#myModalOncePerYear').modal('show');
     });
   };

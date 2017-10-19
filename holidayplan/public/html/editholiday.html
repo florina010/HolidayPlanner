@@ -1,0 +1,39 @@
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+	    <div class="modal-header">
+  			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  			<h3 class="modal-title" id="myModalLabel">Edit holiday</h3>
+	    </div>
+
+		<div class="modal-body" style="padding:40px 50px;">
+				<div class="alert alert-success">
+  				<strong>Successful edit!</strong>
+				</div>
+				<div class="alert alert-success">
+  				<strong>Successful delete!</strong>
+				</div>
+        <form role="form" id="edit-holiday-form" method="POST">
+
+              <div class="form-group">
+                <label for="name"><i class="fa fa-envelope" aria-hidden="true"></i> Name</label>
+                <input type="text" class="form-control" name="name" id="nume" placeholder="Enter Name" required>
+              </div>
+
+
+              <div class="form-group">
+                <label for="typeh"><i class="fa fa-envelope" aria-hidden="true"></i> Type</label>
+                <input type="text" class="form-control" name="typeh" id="type" placeholder="Enter Type" required>
+              </div>
+
+              <div class="form-group">
+                <label for="stholi"><i class="fa fa-calendar" aria-hidden="true"></i> Start date</label><br>
+                <div class="input-group input-append date" id="stholi">
+                  <input id="dateval" type="text" class="form-control" name="stholi" id="dataa" placeholder="yyyy-mm-dd" style="width: 460px;"/>
+                  <span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
+                </div>
+              </div>
+  				<button type="submit" class="btn btn-success"><span class="glyphicon" id="edit"></span> Edit </button>
+			</form>
+		</div>
+	</div>
+</div>

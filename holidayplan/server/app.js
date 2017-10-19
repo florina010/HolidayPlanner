@@ -275,6 +275,32 @@ function ManagerEditUser(req,res) {
   });
 };
 
+function updateAllHolidays(req,res) {
+  var params = req.query;
+  console.log(params + 'ppppp');
+    pool.getConnection(function(err,connection){
+        if (err) {
+          res.json({"code" : 100, "status" : "Error in connection database"});
+          return;
+        }
+        console.log("am intrat aici");
+        console.log(params);
+
+        connection.query("UPDATE legalholidays SET startDate='" + params.startDate + "', name='" + params.name + "', type='" + params.type +"' WHERE id="+ params.id,function(err,rows){
+             console.log(err);
+                connection.release();
+                if(!err) {
+                    res.json(rows);
+                }
+        });
+
+        connection.on('error', function(err) {
+              res.json({"code" : 100, "status" : "Error in connection database"});
+              return;
+        });
+  });
+};
+
 function updateUser(req,res){
   pool.getConnection(function (err,connection){
     if (err) {
@@ -479,6 +505,7 @@ function getAllHolidays(req,res) {
         });
   });
 };
+
 
 function isValidToken(token) {
   return new Promise((resolve, reject) => {
@@ -908,6 +935,7 @@ router.get("/getAllHolidays", function(req,res){
 
 router.get("/updateAllHolidays", function(req,res){
   var token = req.query.token;
+  console.log("aa");
   isValidToken(token).then(function(result) {
     updateAllHolidays(req,res);
   }, function(error){
