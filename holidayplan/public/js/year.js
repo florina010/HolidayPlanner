@@ -126,7 +126,6 @@ $(document).ready( function () {
         var startDate = formWrapper.find("input[name = 'stholi']").val();
 
         $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id='+ id +'&startDate='+ startDate + '&name=' + name + '&type=public' , function (datah) {
-          //out (data.code);
         });
       }
       e.preventDefault();
@@ -152,9 +151,11 @@ $(document).ready( function () {
      $('#example tbody tr').click( function() {
           var str = $(this).text();
           id = parseInt(str[0]);
-          var datahol= str.slice(1,11);
-          var nume = str.slice(11);
-         displayFormOnUpdateClick();
+          var name = $(this).find("td:nth-child(3)").html();
+
+          var data = $(this).find("td:nth-child(2)").html();
+          var type = $(this).find("td:nth-child(4)").html();
+         displayFormOnUpdateClick(id, name, data, type);
      });
     });
  };
@@ -181,7 +182,6 @@ $(document).ready( function () {
       }
     }).on('submit', function(e, data) {
       var formWrapper = $("#new-year-form");
-      alert("din year");
       var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
       var name = formWrapper.find("input[name ='newholiday']").val();
       var startDate = formWrapper.find("input[name = 'stholi']").val();
@@ -217,10 +217,15 @@ $(document).ready( function () {
     });
   };
 
-  function displayFormOnUpdateClick(){
+  function displayFormOnUpdateClick(id, name, data, type){
+
     $("#myModalOncePerYear").load("editholiday.html", function(){
+      $("#nume").val(name);
+      $("#type").val(type);
+      $("#dateval").val(data);
       updateHolidayForm();
       $('#myModalOncePerYear').modal('show');
+
     });
   };
 
