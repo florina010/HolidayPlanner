@@ -276,17 +276,12 @@ function ManagerEditUser(req,res) {
 
 function updateAllHolidays(req,res) {
   var params = req.query;
-  console.log(params + 'ppppp');
     pool.getConnection(function(err,connection){
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-        console.log("am intrat aici");
-        console.log(params);
-
         connection.query("UPDATE legalholidays SET startDate='" + params.startDate + "', name='" + params.name + "', type='" + params.type +"' WHERE id="+ params.id,function(err,rows){
-             console.log(err);
                 connection.release();
                 if(!err) {
                     res.json(rows);
