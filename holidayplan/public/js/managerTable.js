@@ -65,6 +65,7 @@ if (theUser.admin >= 0 ) {
 		var td = tr.find("td").eq(11);
 		var id = $("#approve-freedays-modal").attr("approveId");
 		var approved = parseInt($("#approve-freedays-modal").attr("approve-action"));
+
 		var approvedText = (approved == 2) ? "Not Approved" : "Approved";
 		var buttonClass = (approved == 2) ? "check" : "times";
 		var buttonApprove = (approved == 2) ? 1 : 2;
@@ -98,27 +99,12 @@ if (theUser.admin >= 0 ) {
 	};
 
 function  approve(id, approved, token, params, email) {
-    var tr = $("#manager-table tr.activeModal");
-		var td = tr.find("td").eq(11);
-    var id = $("#approve-freedays-modal").attr("approveId");
-		var approvedText = (approved == 2) ? "Not Approved" : "Approved";
-    var buttonClass = (approved == 2) ? "check" : "times";
-		var buttonApprove = (approved == 2) ? 1 : 2;
-
-        $.get(appConfig.url + appConfig.api + 'ApproveFreeDays?id=' + id + '&approved=' + approved + '&token=' + token, function (data) {
-            out (data.code);
-            var parentRow = $(td).closest("tr");
-            if (approved == 1) {
-                parentRow.removeClass("danger").addClass("info");
-            } else {
-                parentRow.removeClass("info").addClass("danger");
-            }
-            td.prev().text(approvedText);
-            td.html("<span class='fa fa-" + buttonClass + "' onclick='displayApproveModal(this ," + id + ", " + email +  ", " + buttonApprove +  ")' approved='" + approved + "'></span>");
-            $("#manager-table").DataTable().clear();
-            populateTable();
-        });
-    };
+    $.get(appConfig.url + appConfig.api + 'ApproveFreeDays?id=' + id + '&approved=' + approved + '&token=' + token, function (data) {
+        out (data.code);
+        $("#manager-table").DataTable().clear();
+        populateTable();
+    });
+};
 
 	function colorTableRow(approved) {
 		if (approved == true) {
@@ -166,6 +152,21 @@ function  approve(id, approved, token, params, email) {
 			var bonus = userInfo.eq(8).text();
 			editUserForm.find("input[name='bonusUser']").val(bonus);
 
+            if (position == "Manager") {
+				$.get(appConfig.url + appConfig.api + 'getAllManagers?token=' + token, function (managers) {
+					out (managers.code);
+					for (var i in managers){
+						if (managers[i].userID != userId) {
+							selectNewManager.append($("<option></option>")
+								.attr("value", managers[i].userID)
+								.text(managers[i].name));
+						}
+					}
+				});
+			} else {
+				editUserForm.find("select[name='new_manager']").remove();
+				editUserForm.find("label[for='new_manager']").remove();
+			}
 			var selectNewManager = editUserForm.find("select[name='new_manager']");
 			var selectNewManagerLabel = editUserForm.find("label[for='new_manager']");
 			if (active != '0') {
@@ -242,6 +243,18 @@ function  approve(id, approved, token, params, email) {
 				};
 		});
 
+        var selectNewManager = $("#add-user-form").find("select[name='new_manageradd']");
+        var selectNewManagerLabel = $("#add-user-form").find("label[for='new_manageradd']");
+
+        $.get(appConfig.url + appConfig.api + 'getAllManagers?token=' + token, function (managers) {
+            out (managers.code);
+            for (var i in managers){
+                selectNewManager.append($("<option></option>")
+                .attr("value", managers[i].userID)
+                .text(managers[i].name));
+            }
+        });
+
 		//Add user form
 		$("#add-user-form").formValidation({
 			framework: 'bootstrap',
@@ -267,14 +280,21 @@ function  approve(id, approved, token, params, email) {
 			if (e.isDefaultPrevented()) {
 				// handle the invalid form...
 			} else {
-				var formWrapper = $("#add-user-form");
+                var formWrapper = $("#add-user-form");
+                if (theUser.admin != 2) {
+                    $("#forAdmin").css('display', 'none')
+                    var manager = theUser.userID
+                }
+                else {
+                    var manager = formWrapper.find("[name = new_manageradd]").val();
+                }
 				var userName = formWrapper.find("input[name = 'username']").val();
 				var age = formWrapper.find("input[name = 'ageUser']").val();
 				var position = formWrapper.find("[name = 'pos']").val();
 				var stwork = formWrapper.find("[name = 'stwork']").val();
-				var email = formWrapper.find("input[name = 'emailUser']").val();
+				var email = formWrapper.find("input[name = 'email']").val();
 				var phone = formWrapper.find("input[name = 'phoneUser']").val();
-			  var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
+			    var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
 				var hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
 				hashObj.update('avangarde');
 				var password = hashObj.getHash("HEX");
@@ -283,7 +303,7 @@ function  approve(id, approved, token, params, email) {
 				}
 				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork, avfreedays: avfreedays}).done(function( data ) {
 					var userid = JSON.parse(sessionStorage.getItem('user')).userID;
-					$.post(appConfig.url + appConfig.api + 'modifyClass', { userID: data.insertId, managerID: userid, token: token}).done(function( data ) {
+					$.post(appConfig.url + appConfig.api + 'modifyClass', { userID: data.insertId, managerID: manager, token: token}).done(function( data ) {
 						out (data.code);
 					});
 					var userstable = $('#users-list-table').DataTable();
@@ -463,7 +483,7 @@ function  approve(id, approved, token, params, email) {
 						freeDaysStatus = "Approved";
 						var avFD = freeDays[i].avfreedays + freeDays[i].days;
 						var params = '"' + freeDays[i].email + '",' + avFD;
-						approveButtons = "<span class='fa fa-check' onclick='displayApproveModal(this ," + freeDays[i].id + ", "+ params + ", 2)' approved='1'></span>";
+						approveButtons = "<span class='fa fa-times' onclick='displayApproveModal(this ," + freeDays[i].id + ", "+ params + ", 2)' approved='1'></span>";
 					break;
 					case 2:
 						freeDaysStatus = "Not Approved";

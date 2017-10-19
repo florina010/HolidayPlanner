@@ -219,10 +219,9 @@ function getManagerUsers(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-		var token = req.query.token;
 		var params = req.query;
-		var x = params.userId;
-        connection.query("SELECT * FROM user JOIN management ON management.userID = user.userID AND management.managerID = "+ x +"",function(err,rows){
+		var id = params.userId;
+        connection.query("SELECT * FROM user JOIN management ON management.userID = user.userID AND management.managerID = "+ id +"",function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -380,7 +379,7 @@ function getManagerName(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-        connection.query("SELECT * FROM user WHERE userID IN ( SELECT  managerID FROM management WHERE userID ='" + params.id + "')",function(err,rows){
+        connection.query("SELECT * FROM user WHERE userID IN ( SELECT  managerID FROM management)",function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
