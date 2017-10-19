@@ -516,13 +516,10 @@ function  approve(id, approved, token, params, email) {
             arr = Array.prototype.slice.apply(users);
         })).done( function(arr) {
     		$.get(appConfig.url + appConfig.api + 'getAllUsers?token='+token, function (users) {
-                console.log(arr);
     			out (users.code);
     			var userstable = $('#users-list-table').DataTable();
     			var k = 1, usersArray = [], result;
     			for ( i = 0; i < users.length; i++ ){
-                    console.log(users[i].userID + '  u');
-                    console.log(arr[i].userID + '  arr');
                     for (var j = 0; j < arr.length; j++) {
                         if (arr[j].userID == users[i].userID) {
                             result = arr[j].name;
