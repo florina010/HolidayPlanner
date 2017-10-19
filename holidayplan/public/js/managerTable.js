@@ -274,9 +274,19 @@ function  approve(id, approved, token, params, email) {
                             message: 'The value is not a valid email address'
                         }
                     }
+                },
+                phoneUser: {
+                    validators: {
+                        phone: {
+                            country: 'Ro',
+                            message: 'The value is not valid %s phone number'
+                        }
+                    }
                 }
 			}
-		}).on('submit', function(e, data) {
+		}).on('change', '[name="Ro"]', function(e) {
+            $('#add-user-form').formValidation('revalidateField', 'phoneUser');
+        }).on('submit', function(e, data) {
 			if (e.isDefaultPrevented()) {
 				// handle the invalid form...
 			} else {

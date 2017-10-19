@@ -237,6 +237,10 @@ $(document).ready( function () {
         $("#newyear").css("display", 'none');
     }
 
+    if (theUser.admin == 0) {
+        $("[name=addUser]").css('display', 'none');
+    }
+
     $('#logout').click( function () {
       sessionStorage.clear();
       window.location.href = "login.html";
