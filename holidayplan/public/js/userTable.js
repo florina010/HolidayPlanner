@@ -25,6 +25,12 @@ function getHolidays(){
       var j = 1;
       $("#userTable").DataTable().clear();
       for (var i=0; i<data.length; i++){
+          if ( data[i].approved == 2) {
+              var acc = 'Not approved';
+          }
+          else {
+              var acc = 'Approved';
+          }
         table.row.add( [
           j,
           data[i].name,
@@ -33,7 +39,7 @@ function getHolidays(){
           moment(data[i].endDate).format("DD/MM/Y"),
           data[i].type,
           data[i].comment,
-          data[i].approved,
+          acc,
           data[i].isActive,
          // '<i class="fa fa-times" id="' + freeDays[i].id + '"></i>'
           '<div onclick="displayDeleteModal(event, this, ' + data[i].id + ',' + data[i].approved + ')"><i class="fa fa-times"</i></div>'

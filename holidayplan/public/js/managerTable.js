@@ -56,8 +56,11 @@ if (theUser.admin >= 0 ) {
 		approveModal.attr("approve-action", action);
 		$("#manager-table tr").removeClass("activeModal");
 		$(elem).closest("tr").addClass("activeModal");
-		$.get(appConfig.url + appConfig.api + 'updateAvFreeDays?email=' + email + '&avfreedays=' + avFD , function (data) {
-		});
+        if( avFD >= 0 ){
+            $.get(appConfig.url + appConfig.api + 'updateAvFreeDays?email=' + email + '&avfreedays=' + avFD , function (data) {
+
+            });
+        }
 	};
 
 	function approveFreeDays() {
@@ -290,13 +293,17 @@ function  approve(id, approved, token, params, email) {
 			if (e.isDefaultPrevented()) {
 				// handle the invalid form...
 			} else {
-                var formWrapper = $("#add-user-form");
+                console.log($("[name=new_manageradd] option").length);
+                var formWrapper = $("#add-user-form"), manager;
                 if (theUser.admin != 2) {
                     $("#forAdmin").css('display', 'none')
-                    var manager = theUser.userID
+                    manager = theUser.userID
+                }
+                else if ( $("[name=new_manageradd] option").length >0) {
+                    manager = formWrapper.find("[name = new_manageradd]").val();
                 }
                 else {
-                    var manager = formWrapper.find("[name = new_manageradd]").val();
+                    manager = 1;
                 }
 				var userName = formWrapper.find("input[name = 'username']").val();
 				var age = formWrapper.find("input[name = 'ageUser']").val();

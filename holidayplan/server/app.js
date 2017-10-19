@@ -379,6 +379,26 @@ function getManagerName(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
+        connection.query("SELECT * FROM user WHERE userID IN ( SELECT  managerID FROM management WHERE userID = " + params.id+ ")",function(err,rows){
+            connection.release();
+            if(!err) {
+                res.json(rows);
+            }
+        });
+        connection.on('error', function(err) {
+              res.json({"code" : 100, "status" : "Error in connection database"});
+              return;
+        });
+  });
+}
+
+function getManagersName(req,res) {
+    var params = req.body;
+    pool.getConnection(function(err,connection){
+        if (err) {
+          res.json({"code" : 100, "status" : "Error in connection database"});
+          return;
+        }
         connection.query("SELECT * FROM user WHERE userID IN ( SELECT  managerID FROM management)",function(err,rows){
             connection.release();
             if(!err) {
@@ -391,6 +411,8 @@ function getManagerName(req,res) {
         });
   });
 }
+
+
 
 function handle_dateupdate(req,res) {
     var params = req.query;
@@ -453,6 +475,7 @@ function addUser(req,res) {
        }
         connection.query("INSERT INTO user (email, password, name, age, position, phone, startDate, admin, avfreedays) VALUES ("+ columns +")",function(err,rows){
             connection.release();
+            console.log(err);
             if(!err) {
                 res.json(rows);
             }

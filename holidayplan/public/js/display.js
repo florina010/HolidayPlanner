@@ -119,7 +119,7 @@ $(document).ready( function () {
             $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
           }
 
-          if ($("[name=avDays]").val() <= 0)
+          if (theUser.avfreedays <= 0)
           {
     		    $("[name=avDays]").val(0);
             $("#holiday").css("display", 'none');
