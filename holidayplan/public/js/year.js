@@ -126,7 +126,6 @@ $(document).ready( function () {
         var startDate = formWrapper.find("input[name = 'stholi']").val();
 
         $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id='+ id +'&startDate='+ startDate + '&name=' + name + '&type=public' , function (datah) {
-
         });
       }
       e.preventDefault();
@@ -183,7 +182,6 @@ $(document).ready( function () {
       }
     }).on('submit', function(e, data) {
       var formWrapper = $("#new-year-form");
-      alert("din year");
       var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
       var name = formWrapper.find("input[name ='newholiday']").val();
       var startDate = formWrapper.find("input[name = 'stholi']").val();
