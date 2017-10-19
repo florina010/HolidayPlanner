@@ -1,5 +1,4 @@
 "use strict";
-window.appNameSpace = window.appNameSpace || { };
 
 $(document).ready(function () {
   $('#login').click(function (e) {
@@ -52,7 +51,7 @@ $(document).ready(function () {
    });
  });
 
- appNameSpace.User=function(userID, password, isActive, picture, age, name, position, email, phone, startDate, admin, managerID, bonus){
+User=function(userID, password, isActive, picture, age, name, position, email, phone, startDate, admin, managerID, bonus){
    this.userID = userID;
    this.password = password;
    this.isActive = isActive;
@@ -66,8 +65,8 @@ $(document).ready(function () {
    this.admin = admin;
    this.bonus = bonus;
  }
- appNameSpace.Manager = function(userID, password, isActive, picture, age, name, position, email, phone, startDate, admin, managerID) {
-	appNameSpace.User.call(this,userID, password, isActive, picture, age, name, position, email, phone, startDate, admin, managerID);
+Manager = function(userID, password, isActive, picture, age, name, position, email, phone, startDate, admin, managerID) {
+	User.call(this,userID, password, isActive, picture, age, name, position, email, phone, startDate, admin, managerID);
  };
- appNameSpace.Manager.prototype = new appNameSpace.User;
+Manager.prototype = new appNameSpace.User;
 });

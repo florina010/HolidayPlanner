@@ -1,5 +1,4 @@
 "use strict";
-window.appNameSpace = window.appNameSpace || { };
 window.sessionInvalid = false;
 
 function weekend(d1,d2){
