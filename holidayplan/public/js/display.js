@@ -184,7 +184,7 @@ $(document).ready( function () {
 
      var li = $("<li></li>"),
           a = $("<a data-toggle='tab' href='#users-list' name='userst'></a>"),
-          i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Managed Users</i>"),
+          i = $("<i class='fa fa-pencil-square' aria-hidden='true'> Managed Users</i>"),
           div =$("<div id='users-list' class='tab-pane fade'></div>"),
           table = $("<table id='users-list-table' class='table display' cellspacing='0' width='100%'></table>"),
           thead = $("<thead class='thead-inverse'></thead>"),

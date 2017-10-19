@@ -98,7 +98,7 @@ $(document).ready( function () {
     });
       getAllHolidays();
   };
-
+var id;
   function updateHolidayForm(){
     //Update holidays
     var date = new Date();
@@ -124,7 +124,7 @@ $(document).ready( function () {
         var startDate = formWrapper.find("input[name = 'stholi']").val();
         var name = formWrapper.find("input[name ='name']").val();
         var type = formWrapper.find("input[name ='typeh']").val();
-
+        var startDate = formWrapper.find("input[name = 'stholi']").val();
         console.log(id);
         $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id='+ id +'&startDate='+ startDate + '&name=' + name + '&type=public' , function (datah) {
         });
@@ -139,7 +139,6 @@ $(document).ready( function () {
      out (data.code);
      var holidaytable = $('#example').DataTable();
      var j = 1;
-     console.log(data);
      for ( var i= 0; i < data.length; i++ ){
        holidaytable.row.add( [
          j,
@@ -149,6 +148,7 @@ $(document).ready( function () {
        ] ).draw( false );
        j++;
      };
+
 
      $('#example tbody').on('click', 'tr', function() {
           id =  $(this).find("td:nth-child(1)").html();
