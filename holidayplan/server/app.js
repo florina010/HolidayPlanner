@@ -309,10 +309,10 @@ function updateUser(req,res){
 
     var params = req.body;
     if(params.password == ''){
-    var queryStr = "UPDATE user SET name ='" + params.name + "', age = '" + params.age + "', picture = '" + params.picture + "', phone = '" + params.phone + "' WHERE userID=  "+ params.userId;
+    var queryStr = "UPDATE user SET name ='" + params.name + "', picture = '" + params.picture + "', phone = '" + params.phone + "' WHERE userID=  "+ params.userId;
     }
     else {
-      var queryStr = "UPDATE user SET name ='" + params.name + "', password = '" + params.password + "', age = '" + params.age + "', picture = '" + params.picture + "', phone = '" + params.phone + "' WHERE userID=  "+ params.userId;
+      var queryStr = "UPDATE user SET name ='" + params.name + "', password = '" + params.password + "', picture = '" + params.picture + "', phone = '" + params.phone + "' WHERE userID=  "+ params.userId;
     }
     connection.query(queryStr ,function(err,rows){
         connection.release();

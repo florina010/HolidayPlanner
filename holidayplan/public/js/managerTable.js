@@ -32,7 +32,7 @@ if (theUser.admin >= 0 ) {
         console.log(currentAge);
 		var currentPhone = JSON.parse(sessionStorage.getItem('user')).phone;
 		document.getElementById("username").value = currentName;
-		document.getElementById("ageUser").value = currentAge;
+		//document.getElementById("ageUser").value = currentAge;
 		document.getElementById("phoneUser").value = currentPhone;
 	}
 
@@ -459,7 +459,7 @@ function  approve(id, approved, token, params, email) {
 				var formWrapper = $("#update-user-form");
 				var userName = formWrapper.find("input[name = 'username']").val();
 				var passwordUser = formWrapper.find("input[name = 'passwordUser']").val();
-				var age = formWrapper.find("input[name = 'ageUser']").val();
+			//	var age = formWrapper.find("input[name = 'ageUser']").val();
 				var phone = formWrapper.find("input[name = 'phoneUser']").val();
 				var bonus = formWrapper.find("input[name = 'bonusUser']").val();
 				var userid = JSON.parse(sessionStorage.getItem('user')).userID;
@@ -468,11 +468,12 @@ function  approve(id, approved, token, params, email) {
 				if(passwordUser != ''){
 					var passwordUser = hashObj.getHash("HEX");
 				}
+                alert(theUser.age);
 				theUser.name = userName;
-				theUser.age = age;
+				//theUser.age = age;
 				theUser.phone = phone;
 				sessionStorage.setItem('user', JSON.stringify(theUser));
-				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, age : age, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
+				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
 					out (data.code);
 				});
 				$('.modal-body> div:first-child').css('display','block');
