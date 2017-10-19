@@ -88,7 +88,8 @@ $(document).ready( function () {
           $("[name=mName]").val(manager);
           $("#avatar").attr("src", 'data:image/png;base64,'+ theUser.picture);
           $("[name=name]").val(theUser.name);
-          $("[name=age]").val(theUser.age);
+          var yearOfBirth = moment().diff(theUser.age, 'years', false);
+          $("[name=age]").val(yearOfBirth);
           $("[name=email]").val(theUser.email);
           $("[name=phone]").val(theUser.phone);
           $("[name=position]").val(theUser.position);

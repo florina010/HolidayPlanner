@@ -29,6 +29,7 @@ if (theUser.admin >= 0 ) {
 		var currentPicture = JSON.parse(sessionStorage.getItem('user')).picture;
 		var currentName = JSON.parse(sessionStorage.getItem('user')).name;
 		var currentAge = JSON.parse(sessionStorage.getItem('user')).age;
+        console.log(currentAge);
 		var currentPhone = JSON.parse(sessionStorage.getItem('user')).phone;
 		document.getElementById("username").value = currentName;
 		document.getElementById("ageUser").value = currentAge;
@@ -150,7 +151,8 @@ function  approve(id, approved, token, params, email) {
 			editUserForm.find("input[name='active']").val(active);
 
 			var age = userInfo.eq(7).text();
-			editUserForm.find("input[name='ageUser']").val(age);
+            var yearOfBirth = moment().diff(age, 'years', false);
+			editUserForm.find("input[name='ageUser']").val(yearOfBirth);
 
 			var bonus = userInfo.eq(8).text();
 			editUserForm.find("input[name='bonusUser']").val(bonus);
@@ -571,7 +573,7 @@ function  approve(id, approved, token, params, email) {
         				users[i].phone,
                         result,
     					users[i].isActive,
-        				users[i].age,
+                        moment().diff(users[i].age, 'years', false),
         				users[i].bonus,
         				'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
         				//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
@@ -600,7 +602,7 @@ function  approve(id, approved, token, params, email) {
 					users[i].phone,
                     theUser.name,
 					users[i].isActive,
-					users[i].age,
+					moment().diff(users[i].age, 'years', false),
 					users[i].bonus,
 					'<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
 					//"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"

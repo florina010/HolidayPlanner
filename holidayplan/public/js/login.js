@@ -15,7 +15,7 @@ $(document).ready(function () {
           user['userID'] = data.userID;
           user['isActive'] = data.isActive;
           user['picture'] = data.picture;
-          user['age'] = data.age;
+          user['age'] =     moment().diff(data.age, 'years', false);
           user['name'] = data.name;
           user['position'] = data.position;
           user['phone'] = data.phone;
