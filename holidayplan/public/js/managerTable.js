@@ -138,7 +138,7 @@ function  approve(id, approved, token, params, email) {
 			editUserForm.find("select[name='pos']").val(position);
 
 			var email = userInfo.eq(3).text();
-			editUserForm.find("input[name='emailUser']").val(email);
+			editUserForm.find("input[name='email']").val(email);
 
 			var stdate = userInfo.eq(4).text();
 			editUserForm.find("input[name='stwork']").val(moment(stdate).format("YYYY/MM/DD"));
@@ -146,13 +146,10 @@ function  approve(id, approved, token, params, email) {
 			var phone = userInfo.eq(5).text();
 			editUserForm.find("input[name='phoneUser']").val(phone);
 
-			var active = userInfo.eq(6).text();
+			var active = userInfo.eq(7).text();
 			editUserForm.find("input[name='active']").val(active);
 
-			var age = userInfo.eq(7).text();
-			editUserForm.find("input[name='ageUser']").val(age);
-
-			var bonus = userInfo.eq(8).text();
+			var bonus = userInfo.eq(9).text();
 			editUserForm.find("input[name='bonusUser']").val(bonus);
 
             if (position == "Manager") {
@@ -378,7 +375,7 @@ function  approve(id, approved, token, params, email) {
 					tr.find("td").eq(3).text(email);
 					tr.find("td").eq(4).text(stwork);
 					tr.find("td").eq(5).text(phone);
-					tr.find("td").eq(7).text(isActive);
+					tr.find("td").eq(8).text(isActive);
 					tr.find("td").eq(8).text(age);
 					tr.find("td").eq(9).text(bonus);
 					$('.modal-body> div:first-child').css('display','block');
