@@ -58,7 +58,7 @@ $(document).ready( function () {
         $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function (data) {
           out (data.code);
         });
-      }
+      };
       e.preventDefault();
       $('#myModalOncePerYear').modal('hide');
     });
