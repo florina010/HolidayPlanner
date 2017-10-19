@@ -281,6 +281,7 @@ function updateAllHolidays(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
+
         connection.query("UPDATE legalholidays SET startDate='" + params.startDate + "', name='" + params.name + "', type='" + params.type +"' WHERE id="+ params.id,function(err,rows){
                 connection.release();
                 if(!err) {

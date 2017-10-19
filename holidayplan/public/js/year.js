@@ -138,6 +138,7 @@ $(document).ready( function () {
      out (data.code);
      var holidaytable = $('#example').DataTable();
      var j = 1;
+     console.log(data);
      for ( var i= 0; i < data.length; i++ ){
        holidaytable.row.add( [
          j,

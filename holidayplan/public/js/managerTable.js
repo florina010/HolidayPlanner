@@ -32,7 +32,7 @@ if (theUser.admin >= 0 ) {
         console.log(currentAge);
 		var currentPhone = JSON.parse(sessionStorage.getItem('user')).phone;
 		document.getElementById("username").value = currentName;
-		//document.getElementById("ageUser").value = currentAge;
+		document.getElementById("ageUser").value = currentAge;
 		document.getElementById("phoneUser").value = currentPhone;
 	}
 
@@ -149,9 +149,6 @@ function  approve(id, approved, token, params, email) {
 
 			var active = userInfo.eq(7).text();
 			editUserForm.find("input[name='active']").val(active);
-
-			var age = userInfo.eq(8).text();
-			editUserForm.find("input[name='ageUser']").val(age);
 
 			var bonus = userInfo.eq(9).text();
 			editUserForm.find("input[name='bonusUser']").val(bonus);
@@ -354,14 +351,6 @@ function  approve(id, approved, token, params, email) {
                             message: 'The value is not a valid email address'
                         }
                     }
-                },
-                phoneUser: {
-                    validators: {
-                        phone: {
-                            country: 'Ro',
-                            message: 'The value is not valid %s phone number'
-                        }
-                    }
                 }
 			}
 		}).on('submit', function(e, data) {
@@ -442,15 +431,7 @@ function  approve(id, approved, token, params, email) {
 	                    message: 'The password and its confirm are not the same'
 	                }
 	            }
-	        },
-            phoneUser: {
-                validators: {
-                    phone: {
-                        country: 'Ro',
-                        message: 'The value is not valid %s phone number'
-                    }
-                }
-            }
+	        }
 	    }
 	}).on('submit', function(e, data) {
 			if (e.isDefaultPrevented()) {
@@ -459,7 +440,7 @@ function  approve(id, approved, token, params, email) {
 				var formWrapper = $("#update-user-form");
 				var userName = formWrapper.find("input[name = 'username']").val();
 				var passwordUser = formWrapper.find("input[name = 'passwordUser']").val();
-			//	var age = formWrapper.find("input[name = 'ageUser']").val();
+				var age = formWrapper.find("input[name = 'ageUser']").val();
 				var phone = formWrapper.find("input[name = 'phoneUser']").val();
 				var bonus = formWrapper.find("input[name = 'bonusUser']").val();
 				var userid = JSON.parse(sessionStorage.getItem('user')).userID;
@@ -468,12 +449,11 @@ function  approve(id, approved, token, params, email) {
 				if(passwordUser != ''){
 					var passwordUser = hashObj.getHash("HEX");
 				}
-                alert(theUser.age);
 				theUser.name = userName;
-				//theUser.age = age;
+				theUser.age = age;
 				theUser.phone = phone;
 				sessionStorage.setItem('user', JSON.stringify(theUser));
-				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
+				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, age : age, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
 					out (data.code);
 				});
 				$('.modal-body> div:first-child').css('display','block');
