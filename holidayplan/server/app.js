@@ -906,6 +906,16 @@ router.get("/getAllHolidays", function(req,res){
   });
 });
 
+router.get("/updateAllHolidays", function(req,res){
+  var token = req.query.token;
+  isValidToken(token).then(function(result) {
+    updateAllHolidays(req,res);
+  }, function(error){
+    console.log(error);
+      res.json({"code" : 110, "status" : "Your session has expired and you are loged out. - redirect la login in FE"})
+  });
+});
+
 router.post("/addUser", function(req,res){
   var token = req.query.token;
   isValidToken(token).then(function(result) {
