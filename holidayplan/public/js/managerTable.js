@@ -150,10 +150,10 @@ function  approve(id, approved, token, params, email) {
 			var active = userInfo.eq(7).text();
 			editUserForm.find("input[name='active']").val(active);
 
-			var age = userInfo.eq(7).text();
+			var age = userInfo.eq(8).text();
 			editUserForm.find("input[name='ageUser']").val(age);
 
-			var bonus = userInfo.eq(8).text();
+			var bonus = userInfo.eq(9).text();
 			editUserForm.find("input[name='bonusUser']").val(bonus);
 
             if (position == "Manager") {
@@ -354,6 +354,14 @@ function  approve(id, approved, token, params, email) {
                             message: 'The value is not a valid email address'
                         }
                     }
+                },
+                phoneUser: {
+                    validators: {
+                        phone: {
+                            country: 'Ro',
+                            message: 'The value is not valid %s phone number'
+                        }
+                    }
                 }
 			}
 		}).on('submit', function(e, data) {
@@ -434,7 +442,15 @@ function  approve(id, approved, token, params, email) {
 	                    message: 'The password and its confirm are not the same'
 	                }
 	            }
-	        }
+	        },
+            phoneUser: {
+                validators: {
+                    phone: {
+                        country: 'Ro',
+                        message: 'The value is not valid %s phone number'
+                    }
+                }
+            }
 	    }
 	}).on('submit', function(e, data) {
 			if (e.isDefaultPrevented()) {
