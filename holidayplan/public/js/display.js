@@ -42,8 +42,7 @@ $(document).ready( function () {
         toggleActive: true,
         startDate: new Date(),
         clearBtn: true,
-        minViewMode: 0,
-
+        minViewMode: 0
     });
 
 
@@ -232,9 +231,10 @@ $(document).ready( function () {
         $("[name=avDays]").val(0);
     }
     else if (theUser.admin != 2) {
+        $("#forAdmin").css("display", 'none');
         $("#holiday").css('display', 'block');
         $("[name=addUser]").parent().css('display', 'block');
-       $("#newyear").css("display", 'none');
+        $("#newyear").css("display", 'none');
     }
 
     $('#logout').click( function () {
