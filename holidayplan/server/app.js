@@ -52,6 +52,29 @@ function legalHolidaysToDb(req, res){
    });
 };
 
+function deletelegalHolidays(req,res){
+  pool.getConnection(function(err,connection){
+      if (err) {
+        res.json({"code" : 100, "status" : "Error in connection database"});
+        return;
+      };
+          connection.query("DELETE FROM `legalholidays`",function(err,rows){
+            //console.log(err);
+          });
+   });
+};
+
+function autoIncrement(req,res){
+  pool.getConnection(function(err,connection){
+      if (err) {
+        res.json({"code" : 100, "status" : "Error in connection database"});
+        return;
+      };
+          connection.query("ALTER TABLE 'legalholidays' AUTO_INCREMENT = "+ 1 +";",function(err,rows){
+            //console.log(err);
+          });
+   });
+};
 function setToken (token, id) {
   pool.getConnection(function(err,connection){
       if (err) {
@@ -807,6 +830,13 @@ router.get("/legalFreeHolidays",function(req,res){
 
 router.get("/legalHolidaysToDb",function(req,res){
     legalHolidaysToDb(req,res);
+});
+
+router.get("/deletelegalHolidays",function(req,res){
+    deletelegalHolidays(req,res);
+});
+router.get("/autoIncrement",function(req,res){
+    autoIncrement(req,res);
 });
 
 router.post("/login",function(req,res){

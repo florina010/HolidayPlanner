@@ -15,6 +15,15 @@ $(document).ready( function () {
           $.get(appConfig.url + appConfig.api + 'getLastYear?token=' + token + '&year=' + today, function (data) {
             out(data.code);
           });
+
+          $.get(appConfig.url + appConfig.api + 'deletelegalHolidays?token=' + token + '&year=' + today, function (data) {
+            out(data.code);
+          });
+
+          $.get(appConfig.url + appConfig.api + 'autoIncrement?token=' + token + '&year=' + today, function (data) {
+            out(data.code);
+          });
+
           $.get(appConfig.url + appConfig.api + 'legalHolidaysToDb', function (data) {
             out(data.code);
           });
