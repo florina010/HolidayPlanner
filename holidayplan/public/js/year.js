@@ -117,18 +117,24 @@ var id;
         validating: 'glyphicon glyphicon-refresh'
       },
       fields: {
+          stholi: {
+              validators: {
+                  date: {
+                      format: 'YYYY-MM-DD',
+                      message: 'The value is not a valid date'
+                  }
+              }
+          },
       }
     }).on('submit', function(e, data) {
       if (!e.isDefaultPrevented()) {
         var formWrapper = $("#edit-holiday-form");
-        var startDate = formWrapper.find("input[name = 'stholi']").val();
         var name = formWrapper.find("input[name ='name']").val();
         var type = formWrapper.find("input[name ='typeh']").val();
         var startDate = formWrapper.find("input[name = 'stholi']").val();
+
         console.log(startDate);
-        var stDate = moment(formWrapper.find("input[name = 'stholi']").val()).format("YYYY-MM-DD");
-        console.log(stDate);
-        $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id='+ id +'&startDate='+ stDate + '&name=' + name + '&type=public' , function (datah) {
+        $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id='+ id +'&startDate='+ startDate + '&name=' + name + '&type=public' , function (datah) {
         });
       }
       e.preventDefault();
@@ -144,7 +150,7 @@ var id;
      for ( var i= 0; i < data.length; i++ ){
        holidaytable.row.add( [
          j,
-         moment(data[i].startDate).format("DD/MM/YYYY"),
+         moment(data[i].startDate).format("YYYY-MM-DD"),
          data[i].name,
          data[i].type
        ] ).draw( false );
