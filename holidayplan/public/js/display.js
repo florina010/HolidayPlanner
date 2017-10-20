@@ -112,7 +112,7 @@ $(document).ready( function () {
     		    $("[name=avDays]").val(0);
             $("#holiday").css("display", 'none');
             theUser.avfreedays = $("[name=avDays]").val();
-          }
+          };
 
           sessionStorage.setItem('user', JSON.stringify(theUser));
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {

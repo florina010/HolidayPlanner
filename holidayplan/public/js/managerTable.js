@@ -130,11 +130,13 @@ function  approve(id, approved, token, params, email) {
 			editUserForm.attr("user-id", userId);
 
 			// Add user details into edit form.
+
+      editUserForm.find("input[name='userId']").val(userId);
 			var name = userInfo.eq(1).text();
-			editUserForm.find("input[name='username']").val(name);
+			editUserForm.find("input[name='name']").val(name);
 
 			var position = userInfo.eq(2).text();
-			editUserForm.find("select[name='pos']").val(position);
+			editUserForm.find("select[name='position']").val(position);
 
 			var email = userInfo.eq(3).text();
 			editUserForm.find("input[name='email']").val(email);
@@ -143,20 +145,20 @@ function  approve(id, approved, token, params, email) {
 			editUserForm.find("input[name='stwork']").val(moment(stdate).format("YYYY/MM/DD"));
 
 			var phone = userInfo.eq(5).text();
-			editUserForm.find("input[name='phoneUser']").val(phone);
+			editUserForm.find("input[name='phone']").val(phone);
 
 			var active = userInfo.eq(7).text();
-			editUserForm.find("input[name='active']").val(active);
+			editUserForm.find("input[name='isActive']").val(active);
 
 			var bonus = userInfo.eq(9).text();
-			editUserForm.find("input[name='bonusUser']").val(bonus);
+			editUserForm.find("input[name='bonus']").val(bonus);
 
             if (position == "Manager") {
 				$.get(appConfig.url + appConfig.api + 'getAllManagers?token=' + token, function (managers) {
 					out (managers.code);
 					for (var i in managers){
 						if (managers[i].userID != userId) {
-							selectNewManager.append($("<option></option>")
+							$('select[name="new_manager"]').append($("<option></option>")
 								.attr("value", managers[i].userID)
 								.text(managers[i].name));
 						}
@@ -166,28 +168,13 @@ function  approve(id, approved, token, params, email) {
 				editUserForm.find("select[name='new_manager']").remove();
 				editUserForm.find("label[for='new_manager']").remove();
 			}
-			var selectNewManager = editUserForm.find("select[name='new_manager']");
-			var selectNewManagerLabel = editUserForm.find("label[for='new_manager']");
-			if (active != '0') {
+      console.log(active);
+			var selectNewManager = editUserForm.find(".new_manager");
+			if (active != 0) {
 				selectNewManager.hide();
-				selectNewManagerLabel.hide();
 			}
 
-			if (position == "Manager") {
-				$.get(appConfig.url + appConfig.api + 'getAllManagers?token=' + token, function (managers) {
-					out (managers.code);
-					for (var i in managers){
-						if (managers[i].userID != userId) {
-							selectNewManager.append($("<option></option>")
-								.attr("value", managers[i].userID)
-								.text(managers[i].name));
-						}
-					}
-				});
-			} else {
-				editUserForm.find("select[name='new_manager']").remove();
-				editUserForm.find("label[for='new_manager']").remove();
-			}
+
 			var isAdmin = sessionStorage.getItem('admin');
 			if (isAdmin == 2) {
 				var selectChangeManager = editUserForm.find("select[name='change_manager']");
@@ -346,7 +333,7 @@ function  approve(id, approved, token, params, email) {
 		});
 
 		// Edit user form.
-		$("#edit-user-form").formValidation({
+    $("#edit-user-form").formValidation({
 			framework: 'bootstrap',
 			icon: {
 				valid: 'glyphicon glyphicon-ok',
@@ -354,9 +341,9 @@ function  approve(id, approved, token, params, email) {
 				validating: 'glyphicon glyphicon-refresh'
 			},
 			fields: {
-				username: { validators: { notEmpty: {message: 'This is required'}}},
+				name: { validators: { notEmpty: {message: 'This is required'}}},
 				stwork: { validators: { notEmpty: { message: 'The start date is required'}}},
-				pos: { validators: { notEmpty: { message: 'This required'}}},
+				position: { validators: { notEmpty: { message: 'This required'}}},
 				email: {
                 validators: {
                         regexp: {
@@ -378,60 +365,54 @@ function  approve(id, approved, token, params, email) {
 			if (e.isDefaultPrevented()) {
 				// handle the invalid form...
 			} else {
-				var formWrapper = $("#edit-user-form");
-				var userid = formWrapper.attr("user-id");
-				var userName = formWrapper.find("input[name = 'username']").val();
-				var isActive = formWrapper.find("input[name = 'active']").val();
-				var age = formWrapper.find("input[name = 'ageUser']").val();
-				var stwork = formWrapper.find("[name = 'stwork']").val();
-				var position = formWrapper.find("[name = 'pos']").val();
-				var email = formWrapper.find("input[name = 'emailUser']").val();
-				var phone = formWrapper.find("input[name = 'phoneUser']").val();
-				var bonus = formWrapper.find("input[name = 'bonusUser']").val();
-
-				$.get(appConfig.url + appConfig.api + 'ManagerEditUser?userId=' + userid +  '&name=' + userName + '&position=' + position + '&email=' + email + '&stwork=' + stwork +  '&phone=' + phone + '&isActive=' + isActive + '&age=' + age + '&bonus=' + bonus + '&token=' + token , function (data) {
+				var formWrapper = $("form#edit-user-form").serialize();
+                console.log(formWrapper);
+				$.get(appConfig.url + appConfig.api + 'ManagerEditUser?'+ formWrapper + '&token=' + token , function (data) {
 					out (data.code);
-					var tr = $('#users-list tr.active-user');
-					tr.find("td").eq(1).text(userName);
-					tr.find("td").eq(2).text(position);
-					tr.find("td").eq(3).text(email);
-					tr.find("td").eq(4).text(stwork);
-					tr.find("td").eq(5).text(phone);
-					tr.find("td").eq(8).text(isActive);
-					tr.find("td").eq(8).text(age);
-					tr.find("td").eq(9).text(bonus);
-					$('.modal-body> div:first-child').css('display','block');
-					$('.modal-body> div:nth-child(2)').css('display','none');
 
-					if (isActive  == 0){
-						var newManager = formWrapper.find("select[name = 'new_manager']").val();
-						if (newManager == null) {
-							newManager = JSON.parse(sessionStorage.getItem('user')).userID;
-						}
+                    $("#users-list-table").DataTable().clear();
+                    getAllUsers();
 
-						$.post(appConfig.url + appConfig.api+ 'updateRelationsFreedays', { managerId: newManager, deletedUserId: userid, token : token}).done(function( updateInfo ) {
-							out (data.code);
-						});
-
-						$.post(appConfig.url + appConfig.api+ 'updateRelationsManagement', { managerId: newManager, deletedUserId: userid, token : token}).done(function( updateInfo ) {
-							out (data.code);
-						});
-					}
-
-					// Change manager.
-					var changeManagerId = formWrapper.find("select[name = 'change_manager']").val();
-					if (changeManagerId) {
-						$.post(appConfig.url + appConfig.api+ 'updateUserManager', { managerId: changeManagerId, userId: userid, token : token}).done(function( updateInfo ) {
-							out (data.code);
-						});
-					}
-
+                    clearEmployee($("form#edit-user-form").serializeArray());
 				});
 				e.preventDefault();
 				$("#eventForm").data('formValidation').resetForm();
 			}
 		});
 	}
+
+    function clearEmployee (userData) {
+        var userArray = {};
+        for (var i = 0; i < userData.length; i++){
+            userArray[userData[i]['name']] = userData[i]['value'];
+        }
+        console.log(userArray);
+
+        if (userArray['isActive']  == 0){
+            var newManager = userArray["new_manager"];
+
+            if (newManager == null) {
+                newManager = JSON.parse(sessionStorage.getItem('user')).userID;
+            }
+
+            $.post(appConfig.url + appConfig.api+ 'updateRelationsFreedays', { managerId: newManager, deletedUserId: userArray["userId"], token : token}).done(function( updateInfo ) {
+                out (updateInfo.code);
+            });
+
+            $.post(appConfig.url + appConfig.api+ 'updateRelationsManagement', { managerId: newManager, deletedUserId: userArray["userId"], token : token}).done(function( updateInfo ) {
+                out (updateInfo.code);
+            });
+        }
+
+        // Change manager.
+        var changeManagerId = userArray["new_manager"];
+        if (changeManagerId) {
+            $.post(appConfig.url + appConfig.api+ 'updateUserManager', { managerId: changeManagerId, userId: userArray["userId"], token : token}).done(function( updateInfo ) {
+                out (updateInfo.code);
+            });
+        }
+
+    }
 
 	function updateUser (){
 		$("#update-user-form").formValidation({
@@ -485,11 +466,14 @@ function  approve(id, approved, token, params, email) {
 
 	function displayNewManager(elem){
 		if ($(elem).val() == '0') {
-			$("#edit-user-form select[name='new_manager']").show();
-			$("#edit-user-form label[for='new_manager']").show();
+      console.log(11, $("#edit-user-form .new_manager"));
+      $("#edit-user-form .new_manager").show();
+			// $("#edit-user-form select[name='new_manager']").show();
+			// $("#edit-user-form label[for='new_manager']").show();
 		} else {
-			$("#edit-user-form select[name='new_manager']").hide();
-			$("#edit-user-form label[for='new_manager']").hide();
+      $("#edit-user-form .new_manager").hide();
+			// $("#edit-user-form select[name='new_manager']").hide();
+			// $("#edit-user-form label[for='new_manager']").hide();
 		}
 	}
 
