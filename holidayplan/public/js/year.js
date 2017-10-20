@@ -124,10 +124,11 @@ var id;
         var startDate = formWrapper.find("input[name = 'stholi']").val();
         var name = formWrapper.find("input[name ='name']").val();
         var type = formWrapper.find("input[name ='typeh']").val();
-        var startDate = moment(formWrapper.find("input[name = 'stholi']").val()).format('YYYY-MM-DD');
-        console.log(id);
-        console.log(typeof startDate);
-        $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id='+ id +'&startDate='+ startDate + '&name=' + name + '&type=public' , function (datah) {
+        var startDate = formWrapper.find("input[name = 'stholi']").val();
+        console.log(startDate);
+        var stDate = moment(formWrapper.find("input[name = 'stholi']").val()).format("YYYY-MM-DD");
+        console.log(stDate);
+        $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id='+ id +'&startDate='+ stDate + '&name=' + name + '&type=public' , function (datah) {
         });
       }
       e.preventDefault();

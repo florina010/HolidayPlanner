@@ -28,8 +28,11 @@ function getHolidays(){
           if ( data[i].approved == 2) {
               var acc = 'Not approved';
           }
-          else {
+          else if (data[i].approved == 1) {
               var acc = 'Approved';
+          }
+          else {
+              var acc = 'Pending'
           }
         table.row.add( [
           j,
