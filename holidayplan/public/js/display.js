@@ -95,25 +95,26 @@ $(document).ready( function () {
           }
         }
 
-          var work = moment().diff(theUser.startDate, 'months', false);
-
-          var restM = 12 - currentDate.month();
-          if ( work < 12 ){
-              $("[name=avDays]").val(Math.floor(21/12*restM - sum));
-          };
-
-          //When user (super admin) logs in next year
-          if (currentDate.month() == 0 && currentDate.date() == 1 ) {
-            $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
-          }
+          // var work = moment().diff(theUser.startDate, 'months', false);
+          //
+          // var restM = 12 - currentDate.month();
+          // if ( work < 12 ){
+          //     $("[name=avDays]").val(Math.floor(21/12*restM - sum));
+          // };
+          //
+          //
+          // if (currentDate.month() == 0 && currentDate.date() == 1 ) {
+          //   $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
+          // }
 
           if (theUser.avfreedays <= 0)
           {
     		    $("[name=avDays]").val(0);
             $("#holiday").css("display", 'none');
+            theUser.avfreedays = $("[name=avDays]").val();
           }
+          console.log(theUser);
 
-          theUser.avfreedays = $("[name=avDays]").val();
           sessionStorage.setItem('user', JSON.stringify(theUser));
           $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function (data) {
             out (data.code);
@@ -337,7 +338,7 @@ $(document).ready( function () {
                        manag: manId,
                        vacationtype: $("#vacationtype").val(),
                        comment: $("#comment").val(),
-                       avDays: $("[name=avDays]").val(),
+                       avDays: theUser.avfreedays,
                        stdate: from,
                        enddate: to,
                        duration: duration
@@ -365,6 +366,8 @@ $(document).ready( function () {
        };
 
        function addHoliday(options) {
+         console.log(options.avDays);
+         console.log(options.duration);
            if (options.avDays >= options.duration) {
                $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
                    vacationtype: options.vacationtype,
