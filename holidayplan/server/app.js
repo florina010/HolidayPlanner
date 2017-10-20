@@ -420,7 +420,7 @@ function handle_dateupdate(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-        var q = "INSERT INTO freedays (isActive, startDate, endDate, days, approved, userID, approverID,type, comment) VALUES ( '0', '"+params.stdate+"', '"+params.enddate+"', '"+params.days+"', '0', '"+params.userID+"' , '"+params.approverID+"' , '"+params.vacationtype+"' , '" + params.comment + "')";
+        var q = "INSERT INTO freedays (startDate, endDate, days, approved, userID, approverID,type, comment) VALUES ( '"+params.stdate+"', '"+params.enddate+"', '"+params.days+"', '0', '"+params.userID+"' , '"+params.approverID+"' , '"+params.vacationtype+"' , '" + params.comment + "')";
         connection.query(q, function(err,rows){
             connection.release();
             if(err) {

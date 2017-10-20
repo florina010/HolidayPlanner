@@ -22,19 +22,6 @@ $('#tabClickCalendar').click(function(){
 });
 
 $(document).ready( function () {
-    (function()
-    {
-      if( window.localStorage )
-      {
-        if( !localStorage.getItem('firstLoad') )
-        {
-          localStorage['firstLoad'] = true;
-          window.location.reload();
-        }
-        else
-          localStorage.removeItem('firstLoad');
-      }
-    })();
 
     $('.date').datepicker({
         multidate: 2,
@@ -413,7 +400,6 @@ $(document).ready( function () {
 
            $('#myModal').find('form')[0].reset();
            $("#eventForm").data('formValidation').resetForm();
-          // $('#myModal').modal('toggle');
            $('#calendar').empty();
            reloadJs('../js/calendar.js');
        }
@@ -431,7 +417,7 @@ $(document).ready( function () {
                         ends = moment(data[i].endDate).format("YYYY/MM/DD"),
                         start2 = start, end2 = end,
                         dateArray = new Array();
-                      if ( moment(start).isBetween(st,ends) || moment(end).isBetween(st,ends) || start == st || start == ends || end == st || end == ends) {
+                      if ( moment(start).isBetween(st,ends) || moment(end).isBetween(st,ends) || start == st || start == ends || end == st || end == ends || start > end) {
                           $('.modal-body> div:first-child').css('display','none');
                           $('.modal-body> div:nth-child(2)').css('display','none');
                           $('.modal-body> div:nth-child(3)').css('display','block');

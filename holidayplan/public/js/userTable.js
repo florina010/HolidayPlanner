@@ -43,7 +43,6 @@ function getHolidays(){
           data[i].type,
           data[i].comment,
           acc,
-          data[i].isActive,
          // '<i class="fa fa-times" id="' + freeDays[i].id + '"></i>'
           '<div onclick="displayDeleteModal(event, this, ' + data[i].id + ',' + data[i].approved + ')"><i class="fa fa-times"</i></div>'
         ] ).draw( false )
@@ -52,24 +51,17 @@ function getHolidays(){
         .addClass();
         j++;
       }
-
-    //   for (var k = 0;  k < freeDays.length; k++) {
-    //       $(`#${freeDays[k].id}`).click(function(){
-    //           console.log(freeDays[k].approved);
-    //           displayDeleteModal(event, $(this), freeDays[i].id, freeDays[i].approved)
-    //       });
-    //   }
       for ( var i = 0 ; i < data.length; i++ ){
         var appr = $("#userTable>tbody>tr:nth-child("+(i+1)+")>td:nth-last-child(3)");
         var active = $("#userTable>tbody>tr:nth-child("+(i+1)+")>td:nth-last-child(2)");
 
-        if ( appr.html() == "true" ){
+        if ( appr.html() == "Approved" ){
           $("#userTable>tbody>tr:nth-child("+(i+1)+")").css('backgroundColor', "#d9edf7")
         }else{
           $("#userTable>tbody>tr:nth-child("+(i+1)+")").css('backgroundColor', "#f2dede")
         }
 
-        if ( active.html() == "true" ){
+        if ( active.html() == "0" ){
           active.css('backgroundColor', "#d9edf7")
         }else{
           active.css('backgroundColor', "#f2dede")
