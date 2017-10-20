@@ -201,6 +201,7 @@ function getManagerFreeDays(req,res) {
 		var token = req.query.token;
         connection.query("SELECT  user.name, user.position, user.email, freedays.startDate, freedays.endDate, freedays.days, freedays.type, freedays.comment, user.avfreedays, freedays.approved, freedays.id FROM freedays JOIN management ON freedays.userID = management.userID AND management.managerID = (SELECT user.userID FROM user WHERE user.token='" + token + "') JOIN user ON user.userID=freedays.userID ORDER BY freedays.startDate DESC",function(err,rows){
             connection.release();
+            console.log(rows);
             if(!err) {
                 res.json(rows);
             }
@@ -280,7 +281,7 @@ function updateAllHolidays(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-
+        console.log(params.startDate + '  asfdf');
         connection.query("UPDATE legalholidays SET startDate='" + params.startDate + "', name='" + params.name + "', type='" + params.type +"' WHERE id="+ params.id,function(err,rows){
                 connection.release();
                 console.log(err);

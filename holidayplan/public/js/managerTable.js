@@ -29,7 +29,6 @@ if (theUser.admin >= 0 ) {
 		var currentPicture = JSON.parse(sessionStorage.getItem('user')).picture;
 		var currentName = JSON.parse(sessionStorage.getItem('user')).name;
 		var currentAge = JSON.parse(sessionStorage.getItem('user')).age;
-        console.log(currentAge);
 		var currentPhone = JSON.parse(sessionStorage.getItem('user')).phone;
 		document.getElementById("username").value = currentName;
 		document.getElementById("phoneUser").value = currentPhone;
