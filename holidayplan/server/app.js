@@ -279,9 +279,10 @@ function updateAllHolidays(req,res) {
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
-        }
-        console.log(params.startDate + '  asfdf');
-        connection.query("UPDATE legalholidays SET startDate='" + params.startDate + "', name='" + params.name + "', type='" + params.type +"' WHERE id="+ params.id,function(err,rows){
+        };
+        console.log(params.startDate);
+
+        connection.query("UPDATE legalholidays SET startDate='" + params.startDate  + "', name='" + params.name + "', type='" + params.type +"' WHERE id="+ params.id,function(err,rows){
                 connection.release();
                 console.log(err);
                 if(!err) {
