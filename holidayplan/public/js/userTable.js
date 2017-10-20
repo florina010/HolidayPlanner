@@ -61,11 +61,6 @@ function getHolidays(){
           $("#userTable>tbody>tr:nth-child("+(i+1)+")").css('backgroundColor', "#f2dede")
         }
 
-        if ( active.html() == "0" ){
-          active.css('backgroundColor', "#d9edf7")
-        }else{
-          active.css('backgroundColor', "#f2dede")
-        }
       }
     });
 }
@@ -74,14 +69,8 @@ function displayDeleteModal(event, elem, id, approved){
     event.stopPropagation();
     var deleteModal =  $("#delete-modal");
 	deleteModal.modal('show');
-    // $("#delete-modal-btn-yes").addEventListener("click", function(){
-    //     console.log('click');
-    //     deleteHolidayModal(elem, id, approved);
-    //     $("#delete-modal").modal('hide');
-    // });
 
     $("#delete-modal-btn-yes").click(function(){
-        console.log('click');
         deleteHolidayModal(elem, id, approved);
         $("#delete-modal").modal('hide');
     });
@@ -91,7 +80,6 @@ function displayDeleteModal(event, elem, id, approved){
 }
 
 function deleteHolidayModal(elem, id, approved){
-    console.log(elem);
     if (approved != 1) {
         $.post(appConfig.url + appConfig.api+ 'deleteHoliday?token=' + token, { id: id}).done(function( data ) {
             //$(elem).addClass("test");
