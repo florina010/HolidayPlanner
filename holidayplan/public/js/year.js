@@ -125,7 +125,9 @@ var id;
         var name = formWrapper.find("input[name ='name']").val();
         var type = formWrapper.find("input[name ='typeh']").val();
         var startDate = formWrapper.find("input[name = 'stholi']").val();
+        console.log(startDate);
         var stDate = moment(formWrapper.find("input[name = 'stholi']").val()).format("YYYY-MM-DD");
+        console.log(stDate);
         $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id='+ id +'&startDate='+ stDate + '&name=' + name + '&type=public' , function (datah) {
         });
       }

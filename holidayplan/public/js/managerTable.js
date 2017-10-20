@@ -281,6 +281,22 @@ function  approve(id, approved, token, params, email) {
                             message: 'The value is not valid %s phone number'
                         }
                     }
+                },
+                stwork: {
+                    validators: {
+                        date: {
+                            format: 'MM/DD/YYYY',
+                            message: 'The value is not a valid date'
+                        }
+                    }
+                },
+                ageUser: {
+                    validators: {
+                        date: {
+                            format: 'MM/DD/YYYY',
+                            message: 'The value is not a valid birthday'
+                        }
+                    }
                 }
 			}
 		}).on('change', '[name="Ro"]', function(e) {
@@ -313,7 +329,7 @@ function  approve(id, approved, token, params, email) {
 				if (!avfreedays.length ) {
 					avfreedays = Math.floor(21/12*(12 - moment().month()));
 				}
-				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, password:password, position: position, phone: phone, stwork:stwork, avfreedays: avfreedays}).done(function( data ) {
+				$.post(appConfig.url + appConfig.api + 'addUser?token=' + token, { email: email, name: userName, age: age, password:password, position: position, phone: phone, stwork:stwork, avfreedays: avfreedays}).done(function( data ) {
 					var userid = JSON.parse(sessionStorage.getItem('user')).userID;
 					$.post(appConfig.url + appConfig.api + 'modifyClass', { userID: data.insertId, managerID: manager, token: token}).done(function( data ) {
 						out (data.code);
@@ -346,6 +362,14 @@ function  approve(id, approved, token, params, email) {
                         regexp: {
                             regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
                             message: 'The value is not a valid email address'
+                        }
+                    }
+                },
+                stwork: {
+                    validators: {
+                        date: {
+                            format: 'MM/DD/YYYY',
+                            message: 'The value is not a valid date'
                         }
                     }
                 }

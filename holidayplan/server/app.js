@@ -7,6 +7,7 @@ var sha256 = require('js-sha256');
 var Holidays = require('date-holidays');
 var year = new Date().getFullYear();
 var fileUpload = require('express-fileupload');
+var moment = require('moment');
 hd = new Holidays('RO');
 
 // get all holidays for the year 2017
@@ -40,7 +41,8 @@ function legalHolidaysToDb(req, res){
 
       for(var i in hd.getHolidays(year)){
         if(hd.getHolidays(year)[i].type == 'public'){
-          connection.query("INSERT INTO legalholidays(startDate, name, type) VALUES ('" + hd.getHolidays(year)[i].date + "', '"+
+            var date = moment(hd.getHolidays(year)[i].date).format('YYYY/MM/DD');
+          connection.query("INSERT INTO legalholidays(startDate, name, type) VALUES ('" + date + "', '"+
               hd.getHolidays(year)[i].name + "','" + hd.getHolidays(year)[i].type +"')",function(err,rows){
             //console.log(err);
            });
@@ -281,6 +283,7 @@ function updateAllHolidays(req,res) {
           return;
         }
         console.log(params.startDate + '  asfdf');
+        console.log(params.name + '   name');
         connection.query("UPDATE legalholidays SET startDate='" + params.startDate + "', name='" + params.name + "', type='" + params.type +"' WHERE id="+ params.id,function(err,rows){
                 connection.release();
                 console.log(err);
@@ -462,14 +465,15 @@ function addUser(req,res) {
           return;
         }
         if(params.position == 'Manager'){
-         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.position + "', '" +
+         var columns = "'" + params.email + "', '" + params.password + "', '" + params.age + "', '" + params.name + "', '" + params.position + "', '" +
           params.phone + "', '" + params.stwork + "', '" + 1 + "','" + params.avfreedays + "'";
        }
        else {
-         var columns = "'" + params.email + "', '" + params.password + "', '" + params.name + "', '" + params.position + "', '" +
+         var columns = "'" + params.email + "', '" + params.password + "', '" + params.age + "', '" + params.name + "', '" + params.position + "', '" +
          params.phone + "', '" + params.stwork + "', '" + 0 + "','" + params.avfreedays + "'";
        }
-        connection.query("INSERT INTO user (email, password, name, position, phone, startDate, admin, avfreedays) VALUES ("+ columns +")",function(err,rows){
+       console.log(typeof params.age + ' aaas' );
+        connection.query("INSERT INTO user (email, password, age, name, position, phone, startDate, admin, avfreedays) VALUES ("+ columns +")",function(err,rows){
             connection.release();
             console.log(err);
             if(!err) {
