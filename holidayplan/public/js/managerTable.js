@@ -289,7 +289,6 @@ function  approve(id, approved, token, params, email) {
 			if (e.isDefaultPrevented()) {
 				// handle the invalid form...
 			} else {
-                console.log($("[name=new_manageradd] option").length);
                 var formWrapper = $("#add-user-form"), manager;
                 if (theUser.admin != 2) {
                     $("#forAdmin").css('display', 'none')
