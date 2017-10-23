@@ -4,26 +4,16 @@ window.sessionInvalid = false;
 $(document).ready(function(){
   var token = sessionStorage.getItem('token');
   getHolidays();
-})
+});
 
 function getHolidays(){
     $("#userTable").DataTable().clear();
-
-
     $.get(appConfig.url + appConfig.api + 'getFreeDaysApprover?token=' + token, function(data){
-      if ( data.code == 110 ){
-  			if (!appConfig.sessionInvalid) {
-  				appConfig.sessionInvalid = true;
-  				alert('Session expired');
-          $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email}).done(function( data ) {
-         });
-  				window.location.href = 'login.html';
-  			}
-  	}
-    $("#userTable").DataTable().clear();
+        $("#userTable").DataTable().clear();
+      out (data.code);
+
       var table = $('#userTable').DataTable();
       var j = 1;
-      $("#userTable").DataTable().clear();
       for (var i=0; i<data.length; i++){
           if ( data[i].approved == 2) {
               var acc = 'Not approved';
@@ -38,12 +28,11 @@ function getHolidays(){
           j,
           data[i].name,
           data[i].days,
-          moment(data[i].startDate).format("DD/MM/Y"),
-          moment(data[i].endDate).format("DD/MM/Y"),
+          moment(data[i].startDate).format("DD/MM/YYYY"),
+          moment(data[i].endDate).format("DD/MM/YYYY"),
           data[i].type,
           data[i].comment,
           acc,
-         // '<i class="fa fa-times" id="' + freeDays[i].id + '"></i>'
           '<div onclick="displayDeleteModal(event, this, ' + data[i].id + ',' + data[i].approved + ')"><i class="fa fa-times"</i></div>'
         ] ).draw( false )
         .nodes()
@@ -91,5 +80,16 @@ function deleteHolidayModal(elem, id, approved){
     }
     else {
         alert("You can not delete this. Please contact your manager.");
+    }
+}
+
+function out (data) {
+    if ( data == 110 ){
+        if (!appConfig.sessionInvalid) {
+            appConfig.sessionInvalid = true;
+            alert('Session expired');
+            $.post(appConfig.url + appConfig.api+ 'logout', { email: theUser.email});
+            window.location.href = 'login.html';
+        }
     }
 }

@@ -381,10 +381,15 @@ function approve(id, approved, token, params, email) {
 				var formWrapper = $("form#edit-user-form").serialize();
 				$.get(appConfig.url + appConfig.api + 'ManagerEditUser?'+ formWrapper + '&token=' + token , function (data) {
 					out (data.code);
-
-                    clearEmployee($("form#edit-user-form").serializeArray());
-                    $("#users-list-table").DataTable().clear();
-                    getAllUsers();
+                    if (theUser.admin == 2) {
+                        $("#users-list-table").DataTable().clear();
+                        clearEmployee($("form#edit-user-form").serializeArray());
+                        managedUserTable();
+                    }
+                    else {
+                        $("#users-list-table").DataTable().clear();
+                        managedUserTable();
+                    }
 				});
 				e.preventDefault();
 				$("#eventForm").data('formValidation').resetForm();
@@ -460,28 +465,28 @@ function approve(id, approved, token, params, email) {
 					var passwordUser = hashObj.getHash("HEX");
 				}
 				theUser.name = userName;
-				theUser.age = age;
 				theUser.phone = phone;
 				sessionStorage.setItem('user', JSON.stringify(theUser));
 				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
 					out (data.code);
 				});
 				$('.modal-body> div:first-child').css('display','block');
-					e.preventDefault();
+                e.preventDefault();
 			}
 		});
 	}
 
+     $("[name=updateProfile]").click(function(){
+         setTimeout(function(){
+             location.reload();
+         },1000);
+     });
+
 	function displayNewManager(elem){
 		if ($(elem).val() == '0') {
-      console.log(11, $("#edit-user-form .new_manager"));
       $("#edit-user-form .new_manager").show();
-			// $("#edit-user-form select[name='new_manager']").show();
-			// $("#edit-user-form label[for='new_manager']").show();
 		} else {
       $("#edit-user-form .new_manager").hide();
-			// $("#edit-user-form select[name='new_manager']").hide();
-			// $("#edit-user-form label[for='new_manager']").hide();
 		}
 	}
 

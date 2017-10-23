@@ -365,8 +365,6 @@ $(document).ready( function () {
        };
 
        function addHoliday(options) {
-         console.log(options.avDays);
-         console.log(options.duration);
            if (options.avDays >= options.duration) {
                $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
                    vacationtype: options.vacationtype,
@@ -468,9 +466,8 @@ $(document).ready( function () {
                  tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
                  tr.append("<td>"+ options.vacationtype +"</td>");
                  tr.append("<td>"+ options.comment +"</td>");
-                 tr.append("<td>" + 0 + "</td>");
-                 tr.append("<td>" + 0 + "</td>");
-                 tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ dataId +')"></i>' +"</td>");
+                 tr.append("<td>" + 'Pending' + "</td>");
+                 tr.append("<td>"+ '<i class="fa fa-times"></i>' +"</td>");
                  $("#userTable tbody").append(tr);
              }else if(data.length == 0 && isOk){
               $(".dataTables_empty").css("display", "none");
@@ -484,9 +481,8 @@ $(document).ready( function () {
                 tr.append("<td>"+ moment(options.enddate).format("DD/MM/YYYY") +"</td>");
                 tr.append("<td>"+ options.vacationtype +"</td>");
                 tr.append("<td>"+ options.comment +"</td>");
-                tr.append("<td>" + 0 + "</td>");
-                tr.append("<td>" + 0 + "</td>");
-                tr.append("<td>"+ '<i class="fa fa-times" onclick="deleteHolidayModal(this,'+ 0 +')"></i>' +"</td>");
+                tr.append("<td>" + 'Pending' + "</td>");
+                tr.append("<td>"+ '<i class="fa fa-times"></i>' +"</td>");
                 $("#userTable tbody").append(tr);
               }
           });
