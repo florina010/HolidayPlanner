@@ -260,8 +260,9 @@ function ManagerEditUser(req,res) {
           return;
         }
     var params = req.query;
-		connection.query("UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "', startDate='" + params.stwork + "', phone='" + params.phone + "', isActive='" + params.isActive +  "', bonus='" + params.bonus +"' WHERE user.userID="+ params.userId,function(err,rows){
+		connection.query("UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "', startDate='" + params.stwork + "', phone='" + params.phone + "', isActive='" + params.isActive +  "', bonus='" + params.bonus + "', avfreedays=avfreedays + '" + params.bonus +"' WHERE user.userID="+ params.userId,function(err,rows){
             connection.release();
+            console.log(err);
             if(!err) {
                 res.json(rows);
             }
