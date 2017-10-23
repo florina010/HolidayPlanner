@@ -44,7 +44,6 @@ function legalHolidaysToDb(req, res){
             var date = moment(hd.getHolidays(year)[i].date).format('YYYY/MM/DD');
           connection.query("INSERT INTO legalholidays(startDate, name, type) VALUES ('" + date + "', '"+
               hd.getHolidays(year)[i].name + "','" + hd.getHolidays(year)[i].type +"')",function(err,rows){
-            //console.log(err);
            });
         };
       };
@@ -261,10 +260,8 @@ function ManagerEditUser(req,res) {
           return;
         }
     var params = req.query;
-    console.log(params);
-		connection.query("UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "', startDate='" + params.stwork + "', phone='" + params.phone + "', isActive='" + params.isActive + "', age='" + params.age + "', bonus='" + params.bonus +"' WHERE user.userID="+ params.userId,function(err,rows){
+		connection.query("UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "', startDate='" + params.stwork + "', phone='" + params.phone + "', isActive='" + params.isActive +  "', bonus='" + params.bonus +"' WHERE user.userID="+ params.userId,function(err,rows){
             connection.release();
-            console.log(err);
             if(!err) {
                 res.json(rows);
             }
@@ -283,11 +280,8 @@ function updateAllHolidays(req,res) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-        console.log(params.startDate + '  asfdf');
-        console.log(params.name + '   name');
         connection.query("UPDATE legalholidays SET startDate='" + params.startDate + "', name='" + params.name + "', type='" + params.type +"' WHERE id="+ params.id,function(err,rows){
                 connection.release();
-                console.log(err);
                 if(!err) {
                     res.json(rows);
                 }
@@ -425,7 +419,6 @@ function handle_dateupdate(req,res) {
         connection.query(q, function(err,rows){
             connection.release();
             if(err) {
-                console.log('error ' + err);
               throw err;
             }
               res.json(rows[0]);
@@ -473,10 +466,8 @@ function addUser(req,res) {
          var columns = "'" + params.email + "', '" + params.password + "', '" + params.age + "', '" + params.name + "', '" + params.position + "', '" +
          params.phone + "', '" + params.stwork + "', '" + 0 + "','" + params.avfreedays + "'";
        }
-       console.log(typeof params.age + ' aaas' );
         connection.query("INSERT INTO user (email, password, age, name, position, phone, startDate, admin, avfreedays) VALUES ("+ columns +")",function(err,rows){
             connection.release();
-            console.log(err);
             if(!err) {
                 res.json(rows);
             }
@@ -574,13 +565,13 @@ function modifyClass(req,res) {
 }
 
 function updateRelationsFreedays(req,res) {
-    var params = req.body;
+    var params = req.query;
     pool.getConnection(function(err,connection){
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-		connection.query("UPDATE freedays SET approverID = '" + params.managerId + "' WHERE approverId = '" + params.deletedUserId + "';",function(err,rows){
+		connection.query("UPDATE freedays SET approverID = '" + params.managerId + "' WHERE approverId = '" + params.userId + "';",function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -594,13 +585,13 @@ function updateRelationsFreedays(req,res) {
 }
 
 function updateRelationsManagement(req,res) {
-    var params = req.body;
+    var params = req.query;
     pool.getConnection(function(err,connection){
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
           return;
         }
-		connection.query("UPDATE management SET managerID = '" + params.managerId + "' WHERE managerID = '" + params.deletedUserId + "';",function(err,rows){
+		connection.query("UPDATE management SET managerID = '" + params.managerId + "' WHERE managerID = '" + params.userId + "';",function(err,rows){
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -614,7 +605,7 @@ function updateRelationsManagement(req,res) {
 }
 
 function updateUserManager(req,res) {
-    var params = req.body;
+    var params = req.query;
     pool.getConnection(function(err,connection){
         if (err) {
           res.json({"code" : 100, "status" : "Error in connection database"});
@@ -721,8 +712,6 @@ function getNewHoliday(req, res){
       }
 
       connection.query("INSERT INTO legalholidays (startDate, name) VALUES ('" + params.startDate + "', '"+ params.name +"')", function(err,rows){
-        console.log(err);
-
           connection.release();
           if(!err) {
               res.json(rows);
@@ -764,7 +753,6 @@ function getManagerForUser (req, res) {
           return;
         }
         connection.query("SELECT management.userID, management.managerID, user.name FROM user INNER JOIN management ON management.managerID = user.userID" ,function(err,rows){
-            console.log(err);
             connection.release();
             if(!err) {
                 res.json(rows);
@@ -958,7 +946,6 @@ router.get("/getAllHolidays", function(req,res){
 
 router.get("/updateAllHolidays", function(req,res){
   var token = req.query.token;
-  console.log("aa");
   isValidToken(token).then(function(result) {
     updateAllHolidays(req,res);
   }, function(error){
@@ -988,7 +975,7 @@ router.post("/modifyClass", function(req,res){
 });
 
 router.post("/updateRelationsFreedays", function(req,res){
-  var token = req.body.token;
+  var token = req.query.token;
   isValidToken(token).then(function(result) {
     updateRelationsFreedays(req,res);
   }, function(error){
@@ -998,7 +985,7 @@ router.post("/updateRelationsFreedays", function(req,res){
 });
 
 router.post("/updateRelationsManagement", function(req,res){
-  var token = req.body.token;
+  var token = req.query.token;
   isValidToken(token).then(function(result) {
 	updateRelationsManagement(req,res);
   }, function(error){
@@ -1008,7 +995,7 @@ router.post("/updateRelationsManagement", function(req,res){
 });
 
 router.post("/updateUserManager", function(req,res){
-  var token = req.body.token;
+  var token = req.query.token;
   isValidToken(token).then(function(result) {
 	updateUserManager(req,res);
   }, function(error){

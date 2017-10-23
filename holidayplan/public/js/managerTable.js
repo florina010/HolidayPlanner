@@ -100,7 +100,7 @@ if (theUser.admin >= 0 ) {
         }
 	};
 
-function  approve(id, approved, token, params, email) {
+function approve(id, approved, token, params, email) {
     $.get(appConfig.url + appConfig.api + 'ApproveFreeDays?id=' + id + '&approved=' + approved + '&token=' + token, function (data) {
         out (data.code);
         $("#manager-table").DataTable().clear();
@@ -115,7 +115,7 @@ function  approve(id, approved, token, params, email) {
 			return "danger";
 		}
 	};
-	var editUserForm = $("#edit-user-form");
+
 
 	function managerEditUser(elem, userId) {
 		var tr = $(elem).closest("tr");
@@ -142,7 +142,21 @@ function  approve(id, approved, token, params, email) {
 			editUserForm.find("input[name='email']").val(email);
 
 			var stdate = userInfo.eq(4).text();
-			editUserForm.find("input[name='stwork']").val(moment(stdate).format("YYYY/MM/DD"));
+            if (moment(stdate).date() < 10) {
+                var day = "0" + moment(stdate).date();
+            }
+            else {
+                var day = moment(stdate).date();;
+            }
+
+            if (moment(stdate).month() + 1 < 10) {
+                var month = "0" + (moment(stdate).month() + 1);
+            }
+            else {
+                var month = moment(stdate).month() + 1;
+            }
+            var theDate = moment(stdate).year() + "-" + month + "-" + day;
+			editUserForm.find("input[name=stwork]").attr('value', theDate);
 
 			var phone = userInfo.eq(5).text();
 			editUserForm.find("input[name='phone']").val(phone);
@@ -168,7 +182,6 @@ function  approve(id, approved, token, params, email) {
 				editUserForm.find("select[name='new_manager']").remove();
 				editUserForm.find("label[for='new_manager']").remove();
 			}
-      console.log(active);
 			var selectNewManager = editUserForm.find(".new_manager");
 			if (active != 0) {
 				selectNewManager.hide();
@@ -355,7 +368,7 @@ function  approve(id, approved, token, params, email) {
                 stwork: {
                     validators: {
                         date: {
-                            format: 'MM/DD/YYYY',
+                            format: 'DD/MM/YYYY',
                             message: 'The value is not a valid date'
                         }
                     }
@@ -366,14 +379,12 @@ function  approve(id, approved, token, params, email) {
 				// handle the invalid form...
 			} else {
 				var formWrapper = $("form#edit-user-form").serialize();
-                console.log(formWrapper);
 				$.get(appConfig.url + appConfig.api + 'ManagerEditUser?'+ formWrapper + '&token=' + token , function (data) {
 					out (data.code);
 
+                    clearEmployee($("form#edit-user-form").serializeArray());
                     $("#users-list-table").DataTable().clear();
                     getAllUsers();
-
-                    clearEmployee($("form#edit-user-form").serializeArray());
 				});
 				e.preventDefault();
 				$("#eventForm").data('formValidation').resetForm();
@@ -386,32 +397,30 @@ function  approve(id, approved, token, params, email) {
         for (var i = 0; i < userData.length; i++){
             userArray[userData[i]['name']] = userData[i]['value'];
         }
-        console.log(userArray);
-
         if (userArray['isActive']  == 0){
             var newManager = userArray["new_manager"];
 
             if (newManager == null) {
                 newManager = JSON.parse(sessionStorage.getItem('user')).userID;
             }
-
-            $.post(appConfig.url + appConfig.api+ 'updateRelationsFreedays', { managerId: newManager, deletedUserId: userArray["userId"], token : token}).done(function( updateInfo ) {
+            var params = '&managerId=' + newManager + "&userId=" + userArray['userId'] ;
+            $.post (appConfig.url + appConfig.api+ 'updateRelationsFreedays?token=' + token + params).done(function( updateInfo ) {
                 out (updateInfo.code);
             });
 
-            $.post(appConfig.url + appConfig.api+ 'updateRelationsManagement', { managerId: newManager, deletedUserId: userArray["userId"], token : token}).done(function( updateInfo ) {
+            $.post(appConfig.url + appConfig.api+ 'updateRelationsManagement?token=' + token + params).done(function( updateInfo ) {
                 out (updateInfo.code);
             });
         }
 
         // Change manager.
-        var changeManagerId = userArray["new_manager"];
+        var changeManagerId = userArray["change_manager"];
         if (changeManagerId) {
-            $.post(appConfig.url + appConfig.api+ 'updateUserManager', { managerId: changeManagerId, userId: userArray["userId"], token : token}).done(function( updateInfo ) {
+            var params = '&managerId=' + changeManagerId + "&userId=" + userArray['userId'] ;
+            $.post(appConfig.url + appConfig.api+ 'updateUserManager?token=' + token +  params).done(function (updateInfo) {
                 out (updateInfo.code);
             });
         }
-
     }
 
 	function updateUser (){
@@ -442,7 +451,6 @@ function  approve(id, approved, token, params, email) {
 				var formWrapper = $("#update-user-form");
 				var userName = formWrapper.find("input[name = 'username']").val();
 				var passwordUser = formWrapper.find("input[name = 'passwordUser']").val();
-				var age = formWrapper.find("input[name = 'ageUser']").val();
 				var phone = formWrapper.find("input[name = 'phoneUser']").val();
 				var bonus = formWrapper.find("input[name = 'bonusUser']").val();
 				var userid = JSON.parse(sessionStorage.getItem('user')).userID;
@@ -455,7 +463,7 @@ function  approve(id, approved, token, params, email) {
 				theUser.age = age;
 				theUser.phone = phone;
 				sessionStorage.setItem('user', JSON.stringify(theUser));
-				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, age : age, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
+				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
 					out (data.code);
 				});
 				$('.modal-body> div:first-child').css('display','block');
@@ -570,7 +578,7 @@ function  approve(id, approved, token, params, email) {
                         users[i].name,
         				users[i].position,
         				users[i].email,
-        				moment(users[i].startDate).format("DD/MM/Y"),
+        				moment(users[i].startDate).format("MM/DD/YYYY"),
         				users[i].phone,
                         result,
     					users[i].isActive,
