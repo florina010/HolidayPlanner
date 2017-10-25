@@ -1,47 +1,49 @@
 <html>
-	<body>
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-			    <div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					 <h3 class="modal-title" id="myModalLabel"> Update </h3>
-			    </div>
-				<div class="modal-body" style="padding:40px 50px;">
-					<div class="alert alert-success">
-						 <strong>Success!</strong>
-					 </div>
-					<form role="form" id="new-year-form" method="POST">
-		 			<div id="table" class="tab-pane fade active in">
+
+<body>
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h3 class="modal-title" id="myModalLabel"> Update </h3>
+			</div>
+			<div class="modal-body" style="padding:40px 50px;">
+				<div class="alert alert-success">
+					<strong>Success!</strong>
+				</div>
+				<form role="form" id="new-year-form" method="POST">
+					<div id="table" class="tab-pane fade active in">
 						<table id="example" class="display stripe" cellspacing="0" width="100%">
-						        <thead class="thead-inverse">
-						            <tr>
-						                <th>#</th>
-						                <th>Start time </th>
-						                <th>Name </th>
-						                <th>Type </th>
-						            </tr>
-						        </thead>
-										<tbody>
-										</tbody>
+							<thead class="thead-inverse">
+								<tr>
+									<th>#</th>
+									<th>Start time </th>
+									<th>Name </th>
+									<th>Type </th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
 						</table>
 					</div>
-						<br/>
-						<div class="form-group">
-						  <label for="newholiday"><span class="glyphicon glyphicon-pushpin"></span> Add new holiday </label>
-							<input type="text" class="form-control" name="newholiday" placeholder="Enter holidays" required>
+					<br/>
+					<div class="form-group">
+						<label for="newholiday"><span class="glyphicon glyphicon-pushpin"></span> Add new holiday </label>
+						<input type="text" class="form-control" name="newholiday" placeholder="Enter holidays" required>
+					</div>
+					<div class="form-group">
+						<label for="stholi"><i class="fa fa-calendar" aria-hidden="true"></i> Start date</label><br>
+						<div class="input-group input-append date" id="stholi">
+							<input id="dateval" type="text" class="form-control" name="stholi" placeholder="yyyy-mm-dd" style="width: 460px;" />
+							<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 						</div>
-						<div class="form-group">
-							<label for="stholi"><i class="fa fa-calendar" aria-hidden="true"></i> Start date</label><br>
-							<div class="input-group input-append date" id="stholi">
-								<input id="dateval" type="text" class="form-control" name="stholi" placeholder="yyyy-mm-dd" style="width: 460px;"/>
-								<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
-							</div>
-						</div>
-						<button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-plus"></span> Add</button>
-					</form>
-				</div>
+					</div>
+					<button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-plus"></span> Add</button>
+				</form>
 			</div>
 		</div>
+	</div>
 
 </body>
+
 </html>

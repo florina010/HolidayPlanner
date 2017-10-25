@@ -1,15 +1,18 @@
-.dataTables_paginate a.paginate_button:not(.current){
-	background-color: white;
+.dataTables_paginate a.paginate_button:not(.current) {
+    background-color: white;
 }
+
 .fa-check {
-	color: green;
-	cursor: pointer;
+    color: green;
+    cursor: pointer;
 }
+
 .fa-times {
-	color: red;
-	cursor: pointer;
+    color: red;
+    cursor: pointer;
 }
+
 .fa-check:hover, .fa-times:hover {
-	font-size: 25px;
-	text-shadow: 1px 1px grey;
+    font-size: 25px;
+    text-shadow: 1px 1px grey;
 }

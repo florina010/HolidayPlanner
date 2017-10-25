@@ -11,7 +11,8 @@
 
 /* global define, require, window, document, JSON */
 
-;(function (factory) {
+;
+(function(factory) {
     'use strict';
     if (typeof define === 'function' && define.amd) {
         // Register as an anonymous AMD module:
@@ -23,7 +24,7 @@
         // Browser globals:
         factory(window.jQuery);
     }
-}(function ($) {
+}(function($) {
     'use strict';
 
     // Helper variable to create unique names for the transport iframes:
@@ -32,8 +33,8 @@
         jsonParse = 'parseJSON';
 
     if ('JSON' in window && 'parse' in JSON) {
-      jsonAPI = JSON;
-      jsonParse = 'parse';
+        jsonAPI = JSON;
+        jsonParse = 'parse';
     }
 
     // The iframe transport accepts four additional options:
@@ -46,18 +47,18 @@
     //  [{name: 'a', value: 1}, {name: 'b', value: 2}]
     // options.initialIframeSrc: the URL of the initial iframe src,
     //  by default set to "javascript:false;"
-    $.ajaxTransport('iframe', function (options) {
+    $.ajaxTransport('iframe', function(options) {
         if (options.async) {
             // javascript:false as initial iframe src
             // prevents warning popups on HTTPS in IE6:
             /*jshint scripturl: true */
             var initialIframeSrc = options.initialIframeSrc || 'javascript:false;',
-            /*jshint scripturl: false */
+                /*jshint scripturl: false */
                 form,
                 iframe,
                 addParamChar;
             return {
-                send: function (_, completeCallback) {
+                send: function(_, completeCallback) {
                     form = $('<form style="display:none;"></form>');
                     form.attr('accept-charset', options.formAcceptCharset);
                     addParamChar = /\?/.test(options.url) ? '&' : '?';
@@ -78,14 +79,14 @@
                     counter += 1;
                     iframe = $(
                         '<iframe src="' + initialIframeSrc +
-                            '" name="iframe-transport-' + counter + '"></iframe>'
-                    ).bind('load', function () {
+                        '" name="iframe-transport-' + counter + '"></iframe>'
+                    ).bind('load', function() {
                         var fileInputClones,
                             paramNames = $.isArray(options.paramName) ?
-                                    options.paramName : [options.paramName];
+                            options.paramName : [options.paramName];
                         iframe
                             .unbind('load')
-                            .bind('load', function () {
+                            .bind('load', function() {
                                 var response;
                                 // Wrap in a try/catch block to catch exceptions thrown
                                 // when trying to access cross-domain iframe contents:
@@ -104,14 +105,15 @@
                                 // iframe content document as response object:
                                 completeCallback(
                                     200,
-                                    'success',
-                                    {'iframe': response}
+                                    'success', {
+                                        'iframe': response
+                                    }
                                 );
                                 // Fix for IE endless progress bar activity bug
                                 // (happens on form submits to iframe targets):
                                 $('<iframe src="' + initialIframeSrc + '"></iframe>')
                                     .appendTo(form);
-                                window.setTimeout(function () {
+                                window.setTimeout(function() {
                                     // Removing the form in a setTimeout call
                                     // allows Chrome's developer tools to display
                                     // the response result
@@ -123,7 +125,7 @@
                             .prop('action', options.url)
                             .prop('method', options.type);
                         if (options.formData) {
-                            $.each(options.formData, function (index, field) {
+                            $.each(options.formData, function(index, field) {
                                 $('<input type="hidden"/>')
                                     .prop('name', field.name)
                                     .val(field.value)
@@ -131,14 +133,14 @@
                             });
                         }
                         if (options.fileInput && options.fileInput.length &&
-                                options.type === 'POST') {
+                            options.type === 'POST') {
                             fileInputClones = options.fileInput.clone();
                             // Insert a clone for each file input field:
-                            options.fileInput.after(function (index) {
+                            options.fileInput.after(function(index) {
                                 return fileInputClones[index];
                             });
                             if (options.paramName) {
-                                options.fileInput.each(function (index) {
+                                options.fileInput.each(function(index) {
                                     $(this).prop(
                                         'name',
                                         paramNames[index] || options.paramName
@@ -159,7 +161,7 @@
                         // Insert the file input fields at their original location
                         // by replacing the clones with the originals:
                         if (fileInputClones && fileInputClones.length) {
-                            options.fileInput.each(function (index, input) {
+                            options.fileInput.each(function(index, input) {
                                 var clone = $(fileInputClones[index]);
                                 // Restore the original name and form properties:
                                 $(input)
@@ -171,7 +173,7 @@
                     });
                     form.append(iframe).appendTo(document.body);
                 },
-                abort: function () {
+                abort: function() {
                     if (iframe) {
                         // javascript:false as iframe src aborts the request
                         // and prevents warning popups on HTTPS in IE6.
@@ -200,22 +202,22 @@
     // https://github.com/blueimp/jQuery-File-Upload/wiki/Setup#content-type-negotiation
     $.ajaxSetup({
         converters: {
-            'iframe text': function (iframe) {
+            'iframe text': function(iframe) {
                 return iframe && $(iframe[0].body).text();
             },
-            'iframe json': function (iframe) {
+            'iframe json': function(iframe) {
                 return iframe && jsonAPI[jsonParse]($(iframe[0].body).text());
             },
-            'iframe html': function (iframe) {
+            'iframe html': function(iframe) {
                 return iframe && $(iframe[0].body).html();
             },
-            'iframe xml': function (iframe) {
+            'iframe xml': function(iframe) {
                 var xmlDoc = iframe && iframe[0];
                 return xmlDoc && $.isXMLDoc(xmlDoc) ? xmlDoc :
-                        $.parseXML((xmlDoc.XMLDocument && xmlDoc.XMLDocument.xml) ||
-                            $(xmlDoc.body).html());
+                    $.parseXML((xmlDoc.XMLDocument && xmlDoc.XMLDocument.xml) ||
+                        $(xmlDoc.body).html());
             },
-            'iframe script': function (iframe) {
+            'iframe script': function(iframe) {
                 return iframe && $.globalEval($(iframe[0].body).text());
             }
         }
