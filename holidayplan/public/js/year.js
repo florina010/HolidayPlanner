@@ -69,6 +69,7 @@ $(document).ready(function() {
                 });
             };
             e.preventDefault();
+            $('.modal-body> div:first-child').css('display', 'block');
             $('#myModalOncePerYear').modal('hide');
         });
     };
@@ -145,7 +146,11 @@ $(document).ready(function() {
                 $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id=' + id + '&startDate=' + startDate + '&name=' + name + '&type=public', function(datah) {});
             }
             e.preventDefault();
-            $('#myModalOncePerYear').modal('hide');
+            $('.modal-body> div:first-child').css('display', 'block');
+            setTimeout(function() {
+                $('#myModalOncePerYear').modal('hide');
+            }, 1000);
+
         });
     };
 

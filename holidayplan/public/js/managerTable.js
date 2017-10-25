@@ -343,7 +343,7 @@ if (theUser.admin >= 0) {
                 hashObj.update('avangarde');
                 var password = hashObj.getHash("HEX");
                 if (!avfreedays.length) {
-                    avfreedays = Math.floor(21 / 12 * (12 - moment().month()));
+                    avfreedays = Math.floor(21 / 12 * (11 - moment().month()));
                 }
                 $.post(appConfig.url + appConfig.api + 'addUser?token=' + token, {
                     email: email,
@@ -419,6 +419,14 @@ if (theUser.admin >= 0) {
                             message: 'The value is not a valid date'
                         }
                     }
+                },
+                phone: {
+                    validators: {
+                        phone: {
+                            country: 'Ro',
+                            message: 'The value is not a valid phone number'
+                        }
+                    }
                 }
             }
         }).on('submit', function(e, data) {
@@ -456,9 +464,9 @@ if (theUser.admin >= 0) {
                 newManager = JSON.parse(sessionStorage.getItem('user')).userID;
             }
             var params = '&managerId=' + newManager + "&userId=" + userArray['userId'];
-            $.post(appConfig.url + appConfig.api + 'updateRelationsFreedays?token=' + token + params).done(function(updateInfo) {
-                out(updateInfo.code);
-            });
+            // $.post(appConfig.url + appConfig.api + 'updateRelationsFreedays?token=' + token + params).done(function(updateInfo) {
+            //     out(updateInfo.code);
+            // });
 
             $.post(appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params).done(function(updateInfo) {
                 out(updateInfo.code);
@@ -512,7 +520,6 @@ if (theUser.admin >= 0) {
                 var userName = formWrapper.find("input[name = 'username']").val();
                 var passwordUser = formWrapper.find("input[name = 'passwordUser']").val();
                 var phone = formWrapper.find("input[name = 'phoneUser']").val();
-                var bonus = formWrapper.find("input[name = 'bonusUser']").val();
                 var userid = JSON.parse(sessionStorage.getItem('user')).userID;
                 var hashObj = new jsSHA("SHA-512", "TEXT", {
                     numRounds: 1
