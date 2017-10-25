@@ -78,14 +78,14 @@ $(document).ready(function() {
                 $("[name=mName]").val(manager);
                 $("#avatar").attr("src", 'data:image/png;base64,' + theUser.picture);
                 $("[name=name]").val(theUser.name);
-                var yearOfBirth = moment().diff(theUser.age, 'years', false);
-                $("[name=age]").val(yearOfBirth);
+                $("[name=age]").val(theUser.age );
                 $("[name=email]").val(theUser.email);
                 $("[name=phone]").val(theUser.phone);
                 $("[name=position]").val(theUser.position);
-                var fDate = moment(theUser.startDate).format("YYYY/MM/DD");
+                var fDate = moment(theUser.startDate).format("MM/DD/YYYY");
                 $("[name=sDate]").val(fDate);
                 $("[name=timeSpent]").val(moment().diff(theUser.startDate, 'months', false) + " months");
+                $("[name=avDays]").val(theUser.avfreedays);
                 window.theUser = theUser;
 
                 if (data.length == 0) {
