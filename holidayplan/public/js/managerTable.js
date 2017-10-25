@@ -392,7 +392,7 @@ function approve(id, approved, token, params, email) {
                     }
 				});
 				e.preventDefault();
-				$("#eventForm").data('formValidation').resetForm();
+				$("#edit-user-form").data('formValidation').resetForm();
 			}
 		});
 	}
@@ -447,7 +447,14 @@ function approve(id, approved, token, params, email) {
 	                    message: 'The password and its confirm are not the same'
 	                }
 	            }
-	        }
+	        },phoneUser: {
+                validators: {
+                    phone: {
+                        country: 'Ro',
+                        message: 'The value is not valid %s phone number'
+                    }
+                }
+            }
 	    }
 	}).on('submit', function(e, data) {
 			if (e.isDefaultPrevented()) {
@@ -467,11 +474,12 @@ function approve(id, approved, token, params, email) {
 				theUser.name = userName;
 				theUser.phone = phone;
 				sessionStorage.setItem('user', JSON.stringify(theUser));
-				$.post(appConfig.url + appConfig.api + 'updateUser' , {  name : userName, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
+				$.post(appConfig.url + appConfig.api + 'updateUser' , {name : userName, phone : phone, password : passwordUser , userId : userid, token : token }).done(function( data ) {
 					out (data.code);
 				});
-				$('.modal-body> div:first-child').css('display','block');
+				$('.update > div:first-child').css('display','block');
                 e.preventDefault();
+                $("#update-user-form").data('formValidation').resetForm();
 			}
 		});
 	}
