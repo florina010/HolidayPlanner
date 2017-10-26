@@ -51,22 +51,6 @@ function fillDate() {
 
             }
             $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
-              // var x = 0;
-              // for(var a in data){
-              //   // debugger;
-              //     console.log(data.length);
-              //     if(x < data.length -1){
-              //         x += 1;
-              //     }else{
-              //       x = data.length-1;
-              //     }
-              //     if(data[a].startDate != data[x].startDate){
-              //       if((a >= 11) && (a <= data.length)){
-              //         dd.push({start:new Date(data[a].startDate),title:'+ '+ data[a].name});
-              //       };
-              //     }
-              // }
-
                   for (var i in data){
                       if((i >= 11) && (i <= data.length)){
                         dd.push({start:new Date(data[i].startDate),title:'+ '+ data[i].name});
