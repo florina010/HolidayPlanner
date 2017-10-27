@@ -173,10 +173,10 @@ if (theUser.admin >= 0) {
                     out(managers.code);
                     for (var i in managers) {
                         if (managers[i].userID != userId) {
-                            $('select[name="new_manager"]').append($("<option select='selected' required></option>")
+                            $('select[name="new_manager"]').append($("<option></option>")
                                 .attr("value", managers[i].userID)
                                 .text(managers[i].name));
-                        }
+                        };
                     }
                 });
             } else {
@@ -195,7 +195,7 @@ if (theUser.admin >= 0) {
                 $.get(appConfig.url + appConfig.api + 'getAllManagers?token=' + token, function(managers) {
                     out(managers.code);
                     for (var i in managers) {
-                        if (managers[i].userID != userId) {
+                        if ((managers[i].userID != userId)  && (managers[i].name != manager)) {
                             selectChangeManager.append($("<option></option>")
                                 .attr("value", managers[i].userID)
                                 .text(managers[i].name));
