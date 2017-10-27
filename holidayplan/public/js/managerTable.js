@@ -371,7 +371,6 @@ if (theUser.admin >= 0) {
                     });
                     var userstable = $('#users-list-table').DataTable();
                     var j = userid;
-                    $("#users-list-table").DataTable().clear();
                     managedUserTable();
                     $('.modal-body> div:first-child').css('display', 'block');
                     $('#myModalUser').find('form')[0].reset();
@@ -447,7 +446,6 @@ if (theUser.admin >= 0) {
                         clearEmployee($("form#edit-user-form").serializeArray());
                         managedUserTable();
                     } else {
-                        $("#users-list-table").DataTable().clear();
                         managedUserTable();
                     }
                 });
@@ -635,8 +633,10 @@ if (theUser.admin >= 0) {
 
     function managedUserTable() {
         if (sessionStorage.getItem('admin') == 2) {
+            $("#users-list-table").DataTable().clear();
             getAllUsers();
         } else {
+            $("#users-list-table").DataTable().clear();
             getManagerUsers();
         }
     };

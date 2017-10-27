@@ -175,7 +175,7 @@
                             <label class="col-xs-3 control-label">Start date</label>
                             <div class="col-xs-5 dateContainer">
                                 <div class="input-group input-daterange">
-                                    <input type="text" name="dates" class="form-control date">
+                                    <input type="text" name="dates" class="form-control date" required>
                                 </div>
                             </div>
                         </div>
@@ -183,13 +183,17 @@
                             <label class="col-xs-3 control-label">Vacation type</label>
                             <div class="col-xs-5 selectContainer">
                                 <select id="vacationtype" name="vacationtype" class="form-control">
-                      <option value=""></option>
-                      <option >Vacation Leave</option>
-                      <option >Sick Leave</option>
-                      <option >Leave Without Pay</option>
-                      <option >Pregnancy-Disability and Child Care Leave </option>
-                      <option >Other</option>
-                    </select>
+                                    <option value=""></option>
+                                    <option > Concediu </option>
+                                    <option > Concediu medical </option>
+                                    <option > Donare sange (cu plata) </option>
+                                    <option > Deces (cu plata) </option>
+                                    <option > Casatorie (cu plata) </option>
+                                    <option > Nou nascut (cu plata) </option>
+                                    <option > Maternitare (cu plata) </option>
+                                    <option > Concediu de studii </option>
+                                    <option > Concediu fara plata </option>
+                                  </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -198,6 +202,7 @@
                                 <textarea id="comment" name="comment" class="form-control" style="resize:none" rows="8" placeholder="Type here"></textarea>
                             </div>
                         </div>
+                        <div class="alert alert-info" id="info"></div>
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" id="save">Save changes</button>
