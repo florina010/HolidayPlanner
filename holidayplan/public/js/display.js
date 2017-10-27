@@ -32,8 +32,6 @@ $(document).ready(function() {
         minViewMode: 0
     });
 
-
-    var commentEn = 0;
     $('#tabClick').addClass('active');
     var theUser = JSON.parse(sessionStorage.getItem('user')),
         token = sessionStorage.getItem('token'),
@@ -267,7 +265,7 @@ $(document).ready(function() {
             $('#eventForm').formValidation('revalidateField', 'endDate');
         });
 
-
+    var nrOfDays, from, to;
     $('#eventForm')
         .formValidation({
             framework: 'bootstrap',
@@ -288,7 +286,6 @@ $(document).ready(function() {
                 comment: {
                     validators: {
                         notEmpty: {
-                            enabled: false,
                             message: 'The comment is required'
                         }
                     }
@@ -296,39 +293,39 @@ $(document).ready(function() {
             }
         }).on('change', function(e, data) {
             e.preventDefault();
-            switch ($("[name=comment]").attr('name')) {
-                case 'comment':
-                    if ($("#vacationtype").val() != 'Other') {
-                        $('#eventForm').formValidation('enableFieldValidators', 'comment', false);
-                        commentEn = 0;
-                        break;
-                    } else {
-                        $('#eventForm').formValidation('enableFieldValidators', 'comment', true);
-                        commentEn = 1;
-                        break;
-                    }
-                    break;
-                default:
-                    break;
+            $("div #info").empty();
+            var date = $(".date").val().split(";"),
+                stdate = date[0],
+                enddate = date[1]
+            from = moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
+            if (!enddate) {
+                to = moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
+            } else {
+                to = moment(enddate, 'MM/DD/YYYY').format('YYYY/MM/DD');
             }
+
+            nrOfDays = weekend(moment(from), moment(to));
+
+            if ($('#vacationtype').val()) {
+                $("div #info").css('display', 'block');
+                if ($('#vacationtype').val() == 'Concediu') {
+                    $("div #info").append("<p>You selected " + nrOfDays + " days. These will be taken from the total number of available leave days.</p>")
+
+                }
+                else {
+                    $("div #info").append("<p>You selected " + nrOfDays + " days. These will not be taken from the total number of available leave days.</p>")
+                }
+            }
+
         }).on('submit', function(e, data) {
             if (!e.isDefaultPrevented()) {
-                var date = $(".date").val().split(";"),
-                    stdate = date[0],
-                    enddate = date[1];
-
-                var from, to, duration;
-                from = moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
-                if (!enddate) {
-                    to = moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
-                } else {
-                    to = moment(enddate, 'MM/DD/YYYY').format('YYYY/MM/DD');
-                }
-
-                duration = weekend(moment(from), moment(to));
+                var duration;
                 //  let myDate:Date = moment(dateString,"YYYY-MM-DD").format("DD-MM-YYYY");
-                if ($('#vacationtype').val() == 'Other') {
+                if ($('#vacationtype').val() != ' Concediu ') {
                     duration = 0;
+                }
+                else {
+                    duration = nrOfDays;
                 }
                 //$.post(appConfig.url + appConfig.api+ 'getManagerDetails', { managerId: manId}).done(function( data ) {
                 //});
@@ -345,8 +342,6 @@ $(document).ready(function() {
                 }
 
                 check(from, to, holidayOptions, addHoliday);
-
-
             }
         });
 

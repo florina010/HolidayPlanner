@@ -48,7 +48,7 @@ h3 {
 }
 
 #info {
-    font-size: 23px !important;
+    display: none;
 }
 
 label {
