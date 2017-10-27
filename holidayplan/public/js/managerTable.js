@@ -16,6 +16,9 @@ if (theUser.admin >= 0) {
         $("a[name='addUser']").click(function() {
             $("#myModalUser").load("addUserForm.html", function() {
                 prepareUserForm();
+                $('input[type=date]').datepicker({
+                        dateFormat : 'mm-dd-yy'
+                    });
             });
         });
 
