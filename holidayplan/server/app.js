@@ -203,6 +203,33 @@ function getFreeDays(req, res) {
     });
 }
 
+function getFreeDaysApproved(req, res) {
+    var params = req.query;
+    pool.getConnection(function(err, connection) {
+        if (err) {
+            res.json({
+                "code": 100,
+                "status": "Error in connection database"
+            });
+            return;
+        }
+
+        connection.query("SELECT * FROM freedays WHERE approved!=2 AND userID=" + params.userID, function(err, rows) {
+            connection.release();
+            if (!err) {
+                res.json(rows);
+            }
+        });
+        connection.on('error', function(err) {
+            res.json({
+                "code": 100,
+                "status": "Error in connection database"
+            });
+            return;
+        });
+    });
+}
+
 function getLegalFreeDays(req, res) {
     var params = req.query;
     pool.getConnection(function(err, connection) {
@@ -240,8 +267,9 @@ function getManagerFreeDays(req, res) {
             return;
         }
         var token = req.query.token;
-        connection.query("SELECT  user.name, user.position, user.email, freedays.startDate, freedays.endDate, freedays.days, freedays.type, freedays.comment, user.avfreedays, freedays.approved, freedays.id FROM freedays JOIN management ON freedays.userID = management.userID AND management.managerID = (SELECT user.userID FROM user WHERE user.token='" + token + "') JOIN user ON user.userID=freedays.userID ORDER BY freedays.startDate DESC", function(err, rows) {
+        connection.query("SELECT  user.name, user.position, user.email, freedays.startDate, freedays.endDate, freedays.days, freedays.type, freedays.comment, user.avfreedays, freedays.approved, freedays.id FROM freedays JOIN management ON freedays.userID = management.userID AND management.managerID = (SELECT user.userID FROM user WHERE user.token='" + token + "') JOIN user ON user.userID=freedays.userID ORDER BY freedays.approved, freedays.startDate DESC ", function(err, rows) {
             connection.release();
+            console.log(rows);
             if (!err) {
                 res.json(rows);
             }
@@ -267,7 +295,7 @@ function getManagerUsers(req, res) {
         }
         var params = req.query;
         var id = params.userId;
-        connection.query("SELECT * FROM user JOIN management ON management.userID = user.userID AND management.managerID = " + id + "", function(err, rows) {
+        connection.query("SELECT * FROM user JOIN management ON management.userID = user.userID AND management.managerID = " + id + " ORDER BY user.isActive DESC", function(err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows);
@@ -319,9 +347,16 @@ function ManagerEditUser(req, res) {
             return;
         }
         var params = req.query;
-        connection.query("UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "', startDate='" + params.stwork + "', phone='" + params.phone + "', isActive='" + params.isActive + "', bonus='" + params.bonus + "', avfreedays=avfreedays + '" + params.bonus + "' WHERE user.userID=" + params.userId, function(err, rows) {
-            connection.release();
+        if (params.position == 'Manager') {
+            var queryStr = "UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "', startDate='" + params.stwork + "' ,admin='1', phone='" + params.phone + "', isActive='" + params.isActive + "', bonus='" + params.bonus + "', avfreedays=avfreedays + '" + params.bonus
+            + "' WHERE user.userID=" + params.userId
+        } else {
+            var queryStr = "UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "', startDate='" + params.stwork + "', phone='" + params.phone + "', isActive='" + params.isActive + "', bonus='" + params.bonus + "', avfreedays=avfreedays + '" + params.bonus
+            + "' WHERE user.userID=" + params.userId
+        }
+        connection.query(queryStr, function(err, rows) {
             console.log(err);
+            connection.release();
             if (!err) {
                 res.json(rows);
             }
@@ -604,7 +639,7 @@ function getAllUsers(req, res) {
             return;
         }
         var managerId = req.body.managerId;
-        connection.query("SELECT * FROM user WHERE token != '" + params.token + "'", function(err, rows) {
+        connection.query("SELECT * FROM user WHERE token != '" + params.token + "' ORDER BY user.isActive DESC", function(err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows);
@@ -1049,6 +1084,19 @@ router.get("/getFreeDays", function(req, res) {
     var token = req.query.token;
     isValidToken(token).then(function(result) {
         getFreeDays(req, res);
+    }, function(error) {
+        console.log(error);
+        res.json({
+            "code": 110,
+            "status": "Your session has expired and you are loged out. - redirect la login in FE"
+        })
+    });
+});
+
+router.get("/getFreeDaysApproved", function(req, res) {
+    var token = req.query.token;
+    isValidToken(token).then(function(result) {
+        getFreeDaysApproved(req, res);
     }, function(error) {
         console.log(error);
         res.json({
