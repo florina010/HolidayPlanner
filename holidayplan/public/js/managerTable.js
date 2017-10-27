@@ -163,7 +163,6 @@ if (theUser.admin >= 0) {
 
             var manager = userInfo.eq(6).text();
             editUserForm.find("option[name='manager-name']").text(manager);
-            console.log(manager);
 
             var active = userInfo.eq(7).text();
             editUserForm.find("input[name='isActive']").val(active);
@@ -213,7 +212,7 @@ if (theUser.admin >= 0) {
     }
 
     function prepareUserForm() {
-        var date = new Date();
+        var date = new Date(), manager;
         date.setDate(date.getDate());
         $('#stwork').datepicker({
             endDate: date,
@@ -258,6 +257,11 @@ if (theUser.admin >= 0) {
             }
         });
 
+
+        if (theUser.admin != 2) {
+            $("#add-user-form #forAdmin").css('display', 'none')
+            manager = theUser.userID;
+        }
         //Add user form
         $("#add-user-form").formValidation({
             framework: 'bootstrap',
@@ -327,11 +331,9 @@ if (theUser.admin >= 0) {
             if (e.isDefaultPrevented()) {
                 // handle the invalid form...
             } else {
-                var formWrapper = $("#add-user-form"),
-                    manager;
+                var formWrapper = $("#add-user-form");
                 if (theUser.admin != 2) {
-                    $("#forAdmin").css('display', 'none')
-                    manager = theUser.userID
+                    manager = theUser.userID;
                 } else if ($("[name=new_manageradd] option").length > 0) {
                     manager = formWrapper.find("[name = new_manageradd]").val();
                 } else {
@@ -659,6 +661,14 @@ if (theUser.admin >= 0) {
                             result = arr[j].name;
                         }
                     }
+
+                    if (users[i].isActive == 0) {
+                        var colorRow = 'warning';
+                    }
+                    else {
+                        var colorRow = '';
+                    }
+
                     userstable.row.add([
                         k,
                         users[i].name,
@@ -672,7 +682,10 @@ if (theUser.admin >= 0) {
                         users[i].bonus,
                         '<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
                         //"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
-                    ]).draw(false);
+                    ]).draw(false)
+                    .nodes()
+                    .to$()
+                    .addClass(colorRow);
                     k++;
                 }
             });
@@ -688,6 +701,13 @@ if (theUser.admin >= 0) {
             var userstable = $('#users-list-table').DataTable();
             var j = 1;
             for (i = 0; i < users.length; i++) {
+                if (users[i].isActive == 0) {
+                    var colorRow = 'warning';
+                }
+                else {
+                    var colorRow = '';
+                }
+
                 userstable.row.add([
                     j,
                     users[i].name,
@@ -701,7 +721,10 @@ if (theUser.admin >= 0) {
                     users[i].bonus,
                     '<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
                     //"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
-                ]).draw(false);
+                ]).draw(false)
+                .nodes()
+                .to$()
+                .addClass(colorRow);
                 j++;
             }
         });

@@ -410,9 +410,8 @@ $(document).ready(function() {
         getFreeDays();
         var start = moment(startString).format("YYYY/MM/DD"),
             end = moment(endString).format("YYYY/MM/DD");
-        $.get(appConfig.url + appConfig.api + 'getFreeDays?token=' + token + '&userID=' + theUser.userID, function(data) {
+        $.get(appConfig.url + appConfig.api + 'getFreeDaysApproved?token=' + token + '&userID=' + theUser.userID, function(data) {
             out(data.code);
-
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     var st = moment(data[i].startDate).format("YYYY/MM/DD"),
