@@ -454,6 +454,7 @@ $(document).ready(function() {
                 options.duration = checkArrays(dateArray, dates, options.duration);
                 if (isOk) {
                     callback(options);
+                    location.reload();
                 }
             } else {
                 callback(options);
@@ -523,15 +524,16 @@ $(document).ready(function() {
     $(".close").click(function() {
         location.reload();
     });
-    $("#save").click(function() {
-        if (commentEn == 0) {
-            setTimeout(function() {
-                location.reload();
-            }, 1000);
-        } else if ($('[name=comment]').val() && commentEn == 1) {
-            setTimeout(function() {
-                location.reload();
-            }, 1000);
-        }
-    });
+    // $("#save").click(function() {
+    //   console.log(commentEn);
+    //     if (commentEn == 0) {
+    //         // setTimeout(function() {
+    //         //     location.reload();
+    //         // }, 1000);
+    //     } else if ($('[name=comment]').val() && commentEn == 1) {
+    //         // setTimeout(function() {
+    //         //     location.reload();
+    //         // }, 1000);
+    //     }
+    // });
 });

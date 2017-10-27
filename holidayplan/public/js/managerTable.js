@@ -158,6 +158,10 @@ if (theUser.admin >= 0) {
             var phone = userInfo.eq(5).text();
             editUserForm.find("input[name='phone']").val(phone);
 
+            var manager = userInfo.eq(6).text();
+            editUserForm.find("option[name='manager-name']").text(manager);
+            console.log(manager);
+
             var active = userInfo.eq(7).text();
             editUserForm.find("input[name='isActive']").val(active);
 
@@ -169,7 +173,7 @@ if (theUser.admin >= 0) {
                     out(managers.code);
                     for (var i in managers) {
                         if (managers[i].userID != userId) {
-                            $('select[name="new_manager"]').append($("<option></option>")
+                            $('select[name="new_manager"]').append($("<option select='selected' required></option>")
                                 .attr("value", managers[i].userID)
                                 .text(managers[i].name));
                         }

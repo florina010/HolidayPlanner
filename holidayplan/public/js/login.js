@@ -21,7 +21,7 @@ $(document).ready(function() {
                 user['userID'] = data.userID;
                 user['isActive'] = data.isActive;
                 user['picture'] = data.picture;
-                user['age'] = moment().diff(data.age, 'years', false); 
+                user['age'] = moment().diff(data.age, 'years', false);
                 user['name'] = data.name;
                 user['position'] = data.position;
                 user['phone'] = data.phone;
@@ -44,7 +44,8 @@ $(document).ready(function() {
                 sessionStorage.setItem('token', data.token);
                 sessionStorage.setItem('user', JSON.stringify(user));
                 $('.form-signin').removeAttr("onsubmit");
-                $('.form-signin').submit();
+                //$('.form-signin').submit();
+                window.location.href = "display.html";
                 return;
             } else {
                 found = 0;
