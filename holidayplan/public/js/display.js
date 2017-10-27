@@ -524,16 +524,4 @@ $(document).ready(function() {
     $(".close").click(function() {
         location.reload();
     });
-    $("#save").click(function() {
-      console.log(commentEn);
-        if (commentEn == 0) {
-            // setTimeout(function() {
-            //     location.reload();
-            // }, 1000);
-        } else if ($('[name=comment]').val() && commentEn == 1) {
-            // setTimeout(function() {
-            //     location.reload();
-            // }, 1000);
-        }
-    });
 });
