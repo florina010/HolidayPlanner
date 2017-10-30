@@ -1,0 +1,6 @@
+input[type="date"]::-webkit-input-placeholder{
+    visibility: hidden !important;
+}
+input::-webkit-calendar-picker-indicator{
+    display: none;
+}
