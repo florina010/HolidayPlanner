@@ -999,6 +999,32 @@ function getManagerForUser(req, res) {
     });
 }
 
+function getStartDate (req, res) {
+    pool.getConnection(function(err, connection) {
+        if (err) {
+            res.json({
+                "code": 100,
+                "status": "Error in connection database"
+            });
+            return;
+        }
+        connection.query("SELECT user.startDate FROM user WHERE admin = 2", function(err, rows) {
+            connection.release();
+            console.log(rows);
+            if (!err) {
+                res.json(rows);
+            }
+        });
+        connection.on('error', function(err) {
+            res.json({
+                "code": 100,
+                "status": "Error in connection database"
+            });
+            return;
+        });
+    });
+}
+
 
 
 app.use(bodyParser.urlencoded({
@@ -1386,8 +1412,21 @@ router.get("/getNewHoliday", function(req, res) {
     });
 });
 
-router.get("/updateAvFreeDays", function(req, res) {
+router.get("/updateAvFreeDays", function (req, res) {
     updateFreeDays(req, res);
+});
+
+router.get("/getStartDate", function (req, res) {
+    var token = req.query.token;
+    isValidToken(token).then(function(result) {
+        getStartDate(req, res);
+    }, function(error) {
+        console.log(error);
+        res.json({
+            "code": 110,
+            "status": "Your session has expired and you are loged out. - redirect la login in FE"
+        })
+    });
 });
 
 router.get("/getManagerForUser", function(req, res) {
