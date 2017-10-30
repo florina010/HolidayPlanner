@@ -17,10 +17,11 @@ if (theUser.admin >= 0) {
             $("#myModalUser").load("addUserForm.html", function() {
                 prepareUserForm();
                 if(navigator.userAgent.search("Chrome") >= 0){
-                  console.log("chrome");
+                  $('input[type=text]').datepicker({
+                          dateFormat : 'mm-dd-yy'
+                      });
                 }else{
-                  console.log("mozilla");
-                  $('input[type=date]').datepicker({
+                  $('input[type=text]').datepicker({
                           dateFormat : 'mm-dd-yy'
                       });
                 }
@@ -162,7 +163,11 @@ if (theUser.admin >= 0) {
             }
             var theDate = moment(stdate).year() + "-" + month + "-" + day;
             editUserForm.find("input[name=stwork]").attr('value', theDate);
-
+            $('input[name=stwork]').datepicker({
+                format: 'yyyy/mm/dd'
+            }).on('changeDate', function(e) {
+                $('#edit-user-form').formValidation('revalidateField', 'stwork');
+            });
             var phone = userInfo.eq(5).text();
             editUserForm.find("input[name='phone']").val(phone);
 
