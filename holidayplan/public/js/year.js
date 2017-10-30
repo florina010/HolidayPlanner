@@ -78,7 +78,7 @@ $(document).ready(function() {
         //New holiday update
         var date = new Date();
         date.setDate(date.getDate());
-        $('#stholii').datepicker({
+        $('#stholi').datepicker({
             format: 'yyyy-mm-dd'
         }).on('changeDate', function(e) {
             $('#new-year-form').formValidation('revalidateField', 'stholi');
