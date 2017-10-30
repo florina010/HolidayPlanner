@@ -23,11 +23,11 @@ if (theUser.admin >= 0) {
                           dateFormat : 'mm/dd/yy'
                       });
                   $('#dateval').datepicker({
-                          dateFormat : 'mm-dd-yy'
+                          dateFormat : 'mm/dd/yy'
                   });
                 }else{
                   $('#birth').datepicker({
-                          dateFormat : 'mm-dd-yy'
+                          dateFormat : 'mm/dd/yy'
                       });
                   $('#dateval').datepicker({
                           dateFormat : 'mm/dd/yy'
@@ -318,12 +318,12 @@ if (theUser.admin >= 0) {
           //       return true;
           // };
 
-
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
         var minStWork, currentDay = (moment().format('YYYY-MM-DD').toString());
 
         $.get(appConfig.url + appConfig.api + 'getStartDate?token=' + token, function(data) {
             minStWork = moment(data[0].startDate).format('YYYY-MM-DD');
+            console.log(minStWork);
         }).then(function () {
             $("#add-user-form").formValidation({
                 framework: 'bootstrap',
@@ -372,7 +372,7 @@ if (theUser.admin >= 0) {
                                 message: 'The birth day is required'
                             },
                             date: {
-                                format: 'MM/DD/YYYY',
+                                format: 'YYYY-MM-DD',
                                 message: 'The value is not a valid birth day',
                                 max: validAge
                             }
@@ -384,7 +384,7 @@ if (theUser.admin >= 0) {
                                 message: 'The started working is required'
                             },
                             date: {
-                                format: 'MM/DD/YYYY',
+                                format: 'YYYY-MM-DD',
                                 message: 'The value is not a valid date',
                                 min: minStWork,
                                 max: currentDay
@@ -399,6 +399,7 @@ if (theUser.admin >= 0) {
                 if (e.isDefaultPrevented()) {
                 } else {
                   $('#register').attr('disabled', 'disabled');
+                  var formWrapper = $("#add-user-form");
                     if (theUser.admin != 2) {
                         manager = theUser.userID;
                     } else if ($("[name=new_manageradd] option").length > 0) {
@@ -406,6 +407,7 @@ if (theUser.admin >= 0) {
                     } else {
                         manager = 1;
                     }
+
                     var userName = formWrapper.find("input[name = 'username']").val();
                     var age = formWrapper.find("input[name = 'ageUser']").val();
                     var position = formWrapper.find("[name = 'pos']").val();
