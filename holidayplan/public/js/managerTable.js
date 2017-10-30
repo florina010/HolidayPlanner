@@ -20,7 +20,13 @@ if (theUser.admin >= 0) {
                   $('#birth').datepicker({
                           dateFormat : 'mm-dd-yy'
                       });
+                  $('#dateval').datepicker({
+                          dateFormat : 'mm-dd-yy'
+                  });
                 }else{
+                  $('#birth').datepicker({
+                          dateFormat : 'mm-dd-yy'
+                      });
                   $('#dateval').datepicker({
                           dateFormat : 'mm-dd-yy'
                       });
@@ -273,6 +279,22 @@ if (theUser.admin >= 0) {
             manager = theUser.userID;
         }
         //Add user form
+          $form = $('#add-user-form'); // cache
+          $form.find(':input[type="submit"]').prop('disabled', true); // disable submit btn
+          $form.find(':input').change(function() { // monitor all inputs for changes
+            var disable = false;
+            $form.find(':input').not('[type="submit"]').each(function(i, el) { // test all inputs for values
+                if ($.trim(el.value) === '') {
+                    disable = true; // disable submit if any of them are still blank
+                }
+            });
+            $form.find(':input[type="submit"]').prop('disabled', disable);
+        });
+          if ($('#ad_select').val() != '') {
+                $('#register').attr('disabled', 'disabled');
+                return true;
+          };
+
         $("#add-user-form").formValidation({
             framework: 'bootstrap',
             icon: {
