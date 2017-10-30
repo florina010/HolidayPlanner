@@ -19,8 +19,14 @@
 				</div>
 
 				<div class="form-group">
-					<label for="active"><i class="fa fa-check-circle" aria-hidden="true"></i> isActive</label>
-					<input type="text" class="form-control" name="isActive" placeholder="Enter Password" required oninput="displayNewManager(this)">
+					<label for="active"><i class="fa fa-check-circle" aria-hidden="true"></i> isActive</label></br>
+					<!-- <input type="text" class="form-control" name="isActive" title="If this user doesn't work here, please set this field to false" required oninput="displayNewManager(this)"> -->
+					<div class="form-group radio">
+						<label><input type="radio" name="userActive" value="1"> User works here</label> </br>
+					</div>
+					<div class="form-group radio">
+						<label><input type="radio" name="userActive" value="0"> User doesn't work here</label> </br>
+					</div>
 					<span class="new_manager">
 						<label for="new_manager"><i class="fa fa-address-card" aria-hidden="true"></i> New Manager</label>
 						<select name="new_manager" class="form-control" title="this field is used only if isActive is 0">
@@ -30,7 +36,11 @@
 				</div>
 				<div class="form-group">
 					<label for="ageUser"><i class="fa fa-calendar" aria-hidden="true"></i> Started working</label>
+<<<<<<< HEAD
 					<date-util format="yy-mm-dd"><input id="dateval" type="text" class="form-control" name="stwork" value="2017-06-01" /></date-util>
+=======
+					<date-util format="dd/MM/yyyy"><input id="dateval" type="text" class="form-control" name="stwork" /></date-util>
+>>>>>>> 29bf8bcddeb8376675cebe5a66950e570b8ada85
 				</div>
 				<div class="form-group">
 					<label for="position"><i class="fa fa-address-card" aria-hidden="true"></i> Position</label>

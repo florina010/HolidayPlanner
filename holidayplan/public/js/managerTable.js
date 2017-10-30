@@ -20,7 +20,7 @@ if (theUser.admin >= 0) {
                 prepareUserForm();
                 if(navigator.userAgent.search("Chrome") >= 0){
                   $('#birth').datepicker({
-                          dateFormat : 'mm-dd-yy'
+                          dateFormat : 'mm/dd/yy'
                       });
                   $('#dateval').datepicker({
                           dateFormat : 'mm-dd-yy'
@@ -30,7 +30,7 @@ if (theUser.admin >= 0) {
                           dateFormat : 'mm-dd-yy'
                       });
                   $('#dateval').datepicker({
-                          dateFormat : 'mm-dd-yy'
+                          dateFormat : 'mm/dd/yy'
                       });
                 }
             });
@@ -171,6 +171,7 @@ if (theUser.admin >= 0) {
             }
             var theDate = moment(stdate).year() + "-" + month + "-" + day;
             editUserForm.find("input[name=stwork]").attr('value', theDate);
+
             $('input[name=stwork]').datepicker({
                 format: 'yyyy-mm-dd'
             }).on('changeDate', function(e) {
@@ -182,8 +183,16 @@ if (theUser.admin >= 0) {
             var manager = userInfo.eq(6).text();
             editUserForm.find("option[name='manager-name']").text(manager);
 
-            var active = userInfo.eq(7).text();
-            editUserForm.find("input[name='isActive']").val(active);
+            // var active = userInfo.eq(7).text();
+            // editUserForm.find("input[name='isActive']").val(active);
+
+            if (userInfo.eq(7).text() == 'true') {
+                $('[name=userActive]:first').attr('checked', true);
+            }
+            else {
+                $('[name=userActive]:not(:first)').attr('checked', true);
+            }
+
 
             var bonus = userInfo.eq(9).text();
             editUserForm.find("input[name='bonus']").val(bonus);
@@ -204,9 +213,21 @@ if (theUser.admin >= 0) {
                 editUserForm.find("label[for='new_manager']").remove();
             }
             var selectNewManager = editUserForm.find(".new_manager");
-            if (active != 0) {
-                selectNewManager.hide();
-            }
+
+            if ($('input[name=userActive]:checked').attr('value') == '1')  {
+                 selectNewManager.hide();
+             }
+
+            $('[name=userActive]').click(function() {
+                if ($(this).attr('value') == '1') {
+                    selectNewManager.hide();
+                    editUserForm.find("input[name=isActive]").val('true');
+                }
+                else {
+                    selectNewManager.css('display', 'block');
+                    editUserForm.find("input[name=isActive]").val('false');
+                }
+            });
 
 
             var isAdmin = sessionStorage.getItem('admin');
@@ -299,11 +320,11 @@ if (theUser.admin >= 0) {
 
 
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
-        var minStWork;
+        var minStWork, currentDay = (moment().format('YYYY-MM-DD').toString());
+
         $.get(appConfig.url + appConfig.api + 'getStartDate?token=' + token, function(data) {
             minStWork = moment(data[0].startDate).format('YYYY-MM-DD');
         }).then(function () {
-
             $("#add-user-form").formValidation({
                 framework: 'bootstrap',
                 icon: {
@@ -365,7 +386,8 @@ if (theUser.admin >= 0) {
                             date: {
                                 format: 'MM/DD/YYYY',
                                 message: 'The value is not a valid date',
-                                min: minStWork
+                                min: minStWork,
+                                max: currentDay
                             }
                         }
 
@@ -489,6 +511,7 @@ if (theUser.admin >= 0) {
                 // handle the invalid form...
             } else {
                 var formWrapper = $("form#edit-user-form").serialize();
+                console.log(formWrapper);
                 $.get(appConfig.url + appConfig.api + 'ManagerEditUser?' + formWrapper + '&token=' + token, function(data) {
                     out(data.code);
                     if (theUser.admin == 2) {
@@ -699,9 +722,7 @@ if (theUser.admin >= 0) {
             $.get(appConfig.url + appConfig.api + 'getAllUsers?token=' + token, function(users) {
                 out(users.code);
                 var userstable = $('#users-list-table').DataTable();
-                var k = 1,
-                    usersArray = [],
-                    result;
+                var k = 1, usersArray = [], result, active;
                 for (i = 0; i < users.length; i++) {
                     for (var j = 0; j < arr.length; j++) {
                         if (arr[j].userID == users[i].userID) {
@@ -711,9 +732,11 @@ if (theUser.admin >= 0) {
 
                     if (users[i].isActive == 0) {
                         var colorRow = 'warning';
+                        active = 'false';
                     }
                     else {
                         var colorRow = '';
+                        active = 'true';
                     }
 
                     userstable.row.add([
@@ -724,7 +747,7 @@ if (theUser.admin >= 0) {
                         moment(users[i].startDate).format("MM/DD/YYYY"),
                         users[i].phone,
                         result,
-                        users[i].isActive,
+                        active,
                         moment().diff(users[i].age, 'years', false),
                         users[i].bonus,
                         '<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
@@ -746,7 +769,7 @@ if (theUser.admin >= 0) {
         $.get(appConfig.url + appConfig.api + 'getManagerUsers?token=' + token + '&userId=' + userid, function(users) {
             out(users.code);
             var userstable = $('#users-list-table').DataTable();
-            var j = 1;
+            var j = 1, active;
             for (i = 0; i < users.length; i++) {
                 if (users[i].isActive == 0) {
                     var colorRow = 'warning';
@@ -754,7 +777,12 @@ if (theUser.admin >= 0) {
                 else {
                     var colorRow = '';
                 }
-
+                if (users[i].isActive == 1) {
+                    active = 'true';
+                }
+                else {
+                    active = 'false'
+                }
                 userstable.row.add([
                     j,
                     users[i].name,
@@ -763,7 +791,7 @@ if (theUser.admin >= 0) {
                     moment(users[i].startDate).format("DD/MM/Y"),
                     users[i].phone,
                     theUser.name,
-                    users[i].isActive,
+                    active,
                     moment().diff(users[i].age, 'years', false),
                     users[i].bonus,
                     '<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
