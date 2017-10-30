@@ -16,9 +16,14 @@ if (theUser.admin >= 0) {
         $("a[name='addUser']").click(function() {
             $("#myModalUser").load("addUserForm.html", function() {
                 prepareUserForm();
-                // $('input[type=date]').datepicker({
-                //         dateFormat : 'mm-dd-yy'
-                //     });
+                if(navigator.userAgent.search("Chrome") >= 0){
+                  console.log("chrome");
+                }else{
+                  console.log("mozilla");
+                  $('input[type=date]').datepicker({
+                          dateFormat : 'mm-dd-yy'
+                      });
+                }
             });
         });
 
