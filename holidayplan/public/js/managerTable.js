@@ -17,11 +17,11 @@ if (theUser.admin >= 0) {
             $("#myModalUser").load("addUserForm.html", function() {
                 prepareUserForm();
                 if(navigator.userAgent.search("Chrome") >= 0){
-                  $('input[type=text]').datepicker({
+                  $('#birth').datepicker({
                           dateFormat : 'mm-dd-yy'
                       });
                 }else{
-                  $('input[type=text]').datepicker({
+                  $('#dateval').datepicker({
                           dateFormat : 'mm-dd-yy'
                       });
                 }
