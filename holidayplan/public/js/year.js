@@ -78,7 +78,7 @@ $(document).ready(function() {
         //New holiday update
         var date = new Date();
         date.setDate(date.getDate());
-        $('#stholi').datepicker({
+        $('#stholii').datepicker({
             format: 'yyyy-mm-dd'
         }).on('changeDate', function(e) {
             $('#new-year-form').formValidation('revalidateField', 'stholi');
@@ -91,7 +91,22 @@ $(document).ready(function() {
                 invalid: 'glyphicon glyphicon-remove',
                 validating: 'glyphicon glyphicon-refresh'
             },
-            fields: {}
+            fields: {
+              newholiday: {
+                  validators: {
+                      notEmpty: {
+                          message: 'This is required'
+                      }
+                  }
+              },
+              stholi: {
+                  validators: {
+                      notEmpty: {
+                          message: 'The start date is required'
+                      }
+                  }
+              }
+            }
         }).on('submit', function(e, data) {
             if (!e.isDefaultPrevented()) {
                 var formWrapper = $("#new-year-form");
@@ -103,7 +118,7 @@ $(document).ready(function() {
                 });
             }
             e.preventDefault();
-            $('#myModalOncePerYear').modal('hide');
+          //  $('#myModalOncePerYear').modal('hide');
         });
         getAllHolidays();
     };
