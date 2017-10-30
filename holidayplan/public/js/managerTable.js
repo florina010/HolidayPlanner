@@ -172,7 +172,7 @@ if (theUser.admin >= 0) {
             var theDate = moment(stdate).year() + "-" + month + "-" + day;
             editUserForm.find("input[name=stwork]").attr('value', theDate);
             $('input[name=stwork]').datepicker({
-                format: 'yyyy/mm/dd'
+                format: 'yyyy-mm-dd'
             }).on('changeDate', function(e) {
                 $('#edit-user-form').formValidation('revalidateField', 'stwork');
             });
@@ -281,21 +281,21 @@ if (theUser.admin >= 0) {
             manager = theUser.userID;
         }
         //Add user form
-          $form = $('#add-user-form'); // cache
-          $form.find(':input[type="submit"]').prop('disabled', true); // disable submit btn
-          $form.find(':input').change(function() { // monitor all inputs for changes
-            var disable = false;
-            $form.find(':input').not('[type="submit"]').each(function(i, el) { // test all inputs for values
-                if ($.trim(el.value) === '') {
-                    disable = true; // disable submit if any of them are still blank
-                }
-            });
-            $form.find(':input[type="submit"]').prop('disabled', disable);
-        });
-          if ($('#ad_select').val() != '') {
-                $('#register').attr('disabled', 'disabled');
-                return true;
-          };
+        //   $form = $('#add-user-form'); // cache
+        //   $form.find(':input[type="submit"]').prop('disabled', true); // disable submit btn
+        //   $form.find(':input').change(function() { // monitor all inputs for changes
+        //     var disable = false;
+        //     $form.find(':input').not('[type="submit"]').each(function(i, el) { // test all inputs for values
+        //         if ($.trim(el.value) === '') {
+        //             disable = true; // disable submit if any of them are still blank
+        //         }
+        //     });
+        //     $form.find(':input[type="submit"]').prop('disabled', disable);
+        // });
+          // if ($('#ad_select').val() != '') {
+          //       $('#register').attr('disabled', 'disabled');
+          //       return true;
+          // };
 
 
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
@@ -376,7 +376,7 @@ if (theUser.admin >= 0) {
             }).on('submit', function(e, data) {
                 if (e.isDefaultPrevented()) {
                 } else {
-                    var formWrapper = $("#add-user-form");
+                  $('#register').attr('disabled', 'disabled');
                     if (theUser.admin != 2) {
                         manager = theUser.userID;
                     } else if ($("[name=new_manageradd] option").length > 0) {
@@ -470,7 +470,7 @@ if (theUser.admin >= 0) {
                 stwork: {
                     validators: {
                         date: {
-                            format: 'DD/MM/YYYY',
+                            format: 'YYYY-MM-DD',
                             message: 'The value is not a valid date'
                         }
                     }
