@@ -314,13 +314,14 @@ if (theUser.admin >= 0) {
                     validators: {
                         phone: {
                             country: 'Ro',
-                            message: 'The value is not valid %s phone number'
+                            message: 'The value is not valid, Please input a correct phone number.'
                         }
                     }
                 },
                 stwork: {
                     validators: {
                         date: {
+                            min: $('ageUser').add(.18, 'years'),
                             format: 'MM/DD/YYYY',
                             message: 'The value is not a valid date'
                         }
@@ -364,6 +365,7 @@ if (theUser.admin >= 0) {
                 if (!avfreedays.length) {
                     avfreedays = Math.floor(21 / 12 * (11 - moment().month()));
                 }
+
                 $.post(appConfig.url + appConfig.api + 'addUser?token=' + token, {
                     email: email,
                     name: userName,
