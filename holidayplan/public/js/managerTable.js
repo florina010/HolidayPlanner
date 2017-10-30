@@ -12,6 +12,8 @@ $(document).ready(function() {
 
 if (theUser.admin >= 0) {
 
+    var minWork;
+
     $(function() {
         $("a[name='addUser']").click(function() {
             $("#myModalUser").load("addUserForm.html", function() {
@@ -273,125 +275,135 @@ if (theUser.admin >= 0) {
             manager = theUser.userID;
         }
         //Add user form
-        $("#add-user-form").formValidation({
-            framework: 'bootstrap',
-            icon: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                username: {
-                    validators: {
-                        notEmpty: {
-                            message: 'This is required'
-                        }
-                    }
-                },
-                stwork: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The start date is required'
-                        }
-                    }
-                },
-                pos: {
-                    validators: {
-                        notEmpty: {
-                            message: 'This required'
-                        }
-                    }
-                },
-                email: {
-                    validators: {
-                        regexp: {
-                            regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
-                            message: 'The value is not a valid email address'
-                        }
-                    }
-                },
-                phoneUser: {
-                    validators: {
-                        phone: {
-                            country: 'Ro',
-                            message: 'The value is not valid, Please input a correct phone number.'
-                        }
-                    }
-                },
-                stwork: {
-                    validators: {
-                        date: {
-                            min: $('ageUser').add(.18, 'years'),
-                            format: 'MM/DD/YYYY',
-                            message: 'The value is not a valid date'
-                        }
-                    }
-                },
-                ageUser: {
-                    validators: {
-                        date: {
-                            format: 'MM/DD/YYYY',
-                            message: 'The value is not a valid birthday'
-                        }
-                    }
-                }
-            }
-        }).on('change', '[name="Ro"]', function(e) {
-            $('#add-user-form').formValidation('revalidateField', 'phoneUser');
-        }).on('submit', function(e, data) {
-            if (e.isDefaultPrevented()) {
-                // handle the invalid form...
-            } else {
-                var formWrapper = $("#add-user-form");
-                if (theUser.admin != 2) {
-                    manager = theUser.userID;
-                } else if ($("[name=new_manageradd] option").length > 0) {
-                    manager = formWrapper.find("[name = new_manageradd]").val();
-                } else {
-                    manager = 1;
-                }
-                var userName = formWrapper.find("input[name = 'username']").val();
-                var age = formWrapper.find("input[name = 'ageUser']").val();
-                var position = formWrapper.find("[name = 'pos']").val();
-                var stwork = formWrapper.find("[name = 'stwork']").val();
-                var email = formWrapper.find("input[name = 'email']").val();
-                var phone = formWrapper.find("input[name = 'phoneUser']").val();
-                var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
-                var hashObj = new jsSHA("SHA-512", "TEXT", {
-                    numRounds: 1
-                });
-                hashObj.update('avangarde');
-                var password = hashObj.getHash("HEX");
-                if (!avfreedays.length) {
-                    avfreedays = Math.floor(21 / 12 * (11 - moment().month()));
-                }
+        var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
+        var minStWork;
+        $.get(appConfig.url + appConfig.api + 'getStartDate?token=' + token, function(data) {
+            minStWork = moment(data[0].startDate).format('YYYY-MM-DD');
+        }).then(function () {
 
-                $.post(appConfig.url + appConfig.api + 'addUser?token=' + token, {
-                    email: email,
-                    name: userName,
-                    age: age,
-                    password: password,
-                    position: position,
-                    phone: phone,
-                    stwork: stwork,
-                    avfreedays: avfreedays
-                }).done(function(data) {
-                    var userid = JSON.parse(sessionStorage.getItem('user')).userID;
-                    $.post(appConfig.url + appConfig.api + 'modifyClass', {
-                        userID: data.insertId,
-                        managerID: manager,
-                        token: token
-                    }).done(function(data) {
-                        out(data.code);
+            $("#add-user-form").formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    username: {
+                        validators: {
+                            notEmpty: {
+                                message: 'This is required'
+                            }
+                        }
+                    },
+                    pos: {
+                        validators: {
+                            notEmpty: {
+                                message: 'This required'
+                            }
+                        }
+                    },
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'This is required'
+                            },
+                            regexp: {
+                                regexp: '^[^@\\s]+@([^@\\s]+\\.)+[^@\\s]+$',
+                                message: 'The value is not a valid email address'
+                            }
+                        }
+                    },
+                    phoneUser: {
+                        validators: {
+                            phone: {
+                                country: 'Ro',
+                                message: 'The value is not valid, Please input a correct phone number.'
+                            }
+                        }
+                    },
+                    ageUser: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The birth day is required'
+                            },
+                            date: {
+                                format: 'MM/DD/YYYY',
+                                message: 'The value is not a valid birth day',
+                                max: validAge
+                            }
+                        }
+                    },
+                    stwork: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The started working is required'
+                            },
+                            date: {
+                                format: 'MM/DD/YYYY',
+                                message: 'The value is not a valid date',
+                                min: minStWork
+                            }
+                        }
+
+                    }
+                }
+            }).on('change', '[name="Ro"]', function(e) {
+                $('#add-user-form').formValidation('revalidateField', 'phoneUser');
+            }).on('submit', function(e, data) {
+                if (e.isDefaultPrevented()) {
+                } else {
+                    var formWrapper = $("#add-user-form");
+                    if (theUser.admin != 2) {
+                        manager = theUser.userID;
+                    } else if ($("[name=new_manageradd] option").length > 0) {
+                        manager = formWrapper.find("[name = new_manageradd]").val();
+                    } else {
+                        manager = 1;
+                    }
+                    var userName = formWrapper.find("input[name = 'username']").val();
+                    var age = formWrapper.find("input[name = 'ageUser']").val();
+                    var position = formWrapper.find("[name = 'pos']").val();
+                    var stwork = formWrapper.find("[name = 'stwork']").val();
+                    var email = formWrapper.find("input[name = 'email']").val();
+                    var phone = formWrapper.find("input[name = 'phoneUser']").val();
+                    var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
+                    var hashObj = new jsSHA("SHA-512", "TEXT", {
+                        numRounds: 1
                     });
-                    var userstable = $('#users-list-table').DataTable();
-                    var j = userid;
-                    managedUserTable();
-                    $('.modal-body> div:first-child').css('display', 'block');
-                    $('#myModalUser').find('form')[0].reset();
-                });
-                e.preventDefault();
-            }
+                    hashObj.update('avangarde');
+                    var password = hashObj.getHash("HEX");
+                    if (!avfreedays.length) {
+                        avfreedays = Math.floor(21 / 12 * (11 - moment().month()));
+                    }
+
+                    $.post(appConfig.url + appConfig.api + 'addUser?token=' + token, {
+                        email: email,
+                        name: userName,
+                        age: age,
+                        password: password,
+                        position: position,
+                        phone: phone,
+                        stwork: stwork,
+                        avfreedays: avfreedays
+                    }).done(function(data) {
+                        var userid = JSON.parse(sessionStorage.getItem('user')).userID;
+                        $.post(appConfig.url + appConfig.api + 'modifyClass', {
+                            userID: data.insertId,
+                            managerID: manager,
+                            token: token
+                        }).done(function(data) {
+                            out(data.code);
+                        });
+                        var userstable = $('#users-list-table').DataTable();
+                        var j = userid;
+                        managedUserTable();
+                        $('.modal-body> div:first-child').css('display', 'block');
+                        $('#myModalUser').find('form')[0].reset();
+                    });
+                    e.preventDefault();
+                }
+            });
         });
 
         // Edit user form.
