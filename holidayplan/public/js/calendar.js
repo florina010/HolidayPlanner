@@ -34,13 +34,13 @@ function fillDate() {
                         title: 'approved: ' + data[i].type
                     });
                 }
-                if (data[i].userID == theUser.userID && data[i].approved == '2') {
-                    d.push({
-                        start: new Date(data[i].startDate),
-                        end: new Date(data[i].endDate),
-                        title: 'rejected: ' + data[i].type
-                    });
-                }
+                // if (data[i].userID == theUser.userID && data[i].approved == '2') {
+                //     d.push({
+                //         start: new Date(data[i].startDate),
+                //         end: new Date(data[i].endDate),
+                //         title: 'rejected: ' + data[i].type
+                //     });
+                // }
                 if (data[i].userID == theUser.userID && data[i].approved == '0') {
                     d.push({
                         start: new Date(data[i].startDate),
@@ -56,7 +56,6 @@ function fillDate() {
                         dd.push({start:new Date(data[i].startDate),title:'+ '+ data[i].name});
                       };
                  };
-
                 $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function(data) {
                     for (var i in data) {
                         if (data[i].type == "public") {

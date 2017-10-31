@@ -313,11 +313,6 @@ if (theUser.admin >= 0) {
             });
               $form.find(':input[type="submit"]').prop('disabled', disable);
         });
-        console.log($('#ad_select').val());
-        if ($('#ad_select').val() != 'Select position') {
-            var disable = true;
-        };
-        $form.find(':input[type="submit"]').prop('disabled', disable);
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
         var minStWork, currentDay = (moment().format('YYYY-MM-DD').toString());
 

@@ -1,3 +1,7 @@
+td.day.disabled {
+  color: red !important;
+}
+
 #new {
     margin-left: -400px;
 }
