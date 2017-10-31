@@ -157,26 +157,26 @@ if (theUser.admin >= 0) {
             var email = userInfo.eq(3).text();
             editUserForm.find("input[name='email']").val(email);
 
-            var stdate = userInfo.eq(4).text();
-            if (moment(stdate).date() < 10) {
-                var day = "0" + moment(stdate).date();
-            } else {
-                var day = moment(stdate).date();;
-            }
+            // var stdate = userInfo.eq(4).text();
+            // if (moment(stdate).date() < 10) {
+            //     var day = "0" + moment(stdate).date();
+            // } else {
+            //     var day = moment(stdate).date();;
+            // }
+            //
+            // if (moment(stdate).month() + 1 < 10) {
+            //     var month = "0" + (moment(stdate).month() + 1);
+            // } else {
+            //     var month = moment(stdate).month() + 1;
+            // }
+            // var theDate = moment(stdate).year() + "-" + month + "-" + day;
+            // editUserForm.find("input[name=stwork]").attr('value', theDate);
 
-            if (moment(stdate).month() + 1 < 10) {
-                var month = "0" + (moment(stdate).month() + 1);
-            } else {
-                var month = moment(stdate).month() + 1;
-            }
-            var theDate = moment(stdate).year() + "-" + month + "-" + day;
-            editUserForm.find("input[name=stwork]").attr('value', theDate);
-
-            $('input[name=stwork]').datepicker({
-                format: 'yyyy-mm-dd'
-            }).on('changeDate', function(e) {
-                $('#edit-user-form').formValidation('revalidateField', 'stwork');
-            });
+            // $('input[name=stwork]').datepicker({
+            //     format: 'yyyy-mm-dd'
+            // }).on('changeDate', function(e) {
+            //     $('#edit-user-form').formValidation('revalidateField', 'stwork');
+            // });
             var phone = userInfo.eq(5).text();
             editUserForm.find("input[name='phone']").val(phone);
 
