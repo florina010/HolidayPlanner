@@ -28,6 +28,7 @@ $(document).ready(function() {
           for (var i in data){
             datesEnabled.push(data[i].startDate.toString().substring(0,10));
           }
+          console.log(datesEnabled);
           $('#datepicker').datepicker({
               multidate: 2,
               multidateSeparator: ";",
@@ -37,7 +38,19 @@ $(document).ready(function() {
               minViewMode: 0,
               format: 'yyyy-mm-dd',
               beforeShowDay: function (date) {
-                var allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
+                var allDates;
+                if ((date.getMonth()+1 >= 10) && (date.getDate() - 1 >= 10)){
+                   allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
+                }else if ((date.getMonth()+1 >= 10) && (date.getDate() - 1 <= 10)) {
+                   allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-0' + (date.getDate() - 1);
+                }else if ((date.getMonth()+1 <= 10) && (date.getDate() - 1 >= 10)){
+                   allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
+                }else if ((date.getMonth()+1 <= 10) && (date.getDate() - 1 <= 10)){
+                   allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-0' + (date.getDate() - 1);
+                }else if ((date.getMonth()+1 >= 10) && (date.getDate() - 1 == 0)){
+                  allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-01';
+                };
+                 console.log(allDates);
                 if(datesEnabled.indexOf(allDates) != -1){
                   return false;
                 }else{
