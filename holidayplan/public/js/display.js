@@ -25,7 +25,6 @@ $(document).ready(function() {
   var  token = sessionStorage.getItem('token');
   $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
           var datesEnabled= [];
-          console.log(datesEnabled);
           for (var i in data){
             datesEnabled.push(data[i].startDate.toString().substring(0,10));
           }
@@ -39,7 +38,6 @@ $(document).ready(function() {
               format: 'yyyy-mm-dd',
               beforeShowDay: function (date) {
                 var allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
-                console.log(allDates);
                 if(datesEnabled.indexOf(allDates) != -1){
                   return false;
                 }else{
