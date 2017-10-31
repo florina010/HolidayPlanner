@@ -336,11 +336,11 @@ $(document).ready(function() {
             var date = $(".date").val().split(";"),
                 stdate = date[0],
                 enddate = date[1]
-            from = moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
+            from = moment(stdate).format('YYYY/MM/DD');
             if (!enddate) {
-                to = moment(stdate, 'MM/DD/YYYY').format('YYYY/MM/DD');
+                to = moment(stdate).format('YYYY/MM/DD');
             } else {
-                to = moment(enddate, 'MM/DD/YYYY').format('YYYY/MM/DD');
+                to = moment(enddate).format('YYYY/MM/DD');
             }
 
             nrOfDays = weekend(moment(from), moment(to));
