@@ -16,7 +16,8 @@ $(document).ready(function() {
             email: email,
             password: password
         }).done(function(data) {
-            if (user.email.match(regexEmail) && user.email == data.email && user.password == data.password) {
+          alert(user.email.toLowerCase());
+            if (user.email.toLowerCase().match(regexEmail) && user.email.toLowerCase() == data.email.toLowerCase() && user.password == data.password) {
                 found = 1;
                 user['userID'] = data.userID;
                 user['isActive'] = data.isActive;
