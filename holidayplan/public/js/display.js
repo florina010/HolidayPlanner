@@ -20,57 +20,35 @@ $('#tabClickCalendar').click(function() {
         reloadJs('../js/calendar.js');
     }, 400);
 });
-$.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
-        var datesEnabled= [];
-        for (var i in data){
-          datesEnabled.push(data[i].startDate.toString().substring(0,10));
-        }
-        $('#datepicker').datepicker({
-            multidate: 2,
-            multidateSeparator: ";",
-            toggleActive: true,
-            // startDate: new Date(),
-            clearBtn: true,
-            minViewMode: 0,
-            format: 'yyyy-mm-dd',
-            beforeShowDay: function (date) {
-              var allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
-              if(datesEnabled.indexOf(allDates) != -1){
-                return false;
-              }else{
-                return true;
-              };
-            }
-        });
-
-    });
 $(document).ready(function() {
   var theUser = JSON.parse(sessionStorage.getItem('user'));
   var  token = sessionStorage.getItem('token');
-  // $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
-  //         var datesEnabled= [];
-  //         for (var i in data){
-  //           datesEnabled.push(data[i].startDate.toString().substring(0,10));
-  //         }
-  //         $('#datepicker').datepicker({
-  //             multidate: 2,
-  //             multidateSeparator: ";",
-  //             toggleActive: true,
-  //             // startDate: new Date(),
-  //             clearBtn: true,
-  //             minViewMode: 0,
-  //             format: 'yyyy-mm-dd',
-  //             beforeShowDay: function (date) {
-  //               var allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + date.getDate();
-  //               if(datesEnabled.indexOf(allDates) != -1){
-  //                 return false;
-  //               }else{
-  //                 return true;
-  //               };
-  //             }
-  //         });
-  //
-  //     });
+  $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
+          var datesEnabled= [];
+          console.log(datesEnabled);
+          for (var i in data){
+            datesEnabled.push(data[i].startDate.toString().substring(0,10));
+          }
+          $('#datepicker').datepicker({
+              multidate: 2,
+              multidateSeparator: ";",
+              toggleActive: true,
+              // startDate: new Date(),
+              clearBtn: true,
+              minViewMode: 0,
+              format: 'yyyy-mm-dd',
+              beforeShowDay: function (date) {
+                var allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
+                console.log(allDates);
+                if(datesEnabled.indexOf(allDates) != -1){
+                  return false;
+                }else{
+                  return true;
+                };
+              }
+          });
+
+      });
 
     $('#tabClick').addClass('active');
     var theUser = JSON.parse(sessionStorage.getItem('user')),
