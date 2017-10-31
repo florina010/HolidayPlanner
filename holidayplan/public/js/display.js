@@ -45,10 +45,10 @@ $(document).ready(function() {
                    var allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
                 }else if ((date.getMonth()+1 <= 10) && (date.getDate() - 1 <= 10)){
                    var allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-0' + (date.getDate() - 1);
-                }else if ((date.getMonth()+1 >= 10) && (date.getDate() - 1 == 0)){
-                  var allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-00';
+                }else if ((date.getMonth() >= 10) && (date.getDate() - 1 == 1)){
+                  var allDates = date.getFullYear() + '-' + (date.getMonth()) + '-01';
+                   console.log(allDates);
                 };
-                //  console.log(allDates);
                 if(datesEnabled.indexOf(allDates) != -1){
                   return false;
                 }else{
