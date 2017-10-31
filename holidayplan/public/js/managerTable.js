@@ -302,28 +302,27 @@ if (theUser.admin >= 0) {
             manager = theUser.userID;
         }
         //Add user form
-        //   $form = $('#add-user-form'); // cache
-        //   $form.find(':input[type="submit"]').prop('disabled', true); // disable submit btn
-        //   $form.find(':input').change(function() { // monitor all inputs for changes
-        //     var disable = false;
-        //     $form.find(':input').not('[type="submit"]').each(function(i, el) { // test all inputs for values
-        //         if ($.trim(el.value) === '') {
-        //             disable = true; // disable submit if any of them are still blank
-        //         }
-        //     });
-        //     $form.find(':input[type="submit"]').prop('disabled', disable);
-        // });
-          // if ($('#ad_select').val() != '') {
-          //       $('#register').attr('disabled', 'disabled');
-          //       return true;
-          // };
-
+          $form = $('#add-user-form'); // cache
+          $form.find(':input[type="submit"]').prop('disabled', true); // disable submit btn
+          $form.find('input[type="text"]').on('keyup change',function() { // monitor all inputs for changes
+            var disable = false;
+            $form.find('input[type="text"]').not('[type="submit"]').each(function() { // test all inputs for values
+               if ($(this).val() == ''){
+                    disable = true; // disable submit if any of them are still blank
+                }
+            });
+              $form.find(':input[type="submit"]').prop('disabled', disable);
+        });
+        console.log($('#ad_select').val());
+        if ($('#ad_select').val() != 'Select position') {
+            var disable = true;
+        };
+        $form.find(':input[type="submit"]').prop('disabled', disable);
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
         var minStWork, currentDay = (moment().format('YYYY-MM-DD').toString());
 
         $.get(appConfig.url + appConfig.api + 'getStartDate?token=' + token, function(data) {
             minStWork = moment(data[0].startDate).format('YYYY-MM-DD');
-            console.log(minStWork);
         }).then(function () {
             $("#add-user-form").formValidation({
                 framework: 'bootstrap',
@@ -369,7 +368,7 @@ if (theUser.admin >= 0) {
                     ageUser: {
                         validators: {
                             notEmpty: {
-                                message: 'The birth day is required'
+                                message: 'The birthday is required'
                             },
                             date: {
                                 format: 'YYYY-MM-DD',
@@ -513,7 +512,6 @@ if (theUser.admin >= 0) {
                 // handle the invalid form...
             } else {
                 var formWrapper = $("form#edit-user-form").serialize();
-                console.log(formWrapper);
                 $.get(appConfig.url + appConfig.api + 'ManagerEditUser?' + formWrapper + '&token=' + token, function(data) {
                     out(data.code);
                     if (theUser.admin == 2) {
