@@ -348,10 +348,10 @@ function ManagerEditUser(req, res) {
         }
         var params = req.query;
         if (params.position == 'Manager') {
-            var queryStr = "UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "' ,admin='1', phone='" + params.phone + "', isActive='" + params.isActive + "', bonus='" + params.bonus + "', avfreedays=avfreedays + '" + params.bonus
+            var queryStr = "UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "',admin='1', phone='" + params.phone + "', isActive='" + params.isActive + "', bonus='" + params.bonus + "', avfreedays=avfreedays + '" + params.bonus
             + "' WHERE user.userID=" + params.userId
         } else {
-            var queryStr = "UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "', phone='" + params.phone + "', isActive='" + params.isActive + "', bonus='" + params.bonus + "', avfreedays=avfreedays + '" + params.bonus
+            var queryStr = "UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "',admin='0', phone='" + params.phone + "', isActive='" + params.isActive + "', bonus='" + params.bonus + "', avfreedays=avfreedays + '" + params.bonus
             + "' WHERE user.userID=" + params.userId
         }
         connection.query(queryStr, function(err, rows) {
