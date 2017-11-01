@@ -468,6 +468,11 @@ if (theUser.admin >= 0) {
                         $('#myModalUser').find('form')[0].reset();
                         $('#myModalUser').modal('toggle');
                     }
+                    else {
+                        alert("Age and started working are not valid.");
+                        $('#myModalUser').find('form')[0].reset();
+                        $('#myModalUser').modal('toggle');
+                    }
 
                 }
             });
