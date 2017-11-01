@@ -1,7 +1,21 @@
 td.day.disabled {
   color: red !important;
 }
-
+#user-name-disp{
+  position: relative;
+  width: 14%;
+  border: none;
+  bottom: -9px;
+  background-color: rgba(230, 231, 231, 0);
+}
+#user-days-disp{
+  position: relative;
+  width: 14%;
+  border: none;
+  bottom: 25px;
+  left: 142px;
+  background-color: rgba(230, 231, 231, 0);
+}
 #new {
     margin-left: -400px;
 }
