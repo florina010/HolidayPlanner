@@ -12,7 +12,19 @@ function getHolidays() {
         $("#userTable").DataTable().clear();
         out(data.code);
 
-        var table = $('#userTable').DataTable();
+        var table = $('#userTable').DataTable({
+
+          "aoColumnDefs": [
+            {
+               bSortable: false,
+               aTargets: [ -1 ]
+            }
+          ],
+                    "columnDefs": [
+             { orderable: false, targets: -1 }
+          ],
+          "bDestroy": true
+        });
         var j = 1;
         for (var i = 0; i < data.length; i++) {
             if (data[i].approved == 2) {

@@ -644,12 +644,23 @@ if (theUser.admin >= 0) {
             }
         }
     }
-    //Populate manager table
+    //Populate manager table (management)
     function populateTable() {
         var email, avfreedays;
         $.get(appConfig.url + appConfig.api + 'getManagerFreeDays?token=' + token, function(freeDays) {
             out(freeDays.code);
-            var table = $('#manager-table').DataTable();
+            var table = $('#manager-table').DataTable({
+              "aoColumnDefs": [
+                {
+                   bSortable: false,
+                   aTargets: [ -1 ]
+                }
+              ],
+                        "columnDefs": [
+                 { orderable: false, targets: -1 }
+              ],
+              "bDestroy": true
+            });
             var j = 1;
             for (i = 0; i < freeDays.length; i++) {
                 var colorClass = colorTableRow(freeDays[i].approved);
@@ -762,7 +773,18 @@ if (theUser.admin >= 0) {
         var userid = JSON.parse(sessionStorage.getItem('user')).userID;
         $.get(appConfig.url + appConfig.api + 'getManagerUsers?token=' + token + '&userId=' + userid, function(users) {
             out(users.code);
-            var userstable = $('#users-list-table').DataTable();
+            var userstable = $('#users-list-table').DataTable({
+              "aoColumnDefs": [
+                {
+                   bSortable: false,
+                   aTargets: [ -1 ]
+                }
+              ],
+                        "columnDefs": [
+                 { orderable: false, targets: -1 }
+              ],
+              "bDestroy": true
+            });
             var j = 1, active;
             for (i = 0; i < users.length; i++) {
                 if (users[i].isActive == 0) {
