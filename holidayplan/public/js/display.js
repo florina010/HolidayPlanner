@@ -47,7 +47,6 @@ $(document).ready(function() {
                    var allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-0' + (date.getDate() - 1);
                 }else if ((date.getMonth() >= 10) && (date.getDate() - 1 == 1)){
                   var allDates = date.getFullYear() + '-' + (date.getMonth()) + '-01';
-                   console.log(allDates);
                 };
                 if(datesEnabled.indexOf(allDates) != -1){
                   return false;
@@ -291,7 +290,7 @@ $(document).ready(function() {
             $('#eventForm').formValidation('revalidateField', 'endDate');
         });
 
-    var nrOfDays, from, to;
+    var nrOfDays, from, to, currentDay = (moment().format('YYYY-MM-DD'));
     $('#eventForm')
         .formValidation({
             framework: 'bootstrap',
@@ -315,7 +314,7 @@ $(document).ready(function() {
                             message: 'The comment is required'
                         }
                     }
-                },
+                }
             }
         }).on('change', function(e, data) {
             e.preventDefault();
@@ -440,12 +439,15 @@ $(document).ready(function() {
                         start2 = start,
                         end2 = end,
                         dateArray = new Array();
+                        console.log(start);
+                        console.log(end);
                     if (moment(start).isBetween(st, ends) || moment(end).isBetween(st, ends) || start == st || start == ends || end == st || end == ends || start > end) {
                         $('.modal-body> div:first-child').css('display', 'none');
                         $('.modal-body> div:nth-child(2)').css('display', 'none');
                         $('.modal-body> div:nth-child(3)').css('display', 'block');
                         $('#myModal').find('form')[0].reset();
                         $("#eventForm").data('formValidation').resetForm();
+                        $('#datepicker').datepicker('setDate', null);
                         // $('#myModal').modal('toggle');
                         isOk = false;
                         break;
