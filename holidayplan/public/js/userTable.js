@@ -11,7 +11,7 @@ function getHolidays() {
     $.get(appConfig.url + appConfig.api + 'getFreeDaysApprover?token=' + token, function(data) {
         $("#userTable").DataTable().clear();
         out(data.code);
-        
+
         var table = $('#userTable').DataTable();
         var j = 1;
         for (var i = 0; i < data.length; i++) {

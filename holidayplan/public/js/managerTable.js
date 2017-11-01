@@ -132,7 +132,6 @@ if (theUser.admin >= 0) {
         }
     };
 
-
     function managerEditUser(elem, userId) {
         var tr = $(elem).closest("tr");
         $("#users-list tr").removeClass("active-user");
@@ -645,7 +644,7 @@ if (theUser.admin >= 0) {
             }
         }
     }
-
+    //Populate manager table
     function populateTable() {
         var email, avfreedays;
         $.get(appConfig.url + appConfig.api + 'getManagerFreeDays?token=' + token, function(freeDays) {
