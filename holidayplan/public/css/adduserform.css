@@ -4,3 +4,6 @@ input[type="date"]::-webkit-input-placeholder{
 input::-webkit-calendar-picker-indicator{
     display: none;
 }
+.bootstrap-select {
+    display: none;
+}

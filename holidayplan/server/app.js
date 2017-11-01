@@ -1008,7 +1008,7 @@ function getStartDate (req, res) {
             });
             return;
         }
-        connection.query("SELECT user.startDate FROM user WHERE admin = 2", function(err, rows) {
+        connection.query("SELECT user.age FROM user WHERE admin = 2", function(err, rows) {
             connection.release();
             console.log(rows);
             if (!err) {
