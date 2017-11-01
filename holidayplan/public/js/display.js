@@ -440,16 +440,17 @@ $(document).ready(function() {
                         ends = moment(data[i].endDate).format("YYYY/MM/DD"),
                         start2 = start,
                         end2 = end,
-                        dateArray = new Array();
-                        console.log(start);
-                        console.log(end);
-                    if (moment(start).isBetween(st, ends) || moment(end).isBetween(st, ends) || start == st || start == ends || end == st || end == ends || start > end) {
+                        dateArray = new Array(),
+                        currentDay = (moment().format('YYYY/MM/DD'));
+                        alert(start);
+                        alert(end);
+                        alert(currentDay);
+                    if (moment(start).isBetween(st, ends) || moment(end).isBetween(st, ends) || start == st || start == ends || end == st || end == ends || start > end || start < currentDay ) {
                         $('.modal-body> div:first-child').css('display', 'none');
                         $('.modal-body> div:nth-child(2)').css('display', 'none');
                         $('.modal-body> div:nth-child(3)').css('display', 'block');
                         $('#myModal').find('form')[0].reset();
                         $("#eventForm").data('formValidation').resetForm();
-                        $('#datepicker').datepicker('setDate', null);
                         // $('#myModal').modal('toggle');
                         isOk = false;
                         break;
