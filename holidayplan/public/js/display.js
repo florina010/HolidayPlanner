@@ -348,12 +348,13 @@ $(document).ready(function() {
             if (!e.isDefaultPrevented()) {
                 var duration;
                 //  let myDate:Date = moment(dateString,"YYYY-MM-DD").format("DD-MM-YYYY");
-                if ($('#vacationtype').val() != ' Concediu ') {
-                    duration = 0;
-                }
-                else {
-                    duration = nrOfDays;
-                }
+                // if ($('#vacationtype').val() != 'Concediu') {
+                //     duration = 0;
+                // }
+                // else {
+                //     duration = nrOfDays;
+                // }
+                duration = nrOfDays;
                 //$.post(appConfig.url + appConfig.api+ 'getManagerDetails', { managerId: manId}).done(function( data ) {
                 //});
 
@@ -367,8 +368,12 @@ $(document).ready(function() {
                     enddate: to,
                     duration: duration
                 }
-
-                check(from, to, holidayOptions, addHoliday);
+                if (duration == 0) {
+                    alert('Please select another interval.');
+                }
+                else {
+                    check(from, to, holidayOptions, addHoliday);
+                }
             }
         });
 
@@ -442,9 +447,6 @@ $(document).ready(function() {
                         end2 = end,
                         dateArray = new Array(),
                         currentDay = (moment().format('YYYY/MM/DD'));
-                        alert(start);
-                        alert(end);
-                        alert(currentDay);
                     if (moment(start).isBetween(st, ends) || moment(end).isBetween(st, ends) || start == st || start == ends || end == st || end == ends || start > end || start < currentDay ) {
                         $('.modal-body> div:first-child').css('display', 'none');
                         $('.modal-body> div:nth-child(2)').css('display', 'none');

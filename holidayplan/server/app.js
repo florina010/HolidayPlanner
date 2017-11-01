@@ -347,7 +347,6 @@ function ManagerEditUser(req, res) {
             return;
         }
         var params = req.query;
-        console.log('params ' + params.userActive);
         if (params.position == 'Manager') {
             var queryStr = "UPDATE user SET name='" + params.name + "', position='" + params.position + "', email='" + params.email + "',admin='1', phone='" + params.phone + "', userActive='" + params.isActive + "', bonus='" + params.bonus + "', avfreedays=avfreedays + '" + params.bonus
             + "' WHERE user.userID=" + params.userId
