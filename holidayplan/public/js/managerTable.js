@@ -359,32 +359,32 @@ if (theUser.admin >= 0) {
                             }
                         }
                     },
-                    ageUser: {
-                        validators: {
-                            notEmpty: {
-                                message: 'The birthday is required'
-                            },
-                            date: {
-                                format: 'YYYY-MM-DD',
-                                message: 'The value is not a valid birth day',
-                                max: validAge
-                            }
-                        }
-                    },
-                    stwork: {
-                        validators: {
-                            notEmpty: {
-                                message: 'The started working is required'
-                            },
-                            date: {
-                                format: 'YYYY-MM-DD',
-                                message: 'The value is not a valid date',
-                                min: minStWork,
-                                max: currentDay
-                            }
-                        }
+                    // ageUser: {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'The birthday is required'
+                    //         },
+                    //         date: {
+                    //             format: 'YYYY-MM-DD',
+                    //             message: 'The value is not a valid birth day',
+                    //             max: validAge
+                    //         }
+                    //     }
+                    // },
+                    // stwork: {
+                    //     validators: {
+                    //         notEmpty: {
+                    //             message: 'The started working is required'
+                    //         },
+                    //         date: {
+                    //             format: 'YYYY-MM-DD',
+                    //             message: 'The value is not a valid date',
+                    //             min: minStWork,
+                    //             max: currentDay
+                    //         }
+                    //     }
 
-                    }
+                  //  }
                 }
             }).on('change', '[name="Ro"]', function(e) {
                 $('#add-user-form').formValidation('revalidateField', 'phoneUser');
