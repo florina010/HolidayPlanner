@@ -313,12 +313,14 @@ if (theUser.admin >= 0) {
               $form.find(':input[type="submit"]').prop('disabled', disable);
         });
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
-        var minStWork, currentDay = (moment().format('YYYY-MM-DD').toString());
+        var minStWork, currentDay = (moment().format('YYYY-MM-DD')).toString();
 
         $.get(appConfig.url + appConfig.api + 'getStartDate?token=' + token, function(data) {
-            minStWork = moment(data[0].startDate).format('YYYY-MM-DD');
+            minStWork = moment(data[0].age).format('YYYY-MM-DD').toString();
         }).then(function () {
-            $("#add-user-form").formValidation({
+            $("#add-user-form").find('[name="pos"]').selectpicker().change(function(e) {
+                $('#add-user-form').formValidation('revalidateField', 'pos');
+            }).end().formValidation({
                 framework: 'bootstrap',
                 icon: {
                     valid: 'glyphicon glyphicon-ok',
@@ -330,13 +332,6 @@ if (theUser.admin >= 0) {
                         validators: {
                             notEmpty: {
                                 message: 'This is required'
-                            }
-                        }
-                    },
-                    pos: {
-                        validators: {
-                            notEmpty: {
-                                message: 'This required'
                             }
                         }
                     },
@@ -359,6 +354,13 @@ if (theUser.admin >= 0) {
                             }
                         }
                     },
+                    pos: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Please select a position.'
+                        }
+                    }
+                }
                     // ageUser: {
                     //     validators: {
                     //         notEmpty: {
@@ -383,14 +385,25 @@ if (theUser.admin >= 0) {
                     //             max: currentDay
                     //         }
                     //     }
-
-                  //  }
+                    //
+                    // }
                 }
             }).on('change', '[name="Ro"]', function(e) {
                 $('#add-user-form').formValidation('revalidateField', 'phoneUser');
             }).on('submit', function(e, data) {
+                var birthday = "'" + moment($("#add-user-form").find("input[name = 'ageUser']").val()).format("YYYY-MM-DD") + "'",
+                startWork = "'" +  moment($("#add-user-form").find("[name = 'stwork']").val()).format("YYYY-MM-DD") + "'", isOkAge = true, isOkSt = true;
+                if (moment(birthday).isSameOrAfter("'" + validAge + "'")) {
+                    isOkAge = false;
+                }
+
+                if (moment(startWork).isSameOrBefore("'" + minStWork + "'") || moment(startWork).isSameOrAfter("'" + currentDay + "'")) {
+                    isOkSt = false;
+                }
+
                 if (e.isDefaultPrevented()) {
-                } else {
+
+                } else if (isOkAge == true && isOkSt == true) {
                   $('#register').attr('disabled', 'disabled');
                   var formWrapper = $("#add-user-form");
                     if (theUser.admin != 2) {
@@ -402,9 +415,9 @@ if (theUser.admin >= 0) {
                     }
 
                     var userName = formWrapper.find("input[name = 'username']").val();
-                    var age = formWrapper.find("input[name = 'ageUser']").val();
+                    var age = moment(formWrapper.find("input[name = 'ageUser']").val()).format("YYYY-MM-DD");
                     var position = formWrapper.find("[name = 'pos']").val();
-                    var stwork = formWrapper.find("[name = 'stwork']").val();
+                    var stwork = moment(formWrapper.find("[name = 'stwork']").val()).format("YYYY-MM-DD");
                     var email = formWrapper.find("input[name = 'email']").val();
                     var phone = formWrapper.find("input[name = 'phoneUser']").val();
                     var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
@@ -416,7 +429,6 @@ if (theUser.admin >= 0) {
                     if (!avfreedays.length) {
                         avfreedays = Math.floor(21 / 12 * (11 - moment().month()));
                     }
-
                     $.post(appConfig.url + appConfig.api + 'addUser?token=' + token, {
                         email: email,
                         name: userName,
@@ -442,6 +454,21 @@ if (theUser.admin >= 0) {
                         $('#myModalUser').find('form')[0].reset();
                     });
                     e.preventDefault();
+                }
+                else {
+                    e.preventDefault();
+                    if (isOkSt) {
+                        alert('Age is not valid.')
+                        $('#myModalUser').find('form')[0].reset();
+                        $('#myModalUser').modal('toggle');
+                    //    $('#add-user-form').formValidation('revalidateField', 'phoneUser');
+                    }
+                    else if(isOkAge) {
+                        alert("Started working is not valid.");
+                        $('#myModalUser').find('form')[0].reset();
+                        $('#myModalUser').modal('toggle');
+                    }
+
                 }
             });
         });
