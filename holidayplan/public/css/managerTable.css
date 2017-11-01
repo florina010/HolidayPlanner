@@ -1,3 +1,15 @@
+.search{
+  position: relative;
+  left: 361px;
+}
+.labsearch{
+  position: relative;
+  left: 705px;
+  top: 5px;
+}
+.dataTables_filter{
+    display: none;
+}
 .dataTables_paginate a.paginate_button:not(.current) {
     background-color: white;
 }

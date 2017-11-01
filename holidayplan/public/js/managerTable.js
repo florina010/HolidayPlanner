@@ -654,13 +654,24 @@ if (theUser.admin >= 0) {
                 {
                    bSortable: false,
                    aTargets: [ -1 ]
-                }
+                },
               ],
                         "columnDefs": [
                  { orderable: false, targets: -1 }
               ],
               "bDestroy": true
             });
+
+            $('<input class="search" type="text" />')
+              .insertBefore('#manager-table')
+              .before('<label class="labsearch" for="search">Search by name: </label>')
+              .on( 'keyup change', function () {
+                  table
+                  .column( 1 )
+                  .search( this.value )
+                  .draw();
+            });
+
             var j = 1;
             for (i = 0; i < freeDays.length; i++) {
                 var colorClass = colorTableRow(freeDays[i].approved);
@@ -785,6 +796,17 @@ if (theUser.admin >= 0) {
               ],
               "bDestroy": true
             });
+
+            $('<input class="search" type="text" />')
+              .insertBefore('#users-list-table')
+              .before('<label class="labsearch">Search by name: </label>')
+              .on( 'keyup change', function () {
+                  userstable
+                  .column( 1 )
+                  .search( this.value )
+                  .draw();
+            });
+
             var j = 1, active;
             for (i = 0; i < users.length; i++) {
                 if (users[i].isActive == 0) {
