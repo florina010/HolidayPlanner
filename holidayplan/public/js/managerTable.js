@@ -681,7 +681,6 @@ if (theUser.admin >= 0) {
         var email, avfreedays;
         $.get(appConfig.url + appConfig.api + 'getManagerFreeDays?token=' + token, function(freeDays) {
             out(freeDays.code);
-            console.log(freeDays);
             var table = $('#manager-table').DataTable({
               "aoColumnDefs": [
                 {

@@ -88,6 +88,7 @@ function deleteHolidayModal(elem, id, approved) {
         });
     } else {
         alert("You can not delete this. Please contact your manager.");
+        return;
     }
 }
 
