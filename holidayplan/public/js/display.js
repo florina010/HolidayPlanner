@@ -350,11 +350,18 @@ $(document).ready(function() {
                         $("div #danger").append("<p>The duration for this type of holiday is " + holidaysNoCount[j].days + " days.</p>").css('display', 'block');
                         $("[name=comment]").attr('disabled', true);
                         formValid = false;
+                        break;
                     }
                     else {
+                        $("#danger").css('display', 'none');
                         $("[name=comment]").attr('disabled', false);
                         formValid = true;
+                        break;
                     }
+                }
+                else {
+                    $("[name=comment]").attr('disabled', false);
+                    formValid = true;
                 }
             }
             if (type) {
@@ -389,6 +396,8 @@ $(document).ready(function() {
                     }
                     else {
                         check(from, to, holidayOptions, addHoliday);
+                        $("div #info").css('display', 'none');
+                        $("div #danger").css('display', 'none');
                     }
                 }
             }
@@ -411,42 +420,36 @@ $(document).ready(function() {
     };
 
     function addHoliday(options) {
-        // if (options.avDays) {
-            $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
-                vacationtype: options.vacationtype,
-                comment: options.comment,
-                stdate: moment(options.stdate).format("YYYY/MM/DD"),
-                enddate: moment(options.enddate).format("YYYY/MM/DD"),
-                userID: theUser.userID,
-                days: options.duration,
-                approverID: options.manag
-            }, function(data) {
-                out(data.code);
-                // Insert event into calendar.
-                var event = {
-                    title: 'pending: ' + options.comment,
-                    start: moment(options.stdate).format("YYYY-MM-DD"),
-                    end: moment(options.enddate).format("YYYY-MM-DD"),
-                };
-                $('#calendar').fullCalendar('renderEvent', event, true);
-
-                e.preventDefault();
-                $('#myModal').find('form')[0].reset();
-                $("#eventForm").data('formValidation').resetForm();
-            });
-            $('.modal-body> div:first-child').css('display', 'block');
-            $('.modal-body> div:nth-child(2)').css('display', 'none');
-            $('.modal-body> div:nth-child(3)').css('display', 'none');
-        // } else {
-        //     $('.modal-body> div:first-child').css('display', 'none');
-        //     $('.modal-body> div:nth-child(2)').css('display', 'block');
-        //     $('.modal-body> div:nth-child(3)').css('display', 'block');
-        //     isOk = false;
-        // }
+        $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
+            vacationtype: options.vacationtype,
+            comment: options.comment,
+            stdate: moment(options.stdate).format("YYYY/MM/DD"),
+            enddate: moment(options.enddate).format("YYYY/MM/DD"),
+            userID: theUser.userID,
+            days: options.duration,
+            approverID: options.manag
+        }, function(data) {
+            out(data.code);
+            // Insert event into calendar.
+            var event = {
+                title: 'pending: ' + options.comment,
+                start: moment(options.stdate).format("YYYY-MM-DD"),
+                end: moment(options.enddate).format("YYYY-MM-DD"),
+            };
+            $('#calendar').fullCalendar('renderEvent', event, true);
+            e.preventDefault();
+            $('#myModal').find('form')[0].reset();
+            $("#eventForm").data('formValidation').resetForm();
+        });
+        $('.modal-body> div:first-child').css('display', 'block');
+        $('.modal-body> div:nth-child(2)').css('display', 'none');
+        $('.modal-body> div:nth-child(3)').css('display', 'none');
 
         $('#myModal').find('form')[0].reset();
         $("#eventForm").data('formValidation').resetForm();
         $('#calendar').empty();
+        $("div #info").css('display', 'none');
+        $("div #danger").css('display', 'none');
         reloadJs('../js/calendar.js');
     }
 
@@ -468,6 +471,8 @@ $(document).ready(function() {
                         $('.modal-body> div:first-child').css('display', 'none');
                         $('.modal-body> div:nth-child(2)').css('display', 'none');
                         $('.modal-body> div:nth-child(3)').css('display', 'block');
+                        $("div #info").css('display', 'none');
+                        $("div #danger").css('display', 'none');
                         $('#myModal').find('form')[0].reset();
                         $("#eventForm").data('formValidation').resetForm();
                         // $('#myModal').modal('toggle');
@@ -488,7 +493,6 @@ $(document).ready(function() {
                             $('.modal-body> div:nth-child(3)').css('display', 'block');
                             $('#myModal').find('form')[0].reset();
                             $("#eventForm").data('formValidation').resetForm();
-                            // $('#myModal').modal('toggle');
                             isOk = false;
                             break;
                         }
@@ -498,9 +502,17 @@ $(document).ready(function() {
                 options.duration = checkArrays(dateArray, dates, options.duration);
                 if (isOk) {
                     callback(options);
+                    $('#myModal').find('form')[0].reset();
+                    $("#eventForm").data('formValidation').resetForm();
+                    $("div #info").css('display', 'none');
+                    $("div #danger").css('display', 'none');
                     location.reload();
                 }
             } else {
+                $('#myModal').find('form')[0].reset();
+                $("#eventForm").data('formValidation').resetForm();
+                $("div #info").css('display', 'none');
+                $("div #danger").css('display', 'none');
                 callback(options);
             }
 
@@ -565,7 +577,7 @@ $(document).ready(function() {
     $("#close").click(function() {
         location.reload();
     });
-    $(".close").click(function() {
-        location.reload();
-    });
+    // $(".close").click(function() {
+    //     location.reload();
+    // });
 });
