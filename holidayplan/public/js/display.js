@@ -64,19 +64,44 @@ $(document).ready(function() {
               minViewMode: 0,
               format: 'yyyy-mm-dd',
               beforeShowDay: function (date) {
-                var allDates;
+                console.log(date + " " + (date.getDate()-1));
+                if ((date.getMonth()+1 >= 10) && (date.getDate()-1 == 0) && ((date.getMonth()+1) % 2 == 1)){
+                  console.log(date.getMonth() + 1);
+                  console.log((date.getMonth()+1) + " "+ (date.getDate()-1) + '30');
+                  var  allDates = date.getFullYear() + '-' + (date.getMonth()+1) +  '-30' ;
+                };
+                if ((date.getMonth()+1 >= 10) && (date.getDate()-1 == 0) && ((date.getMonth()+1) % 2 == 0)){
+                    console.log("a" + date.getMonth() + 1);
+                    console.log((date.getMonth()+1) + " "+ (date.getDate()-1) + '01');
+                    var  allDates = date.getFullYear() + '-' + (date.getMonth()+1) +  '-01' ;
+                };
+
+                if ((date.getMonth()+1 < 10) && (date.getDate()-1 == 0) && ((date.getMonth()+1) % 2 == 1)){
+                    console.log("a" + date.getMonth() + 1);
+                    console.log((date.getMonth()+1) + " "+ (date.getDate()-1) + '30');
+                    var  allDates = date.getFullYear() + '-0' + (date.getMonth()+1) +  '-01' ;
+                };
+
+                if ((date.getMonth()+1 < 10) && (date.getDate()-1 == 0) && ((date.getMonth()+1) % 2 == 0)){
+                    console.log("a" + date.getMonth() + 1);
+                    console.log((date.getMonth()+1) + " "+ (date.getDate()-1) + '01');
+                    var  allDates = date.getFullYear() + '-0' + (date.getMonth()+1) +  '-01' ;
+                };
 
                 if ((date.getMonth()+1 >= 10) && (date.getDate() - 1 >= 10)){
-                    allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
-                }else if ((date.getMonth()+1 >= 10) && (date.getDate() - 1 <= 10) && (date.getDate() - 1 > 0)) {
-                    allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-0' + (date.getDate() - 1);
-                }else if ((date.getMonth()+1 <= 10) && (date.getDate() - 1 >= 10)){
-                    allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
-                }else if ((date.getMonth()+1 <= 10) && (date.getDate() - 1 <= 10) && (date.getDate() - 1 > 0)){
-                    allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-0' + (date.getDate() - 1);
-                }else if ((date.getMonth()+1 >= 10) && (date.getDate() -1 == 0)){
-                    allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-01';
-                };
+                  var  allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
+                }else if ((date.getMonth()+1 >= 10) && (date.getDate() - 1 <= 10) && (date.getDate() > 1)) {
+                  var  allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-0' + (date.getDate() - 1);
+                }else if ((date.getMonth()+1 < 10) && (date.getDate() - 1 >= 10)){
+                  var  allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-' + (date.getDate() - 1);
+                }else if ((date.getMonth()+1 < 10) && (date.getDate() - 1 <= 10) && (date.getDate() > 1)){
+                  var  allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-0' + (date.getDate() - 1);
+                }
+                // if (date.getDate() == 1){
+                //   var  allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-01';
+                // }//else if((date.getMonth()+1 < 10) && (date.getDate() -1 == 0)){
+                //   var  allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-00';
+                // };
                 if(datesEnabled.indexOf(allDates) != -1){
                   return false;
                 }else{
