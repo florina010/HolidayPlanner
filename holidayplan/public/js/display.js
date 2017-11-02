@@ -113,14 +113,14 @@ $(document).ready(function() {
                 $("[name=avDays]").val(theUser.avfreedays);
                 window.theUser = theUser;
 
-                if (data.length == 0) {
-                    sum = 0;
-                } else {
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].approved == true)
-                            sum += data[i].days;
-                    }
-                }
+                // if (data.length == 0) {
+                //     sum = 0;
+                // } else {
+                     for (var i = 0; i < data.length; i++) {
+                         if (data[i].approved == true)
+                             sum += data[i].days;
+                     }
+                // }
 
                 // var work = moment().diff(theUser.startDate, 'months', false);
                 //
@@ -134,11 +134,11 @@ $(document).ready(function() {
                 //   $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
                 // }
 
-                if (theUser.avfreedays <= 0) {
-                    $("[name=avDays]").val(0);
-                    $("#holiday").css("display", 'none');
-                    theUser.avfreedays = $("[name=avDays]").val();
-                };
+                // if (theUser.avfreedays <= 0) {
+                //     $("[name=avDays]").val(0);
+                //     $("#holiday").css("display", 'none');
+                //     theUser.avfreedays = $("[name=avDays]").val();
+                // };
 
                 sessionStorage.setItem('user', JSON.stringify(theUser));
                 $.get(appConfig.url + appConfig.api + 'updateFreeDays?token=' + token + '&userEmail=' + theUser.email + '&avfreedays=' + $("[name=avDays]").val(), function(data) {
@@ -357,7 +357,7 @@ $(document).ready(function() {
                 duration = nrOfDays;
                 //$.post(appConfig.url + appConfig.api+ 'getManagerDetails', { managerId: manId}).done(function( data ) {
                 //});
-
+                alert(duration);
                 var holidayOptions = {
                     managerName: manager,
                     manag: manId,
@@ -394,7 +394,7 @@ $(document).ready(function() {
     };
 
     function addHoliday(options) {
-        if (options.avDays >= options.duration) {
+        // if (options.avDays) {
             $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
                 vacationtype: options.vacationtype,
                 comment: options.comment,
@@ -420,12 +420,12 @@ $(document).ready(function() {
             $('.modal-body> div:first-child').css('display', 'block');
             $('.modal-body> div:nth-child(2)').css('display', 'none');
             $('.modal-body> div:nth-child(3)').css('display', 'none');
-        } else {
-            $('.modal-body> div:first-child').css('display', 'none');
-            $('.modal-body> div:nth-child(2)').css('display', 'block');
-            $('.modal-body> div:nth-child(3)').css('display', 'block');
-            isOk = false;
-        }
+        // } else {
+        //     $('.modal-body> div:first-child').css('display', 'none');
+        //     $('.modal-body> div:nth-child(2)').css('display', 'block');
+        //     $('.modal-body> div:nth-child(3)').css('display', 'block');
+        //     isOk = false;
+        // }
 
         $('#myModal').find('form')[0].reset();
         $("#eventForm").data('formValidation').resetForm();

@@ -73,11 +73,11 @@ if (theUser.admin >= 0) {
         approveModal.attr("approve-action", action);
         $("#manager-table tr").removeClass("activeModal");
         $(elem).closest("tr").addClass("activeModal");
-        if (avFD >= 0) {
+        // if (avFD >= 0) {
             $.get(appConfig.url + appConfig.api + 'updateAvFreeDays?email=' + email + '&avfreedays=' + avFD, function(data) {
 
             });
-        }
+        // }
     };
 
     function approveFreeDays() {
@@ -106,14 +106,14 @@ if (theUser.admin >= 0) {
         var params = '"' + email + '",' + avFD;
 
         if (approved == 1) {
-            if (availableFD >= days) {
+            // if (availableFD >= days) {
                 approve(id, approved, token, params, email);
-            } else {
-                alert("Number of days is less than number of available free days. ");
+            // } else {
+                // alert("Number of days is less than number of available free days. ");
             }
-        } else {
-            approve(id, approved, token, params, email);
-        }
+        // } else {
+            // approve(id, approved, token, params, email);
+        // }
     };
 
     function approve(id, approved, token, params, email) {
@@ -681,6 +681,7 @@ if (theUser.admin >= 0) {
         var email, avfreedays;
         $.get(appConfig.url + appConfig.api + 'getManagerFreeDays?token=' + token, function(freeDays) {
             out(freeDays.code);
+            console.log(freeDays);
             var table = $('#manager-table').DataTable({
               "aoColumnDefs": [
                 {
