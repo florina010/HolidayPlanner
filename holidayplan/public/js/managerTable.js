@@ -545,6 +545,8 @@ if (theUser.admin >= 0) {
                         clearEmployee($("form#edit-user-form").serializeArray());
                         managedUserTable();
                     } else {
+                        $("#users-list-table").DataTable().clear();
+                        clearEmployee($("form#edit-user-form").serializeArray());
                         managedUserTable();
                     }
                 });

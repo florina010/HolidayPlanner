@@ -541,7 +541,7 @@ function getManagersName(req, res) {
 
 
 function handle_dateupdate(req, res) {
-    var params = req.query;
+    var params = req.query, duration;
     pool.getConnection(function(err, connection) {
         if (err) {
             res.json({
