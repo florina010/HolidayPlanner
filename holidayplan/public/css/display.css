@@ -65,9 +65,10 @@ h3 {
     text-align: left;
 }
 
-#info {
+#info, #danger {
     display: none;
 }
+
 
 label {
     float: left;

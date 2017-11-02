@@ -14,6 +14,33 @@ function weekend(d1, d2) {
     return days - we;
 }
 
+var holidaysNoCount = [
+    {
+        type: 'Donare sange',
+        days: 1
+    },
+    {
+        type: 'Deces (gradul 1)',
+        days: 1
+    },
+    {
+        type: 'Deces (gradul 2)',
+        days: 2
+    },
+    {
+        type: 'Casatorie',
+        days: 5
+    },
+    {
+        type: 'Nou nascut',
+        days: 10
+    },
+    {
+        type: 'Maternitate/Paternitate',
+        days: 730
+    }
+]
+
 $('#tabClickCalendar').click(function() {
     setTimeout(function() {
         $("#calendar").empty();
@@ -113,26 +140,6 @@ $(document).ready(function() {
                 $("[name=avDays]").val(theUser.avfreedays);
                 window.theUser = theUser;
 
-                if (data.length == 0) {
-                    sum = 0;
-                } else {
-                    for (var i = 0; i < data.length; i++) {
-                        if (data[i].approved == true)
-                            sum += data[i].days;
-                    }
-                }
-
-                // var work = moment().diff(theUser.startDate, 'months', false);
-                //
-                // var restM = 12 - currentDate.month();
-                // if ( work < 12 ){
-                //     $("[name=avDays]").val(Math.floor(21/12*restM - sum));
-                // };
-                //
-                //
-                // if (currentDate.month() == 0 && currentDate.date() == 1 ) {
-                //   $("[name=avDays]").val(parseInt($("[name=avDays]").val()) + 21 + theUser.bonus);
-                // }
 
                 if (theUser.avfreedays <= 0) {
                     $("[name=avDays]").val(0);
@@ -153,7 +160,6 @@ $(document).ready(function() {
 
     if (sessionStorage.getItem('admin') != null) {
         $('#navbar1 ul:first-of-type > li:nth-child(2)').css('display', 'block');
-        // $('#navbar1 .navbar-nav li:nth-child(2)').css('display', 'block');
         var li = $("<li></li>"),
             a = $("<a data-toggle='tab' href='#management'></a>"),
             i = $("<i class='fa fa-pencil-square-o' aria-hidden='true'> Management</i>"),
@@ -271,28 +277,7 @@ $(document).ready(function() {
         $('.modal-body> div:nth-child(3)').css('display', 'none');
     });
 
-
-    $('#startDatePicker')
-        .datepicker({
-            startDate: date,
-            format: 'yyyy/mm/dd'
-        })
-        .on('changeDate', function(e) {
-            // Revalidate the start date field
-            $('#eventForm').formValidation('revalidateField', 'startDate');
-        });
-
-    $('#endDatePicker')
-        .datepicker({
-            startDate: date,
-
-            format: 'yyyy/mm/dd'
-        })
-        .on('changeDate', function(e) {
-            $('#eventForm').formValidation('revalidateField', 'endDate');
-        });
-
-    var nrOfDays, from, to, currentDay = (moment().format('YYYY-MM-DD'));
+    var nrOfDays, from, to, currentDay = (moment().format('YYYY-MM-DD')), formValid = true;
     $('#eventForm')
         .formValidation({
             framework: 'bootstrap',
@@ -321,6 +306,7 @@ $(document).ready(function() {
         }).on('change', function(e, data) {
             e.preventDefault();
             $("div #info").empty();
+            $("div #danger").empty();
             var date = $(".date").val().split(";"),
                 stdate = date[0],
                 enddate = date[1]
@@ -332,47 +318,53 @@ $(document).ready(function() {
             }
 
             nrOfDays = weekend(moment(from), moment(to));
-
-            if ($('#vacationtype').val()) {
+            var type = $('#vacationtype').val();
+            for (var j in holidaysNoCount) {
+                if (type == holidaysNoCount[j].type) {
+                    if (nrOfDays != holidaysNoCount[j].days) {
+                        $("div #danger").append("<p>The duration for this type of holiday is " + holidaysNoCount[j].days + " days.</p>").css('display', 'block');
+                        $("[name=comment]").attr('disabled', true);
+                        formValid = false;
+                    }
+                    else {
+                        $("[name=comment]").attr('disabled', false);
+                        formValid = true;
+                    }
+                }
+            }
+            if (type) {
                 $("div #info").css('display', 'block');
-                if ($('#vacationtype').val() == 'Concediu') {
+                if (type == 'Concediu') {
                     $("div #info").append("<p>You selected " + nrOfDays + " days. These will be taken from the total number of available leave days.</p>")
-
                 }
                 else {
                     $("div #info").append("<p>You selected " + nrOfDays + " days. These will not be taken from the total number of available leave days.</p>")
                 }
             }
-
         }).on('submit', function(e, data) {
             if (!e.isDefaultPrevented()) {
-                var duration;
-                //  let myDate:Date = moment(dateString,"YYYY-MM-DD").format("DD-MM-YYYY");
-                // if ($('#vacationtype').val() != 'Concediu') {
-                //     duration = 0;
-                // }
-                // else {
-                //     duration = nrOfDays;
-                // }
-                duration = nrOfDays;
-                //$.post(appConfig.url + appConfig.api+ 'getManagerDetails', { managerId: manId}).done(function( data ) {
-                //});
+                if (formValid) {
+                    var duration;
+                    duration = nrOfDays;
 
-                var holidayOptions = {
-                    managerName: manager,
-                    manag: manId,
-                    vacationtype: $("#vacationtype").val(),
-                    comment: $("#comment").val(),
-                    avDays: theUser.avfreedays,
-                    stdate: from,
-                    enddate: to,
-                    duration: duration
-                }
-                if (duration == 0) {
-                    alert('Please select another interval.');
-                }
-                else {
-                    check(from, to, holidayOptions, addHoliday);
+                    var holidayOptions = {
+                        managerName: manager,
+                        manag: manId,
+                        vacationtype: $("#vacationtype").val(),
+                        comment: $("#comment").val(),
+                        avDays: theUser.avfreedays,
+                        stdate: from,
+                        enddate: to,
+                        duration: duration
+                    }
+
+                    if (duration == 0) {
+                        alert('Please select another interval.');
+                        $('#myModalUser').find('form')[0].reset();
+                    }
+                    else {
+                        check(from, to, holidayOptions, addHoliday);
+                    }
                 }
             }
         });
