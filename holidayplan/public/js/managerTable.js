@@ -73,16 +73,13 @@ if (theUser.admin >= 0) {
         approveModal.attr("approve-action", action);
         $("#manager-table tr").removeClass("activeModal");
         $(elem).closest("tr").addClass("activeModal");
-        // if (avFD >= 0) {
-            $.get(appConfig.url + appConfig.api + 'updateAvFreeDays?email=' + email + '&avfreedays=' + avFD, function(data) {
-
-            });
-        // }
+        $.get(appConfig.url + appConfig.api + 'updateAvFreeDays?email=' + email + '&avfreedays=' + avFD, function(data) {});
     };
 
     function approveFreeDays() {
         var tr = $("#manager-table tr.activeModal");
         var td = tr.find("td").eq(11);
+
         var id = $("#approve-freedays-modal").attr("approveId");
         var approved = parseInt($("#approve-freedays-modal").attr("approve-action"));
 
@@ -102,18 +99,15 @@ if (theUser.admin >= 0) {
         if (td.prev().html() == "Pending") {
             var avFD = availableFD;
         }
+
         var email = td.prev().prev().prev().prev().prev().prev().prev().prev().html();
         var params = '"' + email + '",' + avFD;
 
         if (approved == 1) {
-            // if (availableFD >= days) {
-                approve(id, approved, token, params, email);
-            // } else {
-                // alert("Number of days is less than number of available free days. ");
-            }
-        // } else {
-            // approve(id, approved, token, params, email);
-        // }
+            approve(id, approved, token, params, email);
+         } else {
+             approve(id, approved, token, params, email);
+         }
     };
 
     function approve(id, approved, token, params, email) {
@@ -714,19 +708,34 @@ if (theUser.admin >= 0) {
                 switch (freeDays[i].approved) {
                     case 1:
                         freeDaysStatus = "Approved";
-                        var avFD = freeDays[i].avfreedays + freeDays[i].days;
+                        if (freeDays[i].type == 'Concediu') {
+                            var avFD = freeDays[i].avfreedays + freeDays[i].days;
+                        }
+                        else {
+                            var avFD = freeDays[i].avfreedays;
+                        }
                         var params = '"' + freeDays[i].email + '",' + avFD;
                         approveButtons = "<span class='fa fa-times' onclick='displayApproveModal(this ," + freeDays[i].id + ", " + params + ", 2)' approved='1'></span>";
                         break;
                     case 2:
                         freeDaysStatus = "Not Approved";
-                        var avFD = freeDays[i].avfreedays - freeDays[i].days;
+                        if (freeDays[i].type == 'Concediu') {
+                            var avFD = freeDays[i].avfreedays - freeDays[i].days;
+                        }
+                        else {
+                            var avFD = freeDays[i].avfreedays;
+                        }
                         var params = '"' + freeDays[i].email + '",' + avFD;
                         approveButtons = "<span class='fa fa-check' onclick='displayApproveModal(this ," + freeDays[i].id + ", " + params + ", 1)' approved='2'></span>";
                         break;
                     default:
                         freeDaysStatus = "Pending";
-                        var avFD = freeDays[i].avfreedays - freeDays[i].days;
+                        if (freeDays[i].type == 'Concediu') {
+                            var avFD = freeDays[i].avfreedays - freeDays[i].days;
+                        }
+                        else {
+                            var avFD = freeDays[i].avfreedays;
+                        }
                         var params = '"' + freeDays[i].email + '",' + avFD;
                         approveButtons = "<span class='fa fa-check' onclick='displayApproveModal(this ," + freeDays[i].id + "," + params + ", 1)' approved='0'></span>";
                         approveButtons += "<span class='fa fa-times' onclick='displayApproveModal(this ," + freeDays[i].id + ", 0, 0, 2)' approved='0'></span>";
