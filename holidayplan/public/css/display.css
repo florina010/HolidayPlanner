@@ -3,18 +3,39 @@ td.day.disabled {
 }
 #user-name-disp{
   position: relative;
-  width: 14%;
-  border: none;
-  bottom: -9px;
-  background-color: rgba(230, 231, 231, 0);
+      width: 85%;
+      border: none;
+      bottom: 29px;
+      background-color: rgba(230, 231, 231, 0);
+      left: 120px;
+      display: inline-block;
+}
+#hi{
+  position: relative;
+  bottom: 33px;
+  left: 365px;
+
 }
 #user-days-disp{
   position: relative;
-  width: 14%;
+  width: 65%;
   border: none;
-  bottom: 25px;
-  left: 142px;
+  bottom: -26px;
+  left: 12px;
+  top: -4px;
   background-color: rgba(230, 231, 231, 0);
+  display: inline-block;
+}
+#you{
+  bottom: 38px;
+      position: relative;
+      left: 458px;
+}
+#fd{
+  position: relative;
+  bottom: 31px;
+  left: 458px;
+
 }
 #new {
     margin-left: -400px;
