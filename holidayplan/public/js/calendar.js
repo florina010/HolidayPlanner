@@ -95,7 +95,7 @@ function main() {
         m = date.getMonth(),
         y = date.getFullYear();
 
-        console.log(d);
+        console.log(m);
 
 
     /*  className colors
