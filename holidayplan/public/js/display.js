@@ -550,7 +550,4 @@ $(document).ready(function() {
     $("#close").click(function() {
         location.reload();
     });
-    // $(".close").click(function() {
-    //     location.reload();
-    // });
 });

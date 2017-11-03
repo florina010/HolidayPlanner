@@ -26,6 +26,7 @@ function fillDate() {
                     window.location.href = 'login.html';
                 }
             }
+            console.log(data);
             for (var i = 0; i < data.length; i++) {
                 if (data[i].userID == theUser.userID && data[i].approved == '1') {
                     d.push({
@@ -34,13 +35,6 @@ function fillDate() {
                         title: 'approved: ' + data[i].type
                     });
                 }
-                // if (data[i].userID == theUser.userID && data[i].approved == '2') {
-                //     d.push({
-                //         start: new Date(data[i].startDate),
-                //         end: new Date(data[i].endDate),
-                //         title: 'rejected: ' + data[i].type
-                //     });
-                // }
                 if (data[i].userID == theUser.userID && data[i].approved == '0') {
                     d.push({
                         start: new Date(data[i].startDate),
@@ -48,7 +42,7 @@ function fillDate() {
                         title: 'pending: ' + data[i].type
                     });
                 }
-
+                console.log(d);
             }
             $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
                   for (var i in data){
@@ -67,6 +61,7 @@ function fillDate() {
                     };
 
                     Array.prototype.push.apply(d, dd);
+                    console.log(d);
                     main();
                     colorEvents();
                 });
@@ -87,7 +82,6 @@ function reloadJs(src) {
 function colorEvents() {
 
     $('.fc-event-title:contains("approved")').parent().addClass("fc-event-approved");
-    $('.fc-event-title:contains("rejected")').parent().addClass("fc-event-rejected");
     $('.fc-event-title:contains("pending")').parent().addClass("fc-event-pending");
     $('.fc-event-title:contains("+")').parent().addClass("fc-event-legal");
 }
@@ -101,7 +95,7 @@ function main() {
         m = date.getMonth(),
         y = date.getFullYear();
 
-
+        console.log(d);
 
 
     /*  className colors
@@ -153,7 +147,7 @@ function main() {
         columnFormat: {
             month: 'ddd', // Mon
             week: 'ddd d', // Mon 7
-            day: 'dddd M/d', // Monday 9/7
+            day: 'dddd M-d', // Monday 9/7
             agendaDay: 'dddd d'
         },
         titleFormat: {
