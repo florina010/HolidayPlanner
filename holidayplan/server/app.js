@@ -44,7 +44,7 @@ function legalHolidaysToDb(req, res) {
 
         for (var i in hd.getHolidays(year)) {
             if (hd.getHolidays(year)[i].type == 'public') {
-                var date = moment(hd.getHolidays(year)[i].date).format('YYYY/MM/DD');
+                var date = moment(hd.getHolidays(year)[i].date).format('YYYY-MM-DD');
                 connection.query("INSERT INTO legalholidays(startDate, name, type) VALUES ('" + date + "', '" +
                     hd.getHolidays(year)[i].name + "','" + hd.getHolidays(year)[i].type + "')",
                     function(err, rows) {});
