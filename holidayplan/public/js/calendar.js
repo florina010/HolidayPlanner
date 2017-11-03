@@ -26,7 +26,6 @@ function fillDate() {
                     window.location.href = 'login.html';
                 }
             }
-            console.log(data);
             for (var i = 0; i < data.length; i++) {
                 if (data[i].userID == theUser.userID && data[i].approved == '1') {
                     d.push({
@@ -42,7 +41,6 @@ function fillDate() {
                         title: 'pending: ' + data[i].type
                     });
                 }
-                console.log(d);
             }
             $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
                   for (var i in data){
@@ -61,7 +59,6 @@ function fillDate() {
                     };
 
                     Array.prototype.push.apply(d, dd);
-                    console.log(d);
                     main();
                     colorEvents();
                 });
@@ -94,9 +91,6 @@ function main() {
         d = date.getDate(),
         m = date.getMonth(),
         y = date.getFullYear();
-
-        console.log(m);
-
 
     /*  className colors
 
@@ -200,14 +194,4 @@ function main() {
         events: window.d,
 
     });
-
-    $("#calendar table tbody tr td").each(function () {
-        $(this).click(function (){
-            var currentDay = moment().format('YYYY-MM-DD');
-            if (moment($(this).data('date')).isSameOrAfter(currentDay)) {
-                $("#myModal").modal('show');
-
-            }
-    });
-});
 }
