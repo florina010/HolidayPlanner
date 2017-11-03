@@ -1,4 +1,13 @@
 $(document).ready(function() {
+
+  $('#addhol').click(function() {
+      // setTimeout(function() {
+          // $("#calendar").empty();
+          // reloadJs('../js/calendar.js');
+          console.log("aa");
+      // }, 400);
+  });
+
     var theUser = JSON.parse(sessionStorage.getItem('user')),
         token = sessionStorage.getItem('token');
 
@@ -14,14 +23,6 @@ $(document).ready(function() {
                 if ((data.length == 0) || (today > data[0].year)) {
                     displayForm();
                     $.get(appConfig.url + appConfig.api + 'getLastYear?token=' + token + '&year=' + today, function(data) {
-                        out(data.code);
-                    });
-
-                    $.get(appConfig.url + appConfig.api + 'deletelegalHolidays?token=' + token + '&year=' + today, function(data) {
-                        out(data.code);
-                    });
-
-                    $.get(appConfig.url + appConfig.api + 'autoIncrement?token=' + token + '&year=' + today, function(data) {
                         out(data.code);
                     });
 
@@ -63,7 +64,7 @@ $(document).ready(function() {
                 var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
                 var name = formWrapper.find("input[name ='newholiday']").val();
                 var startDate = formWrapper.find("input[name = 'stholi']").val();
-
+                console.log("aa");
                 $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function(data) {
                     out(data.code);
                 });
@@ -116,9 +117,9 @@ $(document).ready(function() {
                 $.get(appConfig.url + appConfig.api + 'getNewHoliday?token=' + token + '&startDate=' + startDate + '&name=' + name, function(data) {
                     out(data.code);
                 });
+                  $('#myModalOncePerYear').modal('hide');
             }
             e.preventDefault();
-          //  $('#myModalOncePerYear').modal('hide');
         });
         getAllHolidays();
     };
@@ -276,5 +277,4 @@ $(document).ready(function() {
             }
         }
     };
-
 });
