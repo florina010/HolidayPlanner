@@ -276,6 +276,8 @@ $(document).ready(function() {
     });
 
     var nrOfDays, from, to, currentDay = (moment().format('YYYY-MM-DD')), formValid = true;
+
+
     $('#eventForm')
         .formValidation({
             framework: 'bootstrap',
@@ -302,7 +304,6 @@ $(document).ready(function() {
                 }
             }
         }).on('change', function(e, data) {
-            e.preventDefault();
             $("div #info").empty();
             $("div #danger").empty();
             var date = $(".date").val().split(";"),
@@ -347,7 +348,8 @@ $(document).ready(function() {
                 }
             }
         }).on('submit', function(e, data) {
-            if (!e.isDefaultPrevented()) {
+           if (!e.isDefaultPrevented()) {
+               console.log(formValid);
                 if (formValid) {
                     var duration;
                     duration = nrOfDays;
@@ -365,7 +367,7 @@ $(document).ready(function() {
 
                     if (duration == 0) {
                         alert('Please select another interval.');
-                        $('#myModalUser').find('form')[0].reset();
+                        $('#myModal').find('form')[0].reset();
                     }
                     else {
                         check(from, to, holidayOptions, addHoliday);
@@ -373,6 +375,7 @@ $(document).ready(function() {
                         $("div #danger").css('display', 'none');
                     }
                 }
+                e.preventDefault();
             }
         });
 
@@ -393,6 +396,7 @@ $(document).ready(function() {
     };
 
     function addHoliday(options) {
+        console.log('si in add a intrat');
         $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
             vacationtype: options.vacationtype,
             comment: options.comment,
@@ -452,6 +456,9 @@ $(document).ready(function() {
                         isOk = false;
                         break;
                     }
+                    else {
+                        isOk = true;
+                    }
                     while (start2 <= end2) {
                         dateArray.push(start2);
                         var duration = moment.duration({
@@ -468,6 +475,9 @@ $(document).ready(function() {
                             $("#eventForm").data('formValidation').resetForm();
                             isOk = false;
                             break;
+                        }
+                        else {
+                            isOk = true;
                         }
                     }
                 }

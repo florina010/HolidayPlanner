@@ -206,4 +206,14 @@ function main() {
         events: window.d,
 
     });
+
+    $("#calendar table tbody tr td").each(function () {
+        $(this).click(function (){
+            var currentDay = moment().format('YYYY-MM-DD');
+            if (moment($(this).data('date')).isSameOrAfter(currentDay)) {
+                $("#myModal").modal('show');
+
+            }
+    });
+});
 }
