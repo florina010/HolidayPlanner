@@ -4,9 +4,10 @@ window.sessionInvalid = false;
 
 function weekend(d1, d2) {
     var we = 0,
-        days = d2.diff(d1, "days") -1;
+        days = d2.diff(d1, "days") + 1;
     while (d1 <= d2) {
-        if (d1.days() == 0 || d1.days() == 6) {
+        console.log(d1.days());
+        if (d1.days()  == 0 || d1.days()  == 6) {
             we++;
         }
         d1.add(1, "days");
@@ -546,6 +547,17 @@ $(document).ready(function() {
             }
         }
     }
+
+    $("#dropdownMenu2").click(function() {
+        $('#myModal').find('form')[0].reset();
+        $("#eventForm").data('formValidation').resetForm();
+    //    $('#calendar').empty();
+        $("div #info").css('display', 'none');
+        $("div #danger").css('display', 'none');
+        reloadJs('../js/calendar.js');
+    });
+
+
 
     $("#close").click(function() {
         location.reload();

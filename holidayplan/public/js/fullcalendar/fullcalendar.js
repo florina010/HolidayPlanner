@@ -13753,6 +13753,8 @@ var EventDefDateMutation = Class.extend({
 			}
 
 			if (end && !end.hasTime()) {
+				alert(end);
+				alert(end.hasTime());
 				end.time(0);
 			}
 		}
