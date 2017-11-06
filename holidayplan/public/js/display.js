@@ -4,7 +4,7 @@ window.sessionInvalid = false;
 
 function weekend(d1, d2) {
     var we = 0,
-        days = d2.diff(d1, "days") + 1;
+        days = d2.diff(d1, "days") -1;
     while (d1 <= d2) {
         if (d1.days() == 0 || d1.days() == 6) {
             we++;
@@ -342,7 +342,6 @@ $(document).ready(function() {
             }
         }).on('submit', function(e, data) {
            if (!e.isDefaultPrevented()) {
-               console.log(formValid);
                 if (formValid) {
                     var duration;
                     duration = nrOfDays;
@@ -389,7 +388,6 @@ $(document).ready(function() {
     };
 
     function addHoliday(options) {
-        console.log('si in add a intrat');
         $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
             vacationtype: options.vacationtype,
             comment: options.comment,
