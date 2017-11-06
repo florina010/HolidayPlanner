@@ -79,7 +79,7 @@ function displayDeleteModal(event, elem, id, approved) {
 }
 
 function deleteHolidayModal(elem, id, approved) {
-    if (approved != 1) {
+    if (approved == 0) {
         $.post(appConfig.url + appConfig.api + 'deleteHoliday?token=' + token, {
             id: id
         }).done(function(data) {
