@@ -546,14 +546,11 @@ if (theUser.admin >= 0) {
     function clearEmployee(userData) {
         var userArray = {};
         for (var i = 0; i < userData.length; i++) {
-            console.log(userData[i]['name']);
             userArray[userData[i]['name']] = userData[i]['value'];
         }
 
-        console.log(userArray['userActive']);
         if (userArray['userActive'] == 0) {
             var newManager = userArray["new_manager"];
-            console.log(newManager + ' newman');
             if (newManager == null) {
                 newManager = JSON.parse(sessionStorage.getItem('user')).userID;
             }
