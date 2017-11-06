@@ -7690,7 +7690,7 @@ var DayTableMixin = FC.DayTableMixin = {
 		var daysPerRow = this.daysPerRow;
 		var normalRange = this.view.computeDayRange(unzonedRange); // make whole-day range, considering nextDayThreshold
 		var rangeFirst = this.getDateDayIndex(normalRange.start); // inclusive first index
-		var rangeLast = this.getDateDayIndex(normalRange.end.clone().subtract(1, 'days')); // inclusive last index
+		var rangeLast = this.getDateDayIndex(normalRange.end.clone().subtract(0, 'days')); // inclusive last index
 		var segs = [];
 		var row;
 		var rowFirst, rowLast; // inclusive day-index range for current row
