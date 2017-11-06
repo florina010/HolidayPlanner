@@ -551,4 +551,7 @@ $(document).ready(function() {
     $(".close").click(function() {
         location.reload();
     });
+    $("#add-hol").click(function() {
+      location.reload();
+    });
 });

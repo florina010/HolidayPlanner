@@ -116,6 +116,7 @@ $(document).ready(function() {
                 $.get(appConfig.url + appConfig.api + 'getNewHoliday?token=' + token + '&startDate=' + startDate + '&name=' + name, function(data) {
                     out(data.code);
                 });
+                location.reload();
             }
             e.preventDefault();
           //  $('#myModalOncePerYear').modal('hide');
