@@ -44,8 +44,11 @@ var holidaysNoCount = [
 
 $('#tabClickCalendar').click(function() {
     setTimeout(function() {
-        reloadJs('../js/calendar.js');
-    }, 400);
+        // $("#calendar").empty();
+      reloadJs('../js/calendar.js');
+      location.reload();
+
+    }, 50);
 });
 $(document).ready(function() {
   var theUser = JSON.parse(sessionStorage.getItem('user'));
