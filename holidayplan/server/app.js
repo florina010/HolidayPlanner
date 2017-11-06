@@ -355,7 +355,6 @@ function ManagerEditUser(req, res) {
             + "' WHERE user.userID=" + params.userId
         }
         connection.query(queryStr, function(err, rows) {
-            console.log('err  '  + err);
             connection.release();
             if (!err) {
                 res.json(rows);
@@ -616,6 +615,9 @@ function addUser(req, res) {
             connection.release();
             if (!err) {
                 res.json(rows);
+            }
+            else {
+                res.json(err);
             }
         });
         connection.on('error', function(err) {

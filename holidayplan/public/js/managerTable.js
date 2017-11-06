@@ -368,9 +368,15 @@ if (theUser.admin >= 0) {
                 if (moment(birthday).isSameOrAfter("'" + validAge + "'")) {
                     isOkAge = false;
                 }
+                else {
+                    isOkAge = true;
+                }
 
                 if (moment(startWork).isSameOrBefore("'" + minStWork + "'") || moment(startWork).isAfter("'" + currentDay + "'")) {
                     isOkSt = false;
+                }
+                else {
+                    isOkSt = true;
                 }
 
                 if (e.isDefaultPrevented()) {
@@ -411,20 +417,28 @@ if (theUser.admin >= 0) {
                         stwork: stwork,
                         avfreedays: avfreedays
                     }).done(function(data) {
-                        var userid = JSON.parse(sessionStorage.getItem('user')).userID;
-                        $.post(appConfig.url + appConfig.api + 'modifyClass', {
-                            userID: data.insertId,
-                            managerID: manager,
-                            token: token
-                        }).done(function(data) {
-                            out(data.code);
-                        });
-                        var userstable = $('#users-list-table').DataTable();
-                        var j = userid;
-                        managedUserTable();
-                        $('.modal-body> div:first-child').css('display', 'block');
-                        $('#myModalUser').find('form')[0].reset();
+                        if (data.errno == 1062) {
+                            alert ('An user with this email already exists.');
+                            $("[name=email]").val('');
+                            $('#add-user-form').formValidation('revalidateField', 'email');
+                        }
+                        else {
+                            var userid = JSON.parse(sessionStorage.getItem('user')).userID;
+                            $.post(appConfig.url + appConfig.api + 'modifyClass', {
+                                userID: data.insertId,
+                                managerID: manager,
+                                token: token
+                            }).done(function(data) {
+                                out(data.code);
+                            });
+                            var userstable = $('#users-list-table').DataTable();
+                            var j = userid;
+                            managedUserTable();
+                            $('.modal-body> div:first-child').css('display', 'block');
+                            $('#myModalUser').find('form')[0].reset();
+                        }
                     });
+
                     e.preventDefault();
                 }
                 else {
@@ -532,11 +546,14 @@ if (theUser.admin >= 0) {
     function clearEmployee(userData) {
         var userArray = {};
         for (var i = 0; i < userData.length; i++) {
+            console.log(userData[i]['name']);
             userArray[userData[i]['name']] = userData[i]['value'];
         }
-        if (userArray['isActive'] == 0) {
-            var newManager = userArray["new_manager"];
 
+        console.log(userArray['userActive']);
+        if (userArray['userActive'] == 0) {
+            var newManager = userArray["new_manager"];
+            console.log(newManager + ' newman');
             if (newManager == null) {
                 newManager = JSON.parse(sessionStorage.getItem('user')).userID;
             }
@@ -552,7 +569,9 @@ if (theUser.admin >= 0) {
 
         // Change manager.
         var changeManagerId = userArray["change_manager"];
-        if (changeManagerId) {
+        console.log(changeManagerId);
+        if (changeManagerId!=0) {
+            console.log('a intr');
             var params = '&managerId=' + changeManagerId + "&userId=" + userArray['userId'];
             $.post(appConfig.url + appConfig.api + 'updateUserManager?token=' + token + params).done(function(updateInfo) {
                 out(updateInfo.code);
