@@ -43,7 +43,6 @@ var holidaysNoCount = [
 
 $('#tabClickCalendar').click(function() {
     setTimeout(function() {
-        $("#calendar").empty();
         reloadJs('../js/calendar.js');
     }, 400);
 });
