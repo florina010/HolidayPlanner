@@ -1,0 +1,64 @@
+<div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                <h3 class="modal-title" >Enter your dates</h3>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success">
+                    <strong>Success!</strong>
+                </div>
+                <div class="alert alert-danger">
+                    <strong>You don't have enough available free days!</strong>
+                </div>
+                <div class="alert alert-danger">
+                    <strong>Select another dates!</strong>
+                </div>
+                <form id="eventForm" method="post" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">Start date</label>
+                        <div class="col-xs-5 dateContainer">
+                            <div class="input-group input-daterange">
+                                <input id="datepicker" type="text" name="dates" class="form-control date" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label">Vacation type</label>
+                        <div class="col-xs-5 selectContainer">
+                            <select id="vacationtype" name="vacationtype" class="form-control">
+                                <option value=""></option>
+                                <option > Concediu </option>
+                                <option > Concediu medical </option>
+                                <option > Donare sange  </option>
+                                <option > Deces (gradul 1)</option>
+                                <option > Deces (gradul 2) </option>
+                                <option > Casatorie  </option>
+                                <option > Nou nascut </option>
+                                <option > Maternitate/Paternitate </option>
+                                <option > Concediu de studii </option>
+                                <option > Concediu fara plata </option>
+                              </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="commentxt">Comments</label>
+                        <div class="col-xs-5">
+                            <textarea id="comment" name="comment" class="form-control" style="resize:none" rows="10" placeholder="Type here"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="alert alert-danger" id="danger"></div>
+                        <div class="alert alert-info" id="info"></div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" id="save">Save changes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>

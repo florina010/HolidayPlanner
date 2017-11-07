@@ -6,7 +6,6 @@ function weekend(d1, d2) {
     var we = 0,
         days = d2.diff(d1, "days") + 1;
     while (d1 <= d2) {
-        console.log(d1.days());
         if (d1.days()  == 0 || d1.days()  == 6) {
             we++;
         }
@@ -44,7 +43,6 @@ var holidaysNoCount = [
 
 $('#tabClickCalendar').click(function() {
     setTimeout(function() {
-        // $("#calendar").empty();
       reloadJs('../js/calendar.js');
       location.reload();
 
@@ -53,6 +51,8 @@ $('#tabClickCalendar').click(function() {
 $(document).ready(function() {
   var theUser = JSON.parse(sessionStorage.getItem('user'));
   var  token = sessionStorage.getItem('token');
+
+  function freedays(){
   $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
           var datesEnabled= [];
           for (var i in data) {
@@ -87,7 +87,7 @@ $(document).ready(function() {
           });
 
       });
-
+};
     $('#tabClick').addClass('active');
     var theUser = JSON.parse(sessionStorage.getItem('user')),
         token = sessionStorage.getItem('token'),
@@ -273,7 +273,8 @@ $(document).ready(function() {
 
     var nrOfDays, from, to, currentDay = (moment().format('YYYY-MM-DD')), formValid = true;
 
-
+function addholidayForm() {
+  freedays();
     $('#eventForm')
         .formValidation({
             framework: 'bootstrap',
@@ -409,16 +410,16 @@ $(document).ready(function() {
             };
             $('#calendar').fullCalendar('renderEvent', event, true);
             e.preventDefault();
-            $('#myModal').find('form')[0].reset();
-            $("#eventForm").data('formValidation').resetForm();
+            // $('#myModal').find('form')[0].reset();
+            // $("#eventForm").data('formValidation').resetForm();
         });
         $('.modal-body> div:first-child').css('display', 'block');
         $('.modal-body> div:nth-child(2)').css('display', 'none');
         $('.modal-body> div:nth-child(3)').css('display', 'none');
 
-        $('#myModal').find('form')[0].reset();
-        $("#eventForm").data('formValidation').resetForm();
-        $('#calendar').empty();
+        // $('#myModal').find('form')[0].reset();
+        // $("#eventForm").data('formValidation').resetForm();
+        // $('#calendar').empty();
         $("div #info").css('display', 'none');
         $("div #danger").css('display', 'none');
         reloadJs('../js/calendar.js');
@@ -444,8 +445,8 @@ $(document).ready(function() {
                         $('.modal-body> div:nth-child(3)').css('display', 'block');
                         $("div #info").css('display', 'none');
                         $("div #danger").css('display', 'none');
-                        $('#myModal').find('form')[0].reset();
-                        $("#eventForm").data('formValidation').resetForm();
+                        // $('#myModal').find('form')[0].reset();
+                        // $("#eventForm").data('formValidation').resetForm();
                         // $('#myModal').modal('toggle');
                         isOk = false;
                         break;
@@ -465,8 +466,8 @@ $(document).ready(function() {
                             $('.modal-body> div:first-child').css('display', 'none');
                             $('.modal-body> div:nth-child(2)').css('display', 'none');
                             $('.modal-body> div:nth-child(3)').css('display', 'block');
-                            $('#myModal').find('form')[0].reset();
-                            $("#eventForm").data('formValidation').resetForm();
+                            // $('#myModal').find('form')[0].reset();
+                            // $("#eventForm").data('formValidation').resetForm();
                             isOk = false;
                             break;
                         }
@@ -479,15 +480,15 @@ $(document).ready(function() {
                 options.duration = checkArrays(dateArray, dates, options.duration);
                 if (isOk) {
                     callback(options);
-                    $('#myModal').find('form')[0].reset();
-                    $("#eventForm").data('formValidation').resetForm();
+                    // $('#myModal').find('form')[0].reset();
+                    // $("#eventForm").data('formValidation').resetForm();
                     $("div #info").css('display', 'none');
                     $("div #danger").css('display', 'none');
                     location.reload();
                 }
             } else {
-                $('#myModal').find('form')[0].reset();
-                $("#eventForm").data('formValidation').resetForm();
+                // $('#myModal').find('form')[0].reset();
+                // $("#eventForm").data('formValidation').resetForm();
                 $("div #info").css('display', 'none');
                 $("div #danger").css('display', 'none');
                 callback(options);
@@ -550,17 +551,22 @@ $(document).ready(function() {
             }
         }
     }
+};
+    function displayForm() {
+        $("#myModal").load("addholiday.html", function() {
+            addholidayForm();
+            $('#myModal').modal('show');
+        });
+    };
 
     $("#dropdownMenu2").click(function() {
-        $('#myModal').find('form')[0].reset();
-        $("#eventForm").data('formValidation').resetForm();
-    //    $('#calendar').empty();
+        $("#holiday").click(function(){
+          displayForm();
+        });
         $("div #info").css('display', 'none');
         $("div #danger").css('display', 'none');
         reloadJs('../js/calendar.js');
     });
-
-
 
     $("#close").click(function() {
         location.reload();
