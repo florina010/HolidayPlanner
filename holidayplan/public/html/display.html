@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,10 +14,8 @@
     <link rel="stylesheet" href="../css/adduserform.css">
     <link rel="stylesheet" href="../css/edituserform.css">
 </head>
-
 <body>
-
-    <div class="container">
+  <div class="container" id="first-container">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -51,85 +48,19 @@
                                        <i class="fa fa-camera" aria-hidden="true"> Upload photo <input type="file" style="display: none;" id="fileupload"name="profileImage"/></i>
                                    </label>
                                     </li>
-                                    <!-- <span class="btn btn-default btn-file">
-                                   <input type="file" name="profileImage" id="fileuploa">
-                                </span> -->
-
-                                    <!-- <li><input id="fileupload" type="file" name="profileImage"/></li> -->
                                 </ul>
                             </div>
                         </li>
                         <li><a class="btn btn-default" href="#" id="logout" name="logout"><i class="fa fa-sign-out" aria-hidden="true"> Logout</i></a></li>
                     </ul>
                 </div>
-
-                <!--/.nav-collapse -->
             </div>
-            <!--/.container-fluid -->
         </nav>
     </div>
-    <!-- <div class="col-xs-3"> -->
-                            <!-- <label for="name">Name</label> -->
-                            <!-- <input id="user-name-disp" type="text" name="name" value="" class="form-control" disabled/> -->
-                        <!-- </div> -->
-
-    <div class="container">
-
-        <!-- <div class="panel panel-info" id="containerNone">
-            <div class="panel-heading">
-
-                <h3><i class="fa fa-info-circle" id="info" aria-hidden="true"></i>  Personal Info</h3>
-            </div>
-            <div class="panel-body">
-                <div class="form-group">
-                    <div class="col-xs-3">
-                        <label for="name"><i class="fa fa-user-o" aria-hidden="true"></i> Name</label>
-                        <input type="text" name="name" value="" class="form-control" disabled/>
-                    </div>
-                    <div class="col-xs-3">
-                        <label for="age"><i class="fa fa-birthday-cake" aria-hidden="true"></i> Age</label>
-                        <input type="number" name="age" value="" class="form-control" disabled/>
-                    </div>
-                    <div class="col-xs-3">
-                        <label for="email"><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</label>
-                        <input type="email" name="email" value="" class="form-control" disabled/>
-                    </div>
-                    <div class="col-xs-3">
-                        <label for="phone"><i class="fa fa-mobile" aria-hidden="true"></i> Phone</label>
-                        <input type="tel" name="phone" value="" class="form-control" id="ex3" disabled/>
-                    </div>
-                    <div class="col-xs-3">
-                        <label for="position"><i class="fa fa-street-view" aria-hidden="true"></i> Position</label>
-                        <input type="text" name="position" value="" class="form-control" disabled/>
-                    </div>
-                    <div class="col-xs-3">
-                        <label for="mName"><i class="fa fa-user" aria-hidden="true"></i> Manager name</label>
-                        <input type="text" name="mName" value="" class="form-control" disabled/>
-                    </div>
-
-                    <div class="col-xs-3">
-                        <label for="startDate"><i class="fa fa-calendar" aria-hidden="true"></i> Start date</label>
-                        <input data-date-format="YYYY/MM/DD" class="form-control" name="sDate" disabled/>
-                    </div>
-                    <div class="col-xs-3">
-                        <label for="time"><i class="fa fa-clock-o" aria-hidden="true"></i> Time spent here</label>
-                        <input type="text" name="timeSpent" value="" class="form-control" disabled/>
-                    </div>
-                    <div class="col-xs-3">
-                        <label for="avDays"><i class="fa fa-hand-pointer-o" aria-hidden="true"></i> Available free days</label>
-                        <input type="number" name="avDays" value="" class="form-control" disabled/>
-                    </div>
-
-                </div>
-
-
-            </div>
-        </div> -->
-
+    <div class="container" id="second-container">
         <ul class="nav nav-tabs" id="tabs">
             <li id="tabClickCalendar" class="active"><a data-toggle="tab" href="#calendartab"><i class="fa fa-calendar" aria-hidden="true"></i> Calendar</a></li>
             <li><a data-toggle="tab" href="#table"><i class="fa fa-table" aria-hidden="true"></i>My Holidays</a></li>
-            <!-- <li><a data-toggle="tab" href="#management"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Management</a></li> -->
         </ul>
         <div class="tab-content">
             <div id="calendartab" class="tab-pane fade in active">
@@ -160,73 +91,8 @@
             </div>
         </div>
     </div>
-
-     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <!-- <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                    <h3 class="modal-title" >Enter your dates</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="alert alert-success">
-                        <strong>Success!</strong>
-                    </div>
-                    <div class="alert alert-danger">
-                        <strong>You don't have enough available free days!</strong>
-                    </div>
-                    <div class="alert alert-danger">
-                        <strong>Select another dates!</strong>
-                    </div>
-                    <form id="eventForm" method="post" class="form-horizontal">
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Start date</label>
-                            <div class="col-xs-5 dateContainer">
-                                <div class="input-group input-daterange">
-                                    <input id="datepicker" type="text" name="dates" class="form-control date" required>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label">Vacation type</label>
-                            <div class="col-xs-5 selectContainer">
-                                <select id="vacationtype" name="vacationtype" class="form-control">
-                                    <option value=""></option>
-                                    <option > Concediu </option>
-                                    <option > Concediu medical </option>
-                                    <option > Donare sange  </option>
-                                    <option > Deces (gradul 1)</option>
-                                    <option > Deces (gradul 2) </option>
-                                    <option > Casatorie  </option>
-                                    <option > Nou nascut </option>
-                                    <option > Maternitate/Paternitate </option>
-                                    <option > Concediu de studii </option>
-                                    <option > Concediu fara plata </option>
-                                  </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label" for="commentxt">Comments</label>
-                            <div class="col-xs-5">
-                                <textarea id="comment" name="comment" class="form-control" style="resize:none" rows="10" placeholder="Type here"></textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="alert alert-danger" id="danger"></div>
-                            <div class="alert alert-info" id="info"></div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary" id="save">Save changes</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal" id="close">Close</button>
-                        </div>
-                </div>
-                </form>
-            </div>
-        </div> -->
-
-    </div>  
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+</div>
     <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="approveFreedays" aria-hidden="true" id="approve-freedays-modal">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">

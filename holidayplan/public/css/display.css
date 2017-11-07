@@ -1,6 +1,14 @@
 td.day.disabled {
   color: red !important;
 }
+#first-container{
+  position: relative;
+  bottom: -43px;
+}
+#second-container{
+  position: relative;
+  bottom: -23px;
+}
 #user-name-disp{
   position: relative;
       width: 85%;
