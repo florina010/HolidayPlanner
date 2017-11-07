@@ -775,7 +775,7 @@ function updateRelationsManagement(req, res) {
             });
             return;
         }
-        connection.query("UPDATE management SET managerID = '" + params.managerId + "' WHERE managerID = '" + params.userId + "';", function(err, rows) {
+        connection.query("UPDATE management SET managerID = '" + params.managerId + "' WHERE managerID = '" + params.userId + "' AND userID='"+ params.userID +"';", function(err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows);
@@ -960,6 +960,32 @@ function getAllManagers(req, res) {
         }
         var managerId = req.body.managerId;
         connection.query("SELECT * FROM user WHERE position = 'Manager' AND isActive = 1", function(err, rows) {
+            connection.release();
+            if (!err) {
+                res.json(rows);
+            }
+        });
+        connection.on('error', function(err) {
+            res.json({
+                "code": 100,
+                "status": "Error in connection database"
+            });
+            return;
+        });
+    });
+};
+function getAllActiveUsers(req, res) {
+    var params = req.query;
+    pool.getConnection(function(err, connection) {
+        if (err) {
+            res.json({
+                "code": 100,
+                "status": "Error in connection database"
+            });
+            return;
+        }
+        var managerId = req.body.managerId;
+        connection.query("SELECT * FROM user WHERE isActive = 1", function(err, rows) {
             connection.release();
             if (!err) {
                 res.json(rows);
@@ -1230,7 +1256,18 @@ router.get("/getAllManagers", function(req, res) {
         })
     });
 });
-
+router.get("/getAllActiveUsers", function(req, res) {
+    var token = req.query.token;
+    isValidToken(token).then(function(result) {
+        getAllActiveUsers(req, res);
+    }, function(error) {
+        console.log(error);
+        res.json({
+            "code": 110,
+            "status": "Your session has expired and you are loged out. - redirect la login in FE"
+        })
+    });
+});
 router.get("/getAllUsers", function(req, res) {
     var token = req.query.token;
     isValidToken(token).then(function(result) {

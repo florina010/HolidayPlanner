@@ -541,32 +541,37 @@ if (theUser.admin >= 0) {
         for (var i = 0; i < userData.length; i++) {
             userArray[userData[i]['name']] = userData[i]['value'];
         }
-
         if (userArray['userActive'] == 0) {
             var newManager = userArray["new_manager"];
             if (newManager == null) {
                 newManager = JSON.parse(sessionStorage.getItem('user')).userID;
             }
-            var params = '&managerId=' + newManager + "&userId=" + userArray['userId'];
+
             // $.post(appConfig.url + appConfig.api + 'updateRelationsFreedays?token=' + token + params).done(function(updateInfo) {
             //     out(updateInfo.code);
             // });
-
-            $.post(appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params).done(function(updateInfo) {
-                out(updateInfo.code);
+            $.get(appConfig.url + appConfig.api + 'getAllActiveUsers?token=' + token, function(users) {
+              console.log(users);
+              for(var i in users){
+                var params = '&managerId=' + newManager + "&userId=" + userArray['userId'] +  "&userID=" + users[i].userID;
+                $.post(appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params).done(function(updateInfo) {
+                    out(updateInfo.code);
+                });
+              }
             });
-        }
+        };
 
         // Change manager.
-        var changeManagerId = userArray["change_manager"];
-        console.log(changeManagerId);
-        if (changeManagerId!=0) {
-            console.log('a intr');
-            var params = '&managerId=' + changeManagerId + "&userId=" + userArray['userId'];
-            $.post(appConfig.url + appConfig.api + 'updateUserManager?token=' + token + params).done(function(updateInfo) {
-                out(updateInfo.code);
-            });
-        }
+          if (userArray['userActive'] == 1) {
+              var changeManagerId = userArray["change_manager"];
+              if (changeManagerId!=0) {
+                  console.log('a intr');
+                  var params = '&managerId=' + changeManagerId + "&userId=" + userArray['userId'];
+                  $.post(appConfig.url + appConfig.api + 'updateUserManager?token=' + token + params).done(function(updateInfo) {
+                      out(updateInfo.code);
+                  });
+              }
+        };
     }
 
     function updateUser() {
