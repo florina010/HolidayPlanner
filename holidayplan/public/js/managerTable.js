@@ -220,7 +220,7 @@ if (theUser.admin >= 0) {
             }
         });
     }
-
+//Add user form
     function prepareUserForm() {
         var date = new Date(), manager;
         date.setDate(date.getDate());
@@ -445,19 +445,12 @@ if (theUser.admin >= 0) {
                     e.preventDefault();
                     if (isOkSt) {
                         alert('Age is not valid.')
-                        $('#myModalUser').find('form')[0].reset();
-                        $('#myModalUser').modal('toggle');
-                    //    $('#add-user-form').formValidation('revalidateField', 'phoneUser');
                     }
                     else if(isOkAge) {
                         alert("Started working is not valid.");
-                        $('#myModalUser').find('form')[0].reset();
-                        $('#myModalUser').modal('toggle');
                     }
                     else {
                         alert("Age and started working are not valid.");
-                        $('#myModalUser').find('form')[0].reset();
-                        $('#myModalUser').modal('toggle');
                     }
 
                 }
