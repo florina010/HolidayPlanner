@@ -7160,7 +7160,9 @@ DateComponent.mixin({
 
 		// If end is within `startDay` but not past nextDayThreshold, assign the default duration of one day.
 		if (endDay <= startDay) {
-			endDay = startDay.clone().add(1, 'days');
+			endDay = startDay.clone().add(0, 'days');
+		}else if(endDay == startDay){
+			return { start: startDay, end: startDay };
 		}
 
 		return { start: startDay, end: endDay };
