@@ -198,10 +198,9 @@ function main() {
         events: window.d,
         dayClick: function(date, jsEvent, view) {
             var currentDay = moment().format('YYYY-MM-DD');
-            if (moment(date.format()).isSameOrAfter(currentDay)) {
-                $("#myModal").modal('show');
-                $("#datepicker").datepicker( "setDate", "'" + date.format() + "'" );
-            }
+            $("#myModal").modal('show');
+            $("#datepicker").datepicker( "setDate", "'" + date.format() + "'" );
+
 
 
             // alert('Clicked on: ' + date.format());

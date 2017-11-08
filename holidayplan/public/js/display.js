@@ -301,56 +301,59 @@ function addholidayForm() {
                 }
             }
         }).on('change', function(e, data) {
-            $("div #info").empty();
-            $("div #danger").empty();
-            var date = $(".date").val().split(";"),
+            if($(".date").val()){
+
+                $("div #info").empty();
+                $("div #danger").empty();
+                var date = $(".date").val().split(";"),
                 stdate = date[0],
                 enddate = date[1]
-            from = moment(stdate).format('YYYY/MM/DD');
-            if (!enddate) {
-                to = moment(stdate).format('YYYY/MM/DD');
-            } else {
-                to = moment(enddate).format('YYYY/MM/DD');
-            }
-            var aux, from2 = "'" + from + "'", to2 = "'" + to + "'";
+                from = moment(stdate).format('YYYY/MM/DD');
+                if (!enddate) {
+                    to = moment(stdate).format('YYYY/MM/DD');
+                } else {
+                    to = moment(enddate).format('YYYY/MM/DD');
+                }
+                var aux, from2 = "'" + from + "'", to2 = "'" + to + "'";
 
-            if (moment(from2).isAfter(moment(to2)) || moment(to2).isBefore(moment(from2))) {
-                aux = to;
-                to = from;
-                from = aux;
-            }
+                if (moment(from2).isAfter(moment(to2)) || moment(to2).isBefore(moment(from2))) {
+                    aux = to;
+                    to = from;
+                    from = aux;
+                }
 
-            var isWeekend = weekend(moment(from), moment(to));
-            var arrayOfSelectedDays = arrayFromStToEnd(from, to);
-            nrOfDays = checkArrays(arrayOfSelectedDays, dates, isWeekend);
-            var type = $('#vacationtype').val();
-            for (var j in holidaysNoCount) {
-                if (type == holidaysNoCount[j].type) {
-                    if (nrOfDays != holidaysNoCount[j].days) {
-                        $("div #danger").append("<p>The duration for this type of holiday is " + holidaysNoCount[j].days + " days.</p>").css('display', 'block');
-                        $("[name=comment]").attr('disabled', true);
-                        formValid = false;
-                        break;
+                var isWeekend = weekend(moment(from), moment(to));
+                var arrayOfSelectedDays = arrayFromStToEnd(from, to);
+                nrOfDays = checkArrays(arrayOfSelectedDays, dates, isWeekend);
+                var type = $('#vacationtype').val();
+                for (var j in holidaysNoCount) {
+                    if (type == holidaysNoCount[j].type) {
+                        if (nrOfDays != holidaysNoCount[j].days) {
+                            $("div #danger").append("<p>The duration for this type of holiday is " + holidaysNoCount[j].days + " days.</p>").css('display', 'block');
+                            $("[name=comment]").attr('disabled', true);
+                            formValid = false;
+                            break;
+                        }
+                        else {
+                            $("#danger").css('display', 'none');
+                            $("[name=comment]").attr('disabled', false);
+                            formValid = true;
+                            break;
+                        }
                     }
                     else {
-                        $("#danger").css('display', 'none');
                         $("[name=comment]").attr('disabled', false);
                         formValid = true;
-                        break;
                     }
                 }
-                else {
-                    $("[name=comment]").attr('disabled', false);
-                    formValid = true;
-                }
-            }
-            if (type) {
-                $("div #info").css('display', 'block');
-                if (type == 'Concediu') {
-                    $("div #info").append("<p>You selected " + nrOfDays + " days. These will be taken from the total number of available leave days.</p>")
-                }
-                else {
-                    $("div #info").append("<p>You selected " + nrOfDays + " days. These will not be taken from the total number of available leave days.</p>")
+                if (type) {
+                    $("div #info").css('display', 'block');
+                    if (type == 'Concediu') {
+                        $("div #info").append("<p>You selected " + nrOfDays + " days. These will be taken from the total number of available leave days.</p>")
+                    }
+                    else {
+                        $("div #info").append("<p>You selected " + nrOfDays + " days. These will not be taken from the total number of available leave days.</p>")
+                    }
                 }
             }
         }).on('submit', function(e, data) {
@@ -442,7 +445,7 @@ function addholidayForm() {
                         end2 = end,
                         dateArray = new Array(),
                         currentDay = (moment().format('YYYY/MM/DD'));
-                    if (moment(start).isBetween(st, ends) || moment(end).isBetween(st, ends) || start == st || start == ends || end == st || end == ends || start > end || start < currentDay ) {
+                    if (moment(start).isBetween(st, ends) || moment(end).isBetween(st, ends) || start == st || start == ends || end == st || end == ends || start > end ) {
                         $('.modal-body> div:first-child').css('display', 'none');
                         $('.modal-body> div:nth-child(2)').css('display', 'none');
                         $('.modal-body> div:nth-child(3)').css('display', 'block');
