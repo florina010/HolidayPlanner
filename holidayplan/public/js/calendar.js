@@ -196,11 +196,11 @@ function main() {
 
     });
     $("#calendar table tbody tr td").each(function () {
-        $(this).click(function (){
+        $(this).one('click', function (){
+            console.log('clclclc');
             var currentDay = moment().format('YYYY-MM-DD');
             if (moment($(this).data('date')).isSameOrAfter(currentDay)) {
                 $("#myModal").modal('show');
-
             }
     });
 });

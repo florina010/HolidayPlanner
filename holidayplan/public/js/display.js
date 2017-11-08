@@ -49,6 +49,7 @@ $('#tabClickCalendar').click(function() {
     }, 50);
 });
 $(document).ready(function() {
+    displayForm();
   var theUser = JSON.parse(sessionStorage.getItem('user'));
   var  token = sessionStorage.getItem('token');
 
@@ -555,14 +556,11 @@ function addholidayForm() {
     function displayForm() {
         $("#myModal").load("addholiday.html", function() {
             addholidayForm();
-            $('#myModal').modal('show');
+            //$('#myModal').modal('show');
         });
     };
 
     $("#dropdownMenu2").click(function() {
-        $("#holiday").click(function(){
-          displayForm();
-        });
         $("div #info").css('display', 'none');
         $("div #danger").css('display', 'none');
         reloadJs('../js/calendar.js');
