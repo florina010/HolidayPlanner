@@ -407,38 +407,39 @@ if (theUser.admin >= 0) {
                     if (!avfreedays.length) {
                         avfreedays = Math.floor(21 / 12 * (11 - moment().month()));
                     }
-                    $.post(appConfig.url + appConfig.api + 'addUser?token=' + token, {
-                        email: email,
-                        name: userName,
-                        age: age,
-                        password: password,
-                        position: position,
-                        phone: phone,
-                        stwork: stwork,
-                        avfreedays: avfreedays
-                    }).done(function(data) {
-                        if (data.errno == 1062) {
-                            alert ('An user with this email already exists.');
-                            $("[name=email]").val('');
-                            $('#add-user-form').formValidation('revalidateField', 'email');
-                        }
-                        else {
-                            var userid = JSON.parse(sessionStorage.getItem('user')).userID;
-                            $.post(appConfig.url + appConfig.api + 'modifyClass', {
-                                userID: data.insertId,
-                                managerID: manager,
-                                token: token
-                            }).done(function(data) {
-                                out(data.code);
-                            });
-                            var userstable = $('#users-list-table').DataTable();
-                            var j = userid;
-                            managedUserTable();
-                            $('.modal-body> div:first-child').css('display', 'block');
-                            $('#myModalUser').find('form')[0].reset();
-                        }
-                    });
-
+                    if (theUser.admin != 0) {
+                          $.post(appConfig.url + appConfig.api + 'addUser?token=' + token, {
+                              email: email,
+                              name: userName,
+                              age: age,
+                              password: password,
+                              position: position,
+                              phone: phone,
+                              stwork: stwork,
+                              avfreedays: avfreedays
+                          }).done(function(data) {
+                              if (data.errno == 1062) {
+                                  alert ('An user with this email already exists.');
+                                  $("[name=email]").val('');
+                                  $('#add-user-form').formValidation('revalidateField', 'email');
+                              }
+                              else {
+                                  var userid = JSON.parse(sessionStorage.getItem('user')).userID;
+                                  $.post(appConfig.url + appConfig.api + 'modifyClass', {
+                                      userID: data.insertId,
+                                      managerID: manager,
+                                      token: token
+                                  }).done(function(data) {
+                                      out(data.code);
+                                  });
+                                  var userstable = $('#users-list-table').DataTable();
+                                  var j = userid;
+                                  managedUserTable();
+                                  $('.modal-body> div:first-child').css('display', 'block');
+                                  $('#myModalUser').find('form')[0].reset();
+                              }
+                          });
+                  };
                     e.preventDefault();
                 }
                 else {
