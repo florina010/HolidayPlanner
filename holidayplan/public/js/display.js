@@ -314,6 +314,13 @@ function addholidayForm() {
             } else {
                 to = moment(enddate).format('YYYY/MM/DD');
             }
+            var aux, from2 = "'" + from + "'", to2 = "'" + to + "'";
+
+            if (moment(from2).isAfter(moment(to2)) || moment(to2).isBefore(moment(from2))) {
+                aux = to;
+                to = from;
+                from = aux;
+            }
 
             var isWeekend = weekend(moment(from), moment(to));
             var arrayOfSelectedDays = arrayFromStToEnd(from, to);
