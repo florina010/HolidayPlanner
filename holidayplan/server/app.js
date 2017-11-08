@@ -337,7 +337,7 @@ function ApproveFreeDays(req, res) {
     });
 };
 
-function ManagerEditUser(req, res) {
+function ManagerEditUserForm(req, res) {
     pool.getConnection(function(err, connection) {
         if (err) {
             res.json({
@@ -1231,10 +1231,10 @@ router.get("/ApproveFreeDays", function(req, res) {
     });
 });
 
-router.get("/ManagerEditUser", function(req, res) {
+router.get("/ManagerEditUserForm", function(req, res) {
     var token = req.query.token;
     isValidToken(token).then(function(result) {
-        ManagerEditUser(req, res);
+        ManagerEditUserForm(req, res);
     }, function(error) {
         console.log(error);
         res.json({

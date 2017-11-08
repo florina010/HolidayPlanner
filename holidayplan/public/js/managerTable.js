@@ -517,7 +517,7 @@ if (theUser.admin >= 0) {
                 // handle the invalid form...
             } else {
                 var formWrapper = $("form#edit-user-form").serialize();
-                $.get(appConfig.url + appConfig.api + 'ManagerEditUser?' + formWrapper + '&token=' + token, function(data) {
+                $.get(appConfig.url + appConfig.api + 'ManagerEditUserForm?' + formWrapper + '&token=' + token, function(data) {
                     out(data.code);
                     if (theUser.admin == 2) {
                         $("#users-list-table").DataTable().clear();
@@ -525,7 +525,7 @@ if (theUser.admin >= 0) {
                         managedUserTable();
                     } else {
                         $("#users-list-table").DataTable().clear();
-                        clearEmployee($("form#edit-user-form").serializeArray());
+                        // clearEmployee($("form#edit-user-form").serializeArray());
                         managedUserTable();
                     }
                 });
@@ -546,30 +546,31 @@ if (theUser.admin >= 0) {
             if (newManager == null) {
                 newManager = JSON.parse(sessionStorage.getItem('user')).userID;
             }
-
-            // $.post(appConfig.url + appConfig.api + 'updateRelationsFreedays?token=' + token + params).done(function(updateInfo) {
-            //     out(updateInfo.code);
-            // });
-            $.get(appConfig.url + appConfig.api + 'getAllActiveUsers?token=' + token, function(users) {
-              console.log(users);
-              for(var i in users){
-                var params = '&managerId=' + newManager + "&userId=" + userArray['userId'] +  "&userID=" + users[i].userID;
-                $.post(appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params).done(function(updateInfo) {
-                    out(updateInfo.code);
-                });
-              }
+            $.ajax({
+                     type: 'GET',
+                     url: appConfig.url + appConfig.api + 'getAllActiveUsers?token=' + token,
+                     success: function(users){
+                       for(var i in users){
+                            var params = '&managerId=' + newManager + "&userId=" + userArray['userId'] +  "&userID=" + users[i].userID;
+                            $.ajax({
+                                type: 'POST',
+                                url: appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params,
+                                async:false
+                              });
+                     };
+                   },
+                     async:false
             });
-        };
-
         // Change manager.
-          if (userArray['userActive'] == 1) {
+        }else if (userArray['userActive'] == 1) {
               var changeManagerId = userArray["change_manager"];
               if (changeManagerId!=0) {
-                  console.log('a intr');
                   var params = '&managerId=' + changeManagerId + "&userId=" + userArray['userId'];
-                  $.post(appConfig.url + appConfig.api + 'updateUserManager?token=' + token + params).done(function(updateInfo) {
-                      out(updateInfo.code);
-                  });
+                  $.ajax({
+                      type: 'POST',
+                      url: appConfig.url + appConfig.api + 'updateUserManager?token=' + token + params,
+                      async:false
+                    });
               }
         };
     }
