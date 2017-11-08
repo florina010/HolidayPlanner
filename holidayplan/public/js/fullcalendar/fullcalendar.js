@@ -15053,7 +15053,7 @@ var DayGridEventRenderer = EventRenderer.extend({
 		if (seg.isStart) {
 			timeText = this.getTimeText(seg.footprint);
 			if (timeText) {
-				timeHtml = '<span class="fc-time">' + htmlEscape(timeText) + '</span>';
+				//timeHtml = '<span class="fc-time">' + htmlEscape(timeText) + '</span>';
 			}
 		}
 
