@@ -5,45 +5,47 @@ td.day.disabled {
   position: relative;
   bottom: -43px;
 }
+
 #second-container{
   position: relative;
   bottom: -23px;
 }
+
 #user-name-disp{
   position: relative;
-      width: 85%;
-      border: none;
-      bottom: 29px;
-      background-color: rgba(230, 231, 231, 0);
-      left: 120px;
-      display: inline-block;
+  width: 30%;
+  border: none;
+  bottom: 40px;
+  background-color: rgba(230, 231, 231, 0);
+  left: 238px;
+  display: inline-block;
 }
+
 #hi{
   position: relative;
   bottom: 33px;
-  left: 365px;
-
+  left: 361px;
 }
+
 #user-days-disp{
   position: relative;
-  width: 65%;
+  width: 11%;
   border: none;
-  bottom: -26px;
-  left: 12px;
-  top: -4px;
+  bottom: -7px;
+  left: 305px;
+  top: -40px;
   background-color: rgba(230, 231, 231, 0);
   display: inline-block;
 }
 #you{
-  bottom: 38px;
-      position: relative;
-      left: 458px;
+  bottom: 33px;
+  position: relative;
+  left: 581px;
 }
 #fd{
   position: relative;
-  bottom: 31px;
-  left: 458px;
-
+  bottom: 33px;
+  left: 663px;
 }
 
 
