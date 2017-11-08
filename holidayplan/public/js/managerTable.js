@@ -322,7 +322,7 @@ if (theUser.admin >= 0) {
                         validators: {
                             phone: {
                                 country: 'Ro',
-                                message: 'The value is not valid, Please input a correct phone number.'
+                                message: 'The value is not valid, please input a correct phone number.'
                             }
                         }
                     },
