@@ -45,7 +45,10 @@ function fillDate() {
             $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
                   for (var i in data){
                       if((i >= 11) && (i <= data.length)){
-                        dd.push({start:new Date(data[i].startDate),title:'+ '+ data[i].name});
+                        dd.push({
+                          start:new Date(data[i].startDate),
+                          title:'+ '+ data[i].name
+                        });
                       };
                  };
                 $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function(data) {

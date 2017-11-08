@@ -15050,12 +15050,12 @@ var DayGridEventRenderer = EventRenderer.extend({
 		classes.unshift('fc-day-grid-event', 'fc-h-event');
 
 		// Only display a timed events time if it is the starting segment
-		if (seg.isStart) {
-			timeText = this.getTimeText(seg.footprint);
-			if (timeText) {
-				timeHtml = '<span class="fc-time">' + htmlEscape(timeText) + '</span>';
-			}
-		}
+		// if (seg.isStart) {
+		// 	timeText = this.getTimeText(seg.footprint);
+		// 	if (timeText) {
+		// 		//timeHtml = '<span class="fc-time">' + htmlEscape(timeText) + '</span>';
+		// 	}
+		// }
 
 		titleHtml =
 			'<span class="fc-title">' +
