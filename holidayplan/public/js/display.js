@@ -265,8 +265,6 @@ $(document).ready(function() {
     $('#myModal').on('hidden.bs.modal', function() {
         $('#eventForm').bootstrapValidator('resetForm', true);
         $(this).find("input,textarea,select").val('').end();
-        // $('#myModal').find('form')[0].reset();
-        // $("#eventForm").data('formValidation').resetForm();
         $('.modal-body> div:first-child').css('display', 'none');
         $('.modal-body> div:nth-child(2)').css('display', 'none');
         $('.modal-body> div:nth-child(3)').css('display', 'none');

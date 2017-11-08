@@ -196,14 +196,35 @@ function main() {
 
 
         events: window.d,
+        dayClick: function(date, jsEvent, view) {
+            var currentDay = moment().format('YYYY-MM-DD');
+            if (moment(date.format()).isSameOrAfter(currentDay)) {
+                $("#myModal").modal('show');
+                $("#datepicker").datepicker( "setDate", "'" + date.format() + "'" );
+            }
+
+
+            // alert('Clicked on: ' + date.format());
+            //
+            // alert('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+            //
+            // alert('Current view: ' + view.name);
+            //
+            // // change the day's background color just for fun
+            // $(this).css('background-color', 'red');
+
+        }
 
     });
-    $("#calendar table tbody tr td").each(function () {
-        $(this).one('click', function (){
-            var currentDay = moment().format('YYYY-MM-DD');
-            if (moment($(this).data('date')).isSameOrAfter(currentDay)) {
-                $("#myModal").modal('show');
-            }
-    });
-});
+
+//     $("#calendar table").on('click', 'td', function (){
+//         var date = moment($(this).data('date')).format('YYYY-MM-DD')
+//             console.log(date);
+//             var currentDay = moment().format('YYYY-MM-DD');
+//             if (moment(date).isSameOrAfter(currentDay)) {
+//                 $("#myModal").modal('show');
+//                 $("#datepicker").datepicker( "setDate", "'" + moment($(this).data('date')).format('YYYY-MM-DD') + "'" );
+//                 console.log($("#datepicker").val());
+//             }
+// });
 }
