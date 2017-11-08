@@ -44,7 +44,7 @@ var holidaysNoCount = [
 $('#tabClickCalendar').click(function() {
     setTimeout(function() {
       reloadJs('../js/calendar.js');
-      location.reload();
+     // location.reload();
 
     }, 50);
 });
@@ -275,6 +275,7 @@ $(document).ready(function() {
     var nrOfDays, from, to, currentDay = (moment().format('YYYY-MM-DD')), formValid = true;
 
 function addholidayForm() {
+    getFreeDays();
   freedays();
     $('#eventForm')
         .formValidation({
@@ -314,7 +315,9 @@ function addholidayForm() {
                 to = moment(enddate).format('YYYY/MM/DD');
             }
 
-            nrOfDays = weekend(moment(from), moment(to));
+            var isWeekend = weekend(moment(from), moment(to));
+            var arrayOfSelectedDays = arrayFromStToEnd(from, to);
+            nrOfDays = checkArrays(arrayOfSelectedDays, dates, isWeekend);
             var type = $('#vacationtype').val();
             for (var j in holidaysNoCount) {
                 if (type == holidaysNoCount[j].type) {
@@ -411,23 +414,17 @@ function addholidayForm() {
             };
             $('#calendar').fullCalendar('renderEvent', event, true);
             e.preventDefault();
-            // $('#myModal').find('form')[0].reset();
-            // $("#eventForm").data('formValidation').resetForm();
         });
         $('.modal-body> div:first-child').css('display', 'block');
         $('.modal-body> div:nth-child(2)').css('display', 'none');
         $('.modal-body> div:nth-child(3)').css('display', 'none');
 
-        // $('#myModal').find('form')[0].reset();
-        // $("#eventForm").data('formValidation').resetForm();
-        // $('#calendar').empty();
         $("div #info").css('display', 'none');
         $("div #danger").css('display', 'none');
         reloadJs('../js/calendar.js');
     }
 
     function check(startString, endString, options, callback) {
-        getFreeDays();
         var start = moment(startString).format("YYYY/MM/DD"),
             end = moment(endString).format("YYYY/MM/DD");
         $.get(appConfig.url + appConfig.api + 'getFreeDaysApproved?token=' + token + '&userID=' + theUser.userID, function(data) {
@@ -446,29 +443,20 @@ function addholidayForm() {
                         $('.modal-body> div:nth-child(3)').css('display', 'block');
                         $("div #info").css('display', 'none');
                         $("div #danger").css('display', 'none');
-                        // $('#myModal').find('form')[0].reset();
-                        // $("#eventForm").data('formValidation').resetForm();
-                        // $('#myModal').modal('toggle');
                         isOk = false;
                         break;
                     }
                     else {
                         isOk = true;
                     }
-                    while (start2 <= end2) {
-                        dateArray.push(start2);
-                        var duration = moment.duration({
-                            'days': 1
-                        });
-                        start2 = moment(start2, "YYYY/MM/DD").add(duration).format('YYYY/MM/DD');
-                    }
+
+                    dateArray = arrayFromStToEnd(start2, end2);
+
                     for (var j = 0; j < dateArray.length; j++) {
                         if (dateArray[j] == st || dateArray[j] == ends) {
                             $('.modal-body> div:first-child').css('display', 'none');
                             $('.modal-body> div:nth-child(2)').css('display', 'none');
                             $('.modal-body> div:nth-child(3)').css('display', 'block');
-                            // $('#myModal').find('form')[0].reset();
-                            // $("#eventForm").data('formValidation').resetForm();
                             isOk = false;
                             break;
                         }
@@ -477,19 +465,14 @@ function addholidayForm() {
                         }
                     }
                 }
-
-                options.duration = checkArrays(dateArray, dates, options.duration);
                 if (isOk) {
                     callback(options);
-                    // $('#myModal').find('form')[0].reset();
-                    // $("#eventForm").data('formValidation').resetForm();
+
                     $("div #info").css('display', 'none');
                     $("div #danger").css('display', 'none');
                     location.reload();
                 }
             } else {
-                // $('#myModal').find('form')[0].reset();
-                // $("#eventForm").data('formValidation').resetForm();
                 $("div #info").css('display', 'none');
                 $("div #danger").css('display', 'none');
                 callback(options);
@@ -529,6 +512,23 @@ function addholidayForm() {
         });
     }
 
+
+    function arrayFromStToEnd (st, end) {
+        var datesArr = new Array();
+        while (st <= end) {
+            datesArr.push(st);
+            var duration = moment.duration({
+                'days' : 1
+            });
+            st = moment(st, 'YYYY/MM/DD').add(duration).format('YYYY/MM/DD');
+        }
+        return datesArr;
+    }
+
+    function arratOfLegalHolidays () {
+
+    }
+
     function checkArrays(arr1, arr2, options) {
         for (var l = 0; l < arr1.length; l++) {
             for (var d = 0; d < arr2.length; d++) {
@@ -556,7 +556,6 @@ function addholidayForm() {
     function displayForm() {
         $("#myModal").load("addholiday.html", function() {
             addholidayForm();
-            //$('#myModal').modal('show');
         });
     };
 
