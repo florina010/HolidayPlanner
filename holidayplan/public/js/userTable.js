@@ -64,12 +64,14 @@ function getHolidays() {
 
 
 function displayDeleteModal(event, elem, id, approved) {
-    event.preventDefault();
-    event.stopPropagation();
+    console.log('id click  ' + id);
+//    event.stopPropagation();
     var deleteModal = $("#delete-modal");
     deleteModal.modal('show');
 
-    $("#delete-modal-btn-yes").click(function() {
+    $("#delete-modal-btn-yes").one('click', function() {
+        event.stopPropagation();
+        console.log('id din yes ' + id);
         deleteHolidayModal(elem, id, approved);
         $("#delete-modal").modal('hide');
     });
@@ -79,6 +81,7 @@ function displayDeleteModal(event, elem, id, approved) {
 }
 
 function deleteHolidayModal(elem, id, approved) {
+    console.log('click  ' + id);
     if (approved == 0) {
         $.post(appConfig.url + appConfig.api + 'deleteHoliday?token=' + token, {
             id: id
