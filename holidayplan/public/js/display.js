@@ -570,6 +570,7 @@ function addholidayForm() {
     $("#dropdownMenu2").click(function() {
         $("div #info").css('display', 'none');
         $("div #danger").css('display', 'none');
+        displayForm();
         reloadJs('../js/calendar.js');
     });
 
