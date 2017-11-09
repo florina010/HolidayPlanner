@@ -275,13 +275,10 @@ if (theUser.admin >= 0) {
         //Add user form
           $form = $('#add-user-form'); // cache
           $form.find('#register').prop('disabled', true); // disable submit btn
-          if (  $form.find('input[name="username"]').val()){
-               disable = false; // disable submit if any of them are still blank
-           }
-          $form.find('.disabled-button').on('keyup change',function() { // monitor all inputs for changes
+          $form.find('.form-control').on('keyup change',function() { // monitor all inputs for changes
             var disable = false;
-            $form.find('.disabled-button').each(function() { // test all inputs for values
-               if ($(this).val() === ''){
+            $form.find('.form-control').each(function() { // test all inputs for values
+               if ($(this).val() == ''){
                     disable = true; // disable submit if any of them are still blank
                 }
             });
