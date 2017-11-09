@@ -278,12 +278,14 @@ if (theUser.admin >= 0) {
           $form.find('.form-control').on('keyup change',function() { // monitor all inputs for changes
             var disable = false;
             $form.find('.form-control').each(function() { // test all inputs for values
-               if ($(this).val() == ''){
-                    disable = true; // disable submit if any of them are still blank
+               if ($(this).val() != ''){
+                    disable = false; // disable submit if any of them are still blank
+                }else {
+                  disable = true;
                 }
             });
               $form.find('#register').prop('disabled', disable);
-        });
+          });
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
         var minStWork, currentDay = (moment().format('YYYY-MM-DD')).toString();
 
@@ -291,7 +293,7 @@ if (theUser.admin >= 0) {
             minStWork = moment(data[0].age).format('YYYY-MM-DD').toString();
         }).then(function () {
             $("#add-user-form").find('[name="pos"]').selectpicker().change(function(e) {
-                $('#add-user-form').formValidation('revalidateField', 'pos');
+                // $('#add-user-form').formValidation('revalidateField', 'pos');
             }).end().formValidation({
                 framework: 'bootstrap',
                 icon: {
@@ -553,11 +555,20 @@ if (theUser.admin >= 0) {
                      success: function(users){
                        for(var i in users){
                             var params = '&managerId=' + newManager + "&userId=" + userArray['userId'] +  "&userID=" + users[i].userID;
-                            $.ajax({
-                                type: 'POST',
-                                url: appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params,
-                                async:false
-                              });
+                            if(newManager != users[i].userID){
+                              $.ajax({
+                                  type: 'POST',
+                                  url: appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params,
+                                  async:false
+                                });
+                            }else if(newManager == users[i].userID){
+                              var params = '&managerId= Avangarde software' + "&userId=" + userArray['userId'] +  "&userID=" + users[i].userID;
+                              $.ajax({
+                                  type: 'POST',
+                                  url: appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params,
+                                  async:false
+                                });
+                            }
                      };
                    },
                      async:false
