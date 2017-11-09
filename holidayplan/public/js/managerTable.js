@@ -274,15 +274,18 @@ if (theUser.admin >= 0) {
         }
         //Add user form
           $form = $('#add-user-form'); // cache
-          $form.find(':input[type="submit"]').prop('disabled', true); // disable submit btn
-          $form.find('input[type="text"]').on('keyup change',function() { // monitor all inputs for changes
+          $form.find('#register').prop('disabled', true); // disable submit btn
+          if (  $form.find('input[name="username"]').val()){
+               disable = false; // disable submit if any of them are still blank
+           }
+          $form.find('.disabled-button').on('keyup change',function() { // monitor all inputs for changes
             var disable = false;
-            $form.find('input[type="text"]').not('[type="submit"]').each(function() { // test all inputs for values
-               if ($(this).val() == ''){
+            $form.find('.disabled-button').each(function() { // test all inputs for values
+               if ($(this).val() === ''){
                     disable = true; // disable submit if any of them are still blank
                 }
             });
-              $form.find(':input[type="submit"]').prop('disabled', disable);
+              $form.find('#register').prop('disabled', disable);
         });
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
         var minStWork, currentDay = (moment().format('YYYY-MM-DD')).toString();
@@ -360,8 +363,8 @@ if (theUser.admin >= 0) {
                     //
                     // }
                 }
-            }).on('change', '[name="Ro"]', function(e) {
-                $('#add-user-form').formValidation('revalidateField', 'phoneUser');
+            // }).on('change', '[name="Ro"]', function(e) {
+              //  $('#add-user-form').formValidation('revalidateField', 'phoneUser');
             }).on('submit', function(e, data) {
                 var birthday = "'" + moment($("#add-user-form").find("input[name = 'ageUser']").val()).format("YYYY-MM-DD") + "'",
                 startWork = "'" +  moment($("#add-user-form").find("[name = 'stwork']").val()).format("YYYY-MM-DD") + "'", isOkAge = true, isOkSt = true;
@@ -775,7 +778,8 @@ if (theUser.admin >= 0) {
             $.get(appConfig.url + appConfig.api + 'getAllUsers?token=' + token, function(users) {
                 out(users.code);
                 var userstable = $('#users-list-table').DataTable();
-                var k = 1, usersArray = [], result, active;
+                var k = 1, usersArray = [], active;
+                var result = "Avangarde software";
                 for (i = 0; i < users.length; i++) {
                     for (var j = 0; j < arr.length; j++) {
                         if (arr[j].userID == users[i].userID) {
