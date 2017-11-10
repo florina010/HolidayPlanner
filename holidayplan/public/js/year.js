@@ -120,6 +120,7 @@ $(document).ready(function() {
                   $('#myModalOncePerYear').modal('hide');
             }
             e.preventDefault();
+            getAllHolidays();
         });
         getAllHolidays();
     };
