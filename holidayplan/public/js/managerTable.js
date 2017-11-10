@@ -274,7 +274,6 @@ if (theUser.admin >= 0) {
         }
         //Add user form
           $form = $('#add-user-form'); // cache
-
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
         var minStWork, currentDay = (moment().format('YYYY-MM-DD')).toString();
 
@@ -582,7 +581,8 @@ if (theUser.admin >= 0) {
         // Change manager.
         }else if (userArray['userActive'] == 1) {
               var changeManagerId = userArray["change_manager"];
-              if (changeManagerId!=0) {
+              console.log(changeManagerId);
+              if (changeManagerId !=0) {
                   var params = '&managerId=' + changeManagerId + "&userId=" + userArray['userId'];
                   $.ajax({
                       type: 'POST',
@@ -591,7 +591,8 @@ if (theUser.admin >= 0) {
                     });
               }
         };
-    }
+
+    };
 
     function updateUser() {
         $("#update-user-form").formValidation({
