@@ -325,6 +325,7 @@ function addholidayForm() {
                 var isWeekend = weekend(moment(from), moment(to));
                 var arrayOfSelectedDays = arrayFromStToEnd(from, to);
                 nrOfDays = checkArrays(arrayOfSelectedDays, dates, isWeekend);
+                console.log(dates);
                 var type = $('#vacationtype').val();
                 for (var j in holidaysNoCount) {
                     if (type == holidaysNoCount[j].type) {
@@ -538,9 +539,16 @@ function addholidayForm() {
     }
 
     function checkArrays(arr1, arr2, options) {
+      // Remove duplicates from public hollidays array.
+      var unique_arr2 = [];
+      $.each(arr2, function(i, el){
+          if($.inArray(el, unique_arr2) === -1){
+            unique_arr2.push(el);
+          }
+      });
         for (var l = 0; l < arr1.length; l++) {
-            for (var d = 0; d < arr2.length; d++) {
-                if (arr1[l] == arr2[d]) {
+            for (var d = 0; d < unique_arr2.length; d++) {
+                if (arr1[l] == unique_arr2[d]) {
                     options--;
                 }
             }

@@ -274,18 +274,7 @@ if (theUser.admin >= 0) {
         }
         //Add user form
           $form = $('#add-user-form'); // cache
-          $form.find('#register').prop('disabled', true); // disable submit btn
-          $form.find('.form-control').on('keyup change',function() { // monitor all inputs for changes
-            var disable = false;
-            $form.find('.form-control').each(function() { // test all inputs for values
-               if ($(this).val() != ''){
-                    disable = false; // disable submit if any of them are still blank
-                }else {
-                  disable = true;
-                }
-            });
-              $form.find('#register').prop('disabled', disable);
-          });
+
         var validAge = (moment().subtract(18, 'years')).format('YYYY-MM-DD').toString();
         var minStWork, currentDay = (moment().format('YYYY-MM-DD')).toString();
 
@@ -294,7 +283,7 @@ if (theUser.admin >= 0) {
         }).then(function () {
             $("#add-user-form").find('[name="pos"]').selectpicker().change(function(e) {
                 // $('#add-user-form').formValidation('revalidateField', 'pos');
-            }).end().formValidation({
+            }).end().bootstrapValidator({
                 framework: 'bootstrap',
                 icon: {
                     valid: 'glyphicon glyphicon-ok',
@@ -364,7 +353,24 @@ if (theUser.admin >= 0) {
                 }
             // }).on('change', '[name="Ro"]', function(e) {
               //  $('#add-user-form').formValidation('revalidateField', 'phoneUser');
-            }).on('submit', function(e, data) {
+            }).on( 'status.field.bv', function( e, data ) {
+              let $this = $( this );
+              let formIsValid = true;
+              if (!$this.find('input[name="username"]').parent().hasClass("has-success")) {
+                formIsValid = false;
+              }
+              if (!$this.find('input[name="email"]').parent().hasClass("has-success")) {
+                formIsValid = false;
+              }
+              if (!$this.find('input[name="phoneUser"]').parent().hasClass("has-success")) {
+                formIsValid = false;
+              }
+              // if (!$this.find('input[name="pos"]').parent().hasClass("has-success")) {
+              //   formIsValid = false;
+              // }
+
+              $( '#register', $this ).attr( 'disabled', !formIsValid );
+          }).on('submit', function(e, data) {
                 var birthday = "'" + moment($("#add-user-form").find("input[name = 'ageUser']").val()).format("YYYY-MM-DD") + "'",
                 startWork = "'" +  moment($("#add-user-form").find("[name = 'stwork']").val()).format("YYYY-MM-DD") + "'", isOkAge = true, isOkSt = true;
                 if (moment(birthday).isSameOrAfter("'" + validAge + "'")) {
