@@ -175,6 +175,32 @@ function deleteHoliday(req, res) {
         });
     });
 };
+function deleteLegalHoliday(req, res) {
+    pool.getConnection(function(err, connection) {
+        if (err) {
+            res.json({
+                "code": 100,
+                "status": "Error in connection database"
+            });
+            return;
+        }
+        var params = req.body;
+        console.log(params);
+        connection.query("DELETE FROM `legalholidays` WHERE `id` = " + params.id + "", function(err, rows) {
+            connection.release();
+            if (!err) {
+                res.json(rows);
+            } else {}
+        });
+        connection.on('error', function(err) {
+            res.json({
+                "code": 100,
+                "status": "Error in connection database"
+            });
+            return;
+        });
+    });
+};
 
 function getFreeDays(req, res) {
     var params = req.query;
@@ -1377,6 +1403,19 @@ router.post("/deleteHoliday", function(req, res) {
     var token = req.query.token;
     isValidToken(token).then(function(result) {
         deleteHoliday(req, res);
+    }, function(error) {
+        console.log(error);
+        res.json({
+            "code": 110,
+            "status": "Your session has expired and you are loged out. - redirect la login in FE"
+        })
+    });
+});
+
+router.post("/deleteLegalHoliday", function(req, res) {
+    var token = req.query.token;
+    isValidToken(token).then(function(result) {
+        deleteLegalHoliday(req, res);
     }, function(error) {
         console.log(error);
         res.json({

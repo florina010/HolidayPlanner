@@ -112,6 +112,7 @@ $(document).ready(function() {
             e.preventDefault();
         });
         getAllHolidays();
+        deleteLegalHoliday();
     };
     var id;
 
@@ -148,7 +149,6 @@ $(document).ready(function() {
                 var name = formWrapper.find("input[name ='name']").val();
                 var type = formWrapper.find("input[name ='typeh']").val();
                 var startDate = formWrapper.find("input[name = 'stholi']").val();
-
                 $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id=' + id + '&startDate=' + startDate + '&name=' + name + '&type=public', function(datah) {});
             }
             e.preventDefault();
@@ -176,7 +176,6 @@ $(document).ready(function() {
                         ]).draw(false);
                         j++;
                     };
-
                     $('#example tbody').on('click', 'tr', function() {
                         id = $(this).find("td:nth-child(1)").html();
                         var data = $(this).find("td:nth-child(2)").html();
@@ -267,4 +266,24 @@ $(document).ready(function() {
             }
         }
     };
+var holidayId;
+    function deleteLegalHoliday(){
+      $.ajax({
+               type: 'GET',
+               url: appConfig.url + appConfig.api + 'getAllHolidays?token=' + token,
+               success: function(data){
+                 console.log(data);
+                    $('#example tbody').on('click', 'tr', function() {
+                      holidayId = $(this).find("td:nth-child(1)").html();
+                        console.log(holidayId);
+                        $.post(appConfig.url + appConfig.api + 'deleteLegalHoliday?token=' + token, {
+                            id: holidayId,
+                        }).done(function(data) {
+
+                        });
+                    });
+              },
+               async:false
+          });
+    }
 });

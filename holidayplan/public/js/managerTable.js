@@ -138,7 +138,7 @@ if (theUser.admin >= 0) {
 
             var editUserForm = $("#edit-user-form");
             editUserForm.attr("user-id", userId);
-
+            console.log(editUserForm.attr("user-id"));
             // Add user details into edit form.
 
             editUserForm.find("input[name='userId']").val(userId);
