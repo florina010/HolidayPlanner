@@ -579,19 +579,25 @@ if (theUser.admin >= 0) {
                      async:false
             });
         // Change manager.
-        }else if (userArray['userActive'] == 1) {
+      }//else if (userArray['userActive'] == 1) {
               var changeManagerId = userArray["change_manager"];
               console.log(changeManagerId);
-              if (changeManagerId !=0) {
+              if (changeManagerId != 0) {
                   var params = '&managerId=' + changeManagerId + "&userId=" + userArray['userId'];
                   $.ajax({
                       type: 'POST',
                       url: appConfig.url + appConfig.api + 'updateUserManager?token=' + token + params,
                       async:false
                     });
-              }
-        };
+              };
 
+            if (userArray['userActive'] == 1) {
+              // $.ajax({
+              //     type: 'POST',
+              //     url: appConfig.url + appConfig.api + 'updateUserManager?token=' + token + params,
+              //     async:false
+              //   });
+            };
     };
 
     function updateUser() {
