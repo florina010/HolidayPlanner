@@ -57,7 +57,6 @@ if (theUser.admin >= 0) {
         populateTable();
         managedUserTable();
         $("#approve-modal-btn-yes").click(function() {
-            console.log('click');
             approveFreeDays();
             $("#approve-freedays-modal").modal('hide');
 

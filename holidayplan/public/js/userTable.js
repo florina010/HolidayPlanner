@@ -14,19 +14,19 @@ function getHolidays() {
 
         var table = $('#userTable').DataTable({
 
-          "aoColumnDefs": [
-            {
-               bSortable: false,
-               aTargets: [ -1 ]
-            }
-          ],
-                    "columnDefs": [
-             { orderable: false, targets: -1 }
-          ],
-          "bDestroy": true
+            "aoColumnDefs": [{
+                bSortable: false,
+                aTargets: [-1]
+            }],
+            "columnDefs": [{
+                orderable: false,
+                targets: -1
+            }],
+            "bDestroy": true
         });
         var j = 1;
         for (var i = 0; i < data.length; i++) {
+            var colorClass = colorTableRow(data[i].approved);
             if (data[i].approved == 2) {
                 var acc = 'Not approved';
             } else if (data[i].approved == 1) {
@@ -47,21 +47,30 @@ function getHolidays() {
                 ]).draw(false)
                 .nodes()
                 .to$()
-                .addClass();
+                .addClass(colorClass);
             j++;
         }
-        for (var i = 0; i < data.length; i++) {
-            var appr = $("#userTable>tbody>tr:nth-child(" + (i + 1) + ")>td:nth-last-child(2)");
-            if (appr.html() == "Approved") {
-                $("#userTable>tbody>tr:nth-child(" + (i + 1) + ")").css('backgroundColor', "#d9edf7")
-            } else {
-                $("#userTable>tbody>tr:nth-child(" + (i + 1) + ")").css('backgroundColor', "#f2dede")
-            }
-
-        }
+        // console.log(data.length);
+        // for (var i = 0; i < data.length; i++) {
+        //     var appr = $("#userTable>tbody>tr:nth-child(" + (i + 1) + ")>td:nth-last-child(2)");
+        //     console.log(appr.html());
+        //     if (appr.html() == "Approved") {
+        //         $("#userTable>tbody>tr:nth-child(" + (i + 1) + ")").css('backgroundColor', "#d9edf7")
+        //     } else {
+        //         $("#userTable>tbody>tr:nth-child(" + (i + 1) + ")").css('backgroundColor', "#f2dede")
+        //     }
+        //
+        // }
     });
 }
 
+function colorTableRow(approved) {
+    if (approved == true) {
+        return "info";
+    } else {
+        return "danger";
+    }
+};
 
 function displayDeleteModal(event, elem, id, approved) {
     var deleteModal = $("#delete-modal");
