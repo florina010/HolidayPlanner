@@ -55,7 +55,6 @@ $(document).ready(function() {
                 var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
                 var name = formWrapper.find("input[name ='newholiday']").val();
                 var startDate = formWrapper.find("input[name = 'stholi']").val();
-                console.log("aa");
                 $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function(data) {
                     out(data.code);
                 });
@@ -247,7 +246,6 @@ $(document).ready(function() {
     };
 
     function displayFormOnUpdateClick(id, name, data, type) {
-      console.log(data);
         $("#myModalOncePerYear").load("editholiday.html", function() {
             $("#nume").val(name);
             $("#type").val(type);
