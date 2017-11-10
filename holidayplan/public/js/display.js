@@ -6,7 +6,7 @@ function weekend(d1, d2) {
     var we = 0,
         days = d2.diff(d1, "days") + 1;
     while (d1 <= d2) {
-        if (d1.days()  == 0 || d1.days()  == 6) {
+        if (d1.days() == 0 || d1.days() == 6) {
             we++;
         }
         d1.add(1, "days");
@@ -14,8 +14,7 @@ function weekend(d1, d2) {
     return days - we;
 }
 
-var holidaysNoCount = [
-    {
+var holidaysNoCount = [{
         type: 'Donare sange',
         days: 1
     },
@@ -43,58 +42,58 @@ var holidaysNoCount = [
 
 $('#tabClickCalendar').click(function() {
     setTimeout(function() {
-      reloadJs('../js/calendar.js');
-     // location.reload();
+        reloadJs('../js/calendar.js');
+        // location.reload();
 
     }, 50);
 });
 $(document).ready(function() {
     displayForm();
-  var theUser = JSON.parse(sessionStorage.getItem('user'));
-  var  token = sessionStorage.getItem('token');
+    var theUser = JSON.parse(sessionStorage.getItem('user'));
+    var token = sessionStorage.getItem('token');
 
-  function freedays(){
-  $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
-          var datesEnabled= [];
-          for (var i in data) {
-            datesEnabled.push(data[i].startDate.toString().substring(0,10));
-          }
-          $('#datepicker').datepicker({
-              multidate: 2,
-              multidateSeparator: ";",
-              toggleActive: true,
-              // startDate: new Date(),
-              clearBtn: true,
-              minViewMode: 0,
-              format: 'yyyy-mm-dd',
-              beforeShowDay: function (date) {
+    function freedays() {
+        $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token + "&userID=" + theUser.userID, function(data) {
+            var datesEnabled = [];
+            for (var i in data) {
+                datesEnabled.push(data[i].startDate.toString().substring(0, 10));
+            }
+            $('#datepicker').datepicker({
+                multidate: 2,
+                multidateSeparator: ";",
+                toggleActive: true,
+                // startDate: new Date(),
+                clearBtn: true,
+                minViewMode: 0,
+                format: 'yyyy-mm-dd',
+                beforeShowDay: function(date) {
 
-                if ((date.getMonth()+1 >= 10) && (date.getDate() >= 10)) {
-                  var  allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-' + (date.getDate());
-                } else if ((date.getMonth()+1 >= 10) && (date.getDate() <= 10)) {
-                  var  allDates = date.getFullYear() + '-' + (date.getMonth()+1) + '-0' + (date.getDate());
-                } else if ((date.getMonth()+1 < 10) && (date.getDate() >= 10)) {
-                  var  allDates = date.getFullYear() + '-0' + (date.getMonth()+1) + '-' + (date.getDate());
-                } else if ((date.getMonth()+1 < 10) && (date.getDate() <= 10)) {
-                  var  allDates = date.getFullYear() + '-0' + (date.getMonth(+1)) + '-0' + (date.getDate());
+                    if ((date.getMonth() + 1 >= 10) && (date.getDate() >= 10)) {
+                        var allDates = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + (date.getDate());
+                    } else if ((date.getMonth() + 1 >= 10) && (date.getDate() <= 10)) {
+                        var allDates = date.getFullYear() + '-' + (date.getMonth() + 1) + '-0' + (date.getDate());
+                    } else if ((date.getMonth() + 1 < 10) && (date.getDate() >= 10)) {
+                        var allDates = date.getFullYear() + '-0' + (date.getMonth() + 1) + '-' + (date.getDate());
+                    } else if ((date.getMonth() + 1 < 10) && (date.getDate() <= 10)) {
+                        var allDates = date.getFullYear() + '-0' + (date.getMonth(+1)) + '-0' + (date.getDate());
+                    }
+
+                    if (datesEnabled.indexOf(allDates) != -1) {
+                        return false;
+                    } else {
+                        return true;
+                    };
                 }
+            });
 
-                if (datesEnabled.indexOf(allDates) != -1) {
-                  return false;
-                } else {
-                  return true;
-                };
-              }
-          });
-
-      });
-};
+        });
+    };
     $('#tabClick').addClass('active');
     var theUser = JSON.parse(sessionStorage.getItem('user')),
         token = sessionStorage.getItem('token'),
         currentDate = moment(),
         sum = 0,
-        manager, manId, dates = new Array(),
+        manager, manId,
         isOk = true;
 
     $('#fileupload').fileupload({
@@ -132,7 +131,7 @@ $(document).ready(function() {
                 $("[name=mName]").val(manager);
                 $("#avatar").attr("src", 'data:image/png;base64,' + theUser.picture);
                 $("[name=name]").val(theUser.name);
-                $("[name=age]").val(theUser.age );
+                $("[name=age]").val(theUser.age);
                 $("[name=email]").val(theUser.email);
                 $("[name=phone]").val(theUser.phone);
                 $("[name=position]").val(theUser.position);
@@ -270,305 +269,304 @@ $(document).ready(function() {
         $('.modal-body> div:nth-child(3)').css('display', 'none');
     });
 
-    var nrOfDays, from, to, currentDay = (moment().format('YYYY-MM-DD')), formValid = true;
+    var nrOfDays, from, to, currentDay = (moment().format('YYYY-MM-DD')),
+        formValid = true;
 
-function addholidayForm() {
-    getFreeDays();
-  freedays();
-    $('#eventForm')
-        .formValidation({
-            framework: 'bootstrap',
-            icon: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
-            },
-            fields: {
-                vacationtype: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The type is required'
-                        }
-                    }
+    function addholidayForm() {
+        var legalH = getFreeDays();
+        freedays();
+        $('#eventForm')
+            .formValidation({
+                framework: 'bootstrap',
+                icon: {
+                    valid: 'glyphicon glyphicon-ok',
+                    invalid: 'glyphicon glyphicon-remove',
+                    validating: 'glyphicon glyphicon-refresh'
                 },
+                fields: {
+                    vacationtype: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The type is required'
+                            }
+                        }
+                    },
 
-                comment: {
-                    validators: {
-                        notEmpty: {
-                            message: 'The comment is required'
+                    comment: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The comment is required'
+                            }
                         }
                     }
                 }
-            }
-        }).on('change', function(e, data) {
-            if($(".date").val()){
+            }).on('change', function(e, data) {
+                if ($(".date").val()) {
 
-                $("div #info").empty();
-                $("div #danger").empty();
-                var date = $(".date").val().split(";"),
-                stdate = date[0],
-                enddate = date[1]
-                from = moment(stdate).format('YYYY/MM/DD');
-                if (!enddate) {
-                    to = moment(stdate).format('YYYY/MM/DD');
-                } else {
-                    to = moment(enddate).format('YYYY/MM/DD');
-                }
-                var aux, from2 = "'" + from + "'", to2 = "'" + to + "'";
+                    $("div #info").empty();
+                    $("div #danger").empty();
+                    var date = $(".date").val().split(";"),
+                        stdate = date[0],
+                        enddate = date[1]
+                    from = moment(stdate).format('YYYY/MM/DD');
+                    if (!enddate) {
+                        to = moment(stdate).format('YYYY/MM/DD');
+                    } else {
+                        to = moment(enddate).format('YYYY/MM/DD');
+                    }
+                    var aux, from2 = "'" + from + "'",
+                        to2 = "'" + to + "'";
 
-                if (moment(from2).isAfter(moment(to2)) || moment(to2).isBefore(moment(from2))) {
-                    aux = to;
-                    to = from;
-                    from = aux;
-                }
+                    if (moment(from2).isAfter(moment(to2)) || moment(to2).isBefore(moment(from2))) {
+                        aux = to;
+                        to = from;
+                        from = aux;
+                    }
 
-                var isWeekend = weekend(moment(from), moment(to));
-                var arrayOfSelectedDays = arrayFromStToEnd(from, to);
-                nrOfDays = checkArrays(arrayOfSelectedDays, dates, isWeekend);
-                // console.log(dates);
-                var type = $('#vacationtype').val();
-                for (var j in holidaysNoCount) {
-                    if (type == holidaysNoCount[j].type) {
-                        if (nrOfDays != holidaysNoCount[j].days) {
-                            $("div #danger").append("<p>The duration for this type of holiday is " + holidaysNoCount[j].days + " days.</p>").css('display', 'block');
-                            $("[name=comment]").attr('disabled', true);
-                            formValid = false;
-                            break;
-                        }
-                        else {
-                            $("#danger").css('display', 'none');
+                    var isWeekend = weekend(moment(from), moment(to));
+                    var arrayOfSelectedDays = arrayFromStToEnd(from, to);
+                    nrOfDays = checkArrays(arrayOfSelectedDays, legalH, isWeekend);
+                    var type = $('#vacationtype').val();
+                    for (var j in holidaysNoCount) {
+                        if (type == holidaysNoCount[j].type) {
+                            if (nrOfDays != holidaysNoCount[j].days) {
+                                $("div #danger").append("<p>The duration for this type of holiday is " + holidaysNoCount[j].days + " days.</p>").css('display', 'block');
+                                $("[name=comment]").attr('disabled', true);
+                                formValid = false;
+                                break;
+                            } else {
+                                $("#danger").css('display', 'none');
+                                $("[name=comment]").attr('disabled', false);
+                                formValid = true;
+                                break;
+                            }
+                        } else {
                             $("[name=comment]").attr('disabled', false);
                             formValid = true;
-                            break;
                         }
                     }
-                    else {
-                        $("[name=comment]").attr('disabled', false);
-                        formValid = true;
+                    if (type) {
+                        $("div #info").css('display', 'block');
+                        if (type == 'Concediu') {
+                            $("div #info").append("<p>You selected " + nrOfDays + " days. These will be taken from the total number of available leave days.</p>")
+                        } else {
+                            $("div #info").append("<p>You selected " + nrOfDays + " days. These will not be taken from the total number of available leave days.</p>")
+                        }
                     }
                 }
-                if (type) {
-                    $("div #info").css('display', 'block');
-                    if (type == 'Concediu') {
-                        $("div #info").append("<p>You selected " + nrOfDays + " days. These will be taken from the total number of available leave days.</p>")
-                    }
-                    else {
-                        $("div #info").append("<p>You selected " + nrOfDays + " days. These will not be taken from the total number of available leave days.</p>")
-                    }
+                else {
+                    $("div #info").css('display', 'none');
                 }
-            }
-        }).on('submit', function(e, data) {
-           if (!e.isDefaultPrevented()) {
-                if (formValid) {
-                    var duration;
-                    duration = nrOfDays;
+            }).on('submit', function(e, data) {
+                if (!e.isDefaultPrevented()) {
+                    if (formValid) {
+                        var duration;
+                        duration = nrOfDays;
 
-                    var holidayOptions = {
-                        managerName: manager,
-                        manag: manId,
-                        vacationtype: $("#vacationtype").val(),
-                        comment: $("#comment").val(),
-                        avDays: theUser.avfreedays,
-                        stdate: from,
-                        enddate: to,
-                        duration: duration
-                    }
+                        var holidayOptions = {
+                            managerName: manager,
+                            manag: manId,
+                            vacationtype: $("#vacationtype").val(),
+                            comment: $("#comment").val(),
+                            avDays: theUser.avfreedays,
+                            stdate: from,
+                            enddate: to,
+                            duration: duration
+                        }
 
-                    if (duration == 0) {
-                        alert('Please select another interval.');
-                        $('#myModal').find('form')[0].reset();
+                        if (duration == 0) {
+                            alert('Please select another interval.');
+                            $('#myModal').find('form')[0].reset();
+                        } else {
+                            check(from, to, holidayOptions, addHoliday);
+                            $("div #info").css('display', 'none');
+                            $("div #danger").css('display', 'none');
+                        }
                     }
-                    else {
-                        check(from, to, holidayOptions, addHoliday);
-                        $("div #info").css('display', 'none');
-                        $("div #danger").css('display', 'none');
-                    }
+                    e.preventDefault();
                 }
-                e.preventDefault();
-            }
+            });
+
+        $('#logout').click(function(e) {
+            $.post(appConfig.url + appConfig.api + 'logout', {
+                email: theUser.email
+            }).done(function(data) {});
         });
 
-    $('#logout').click(function(e) {
-        $.post(appConfig.url + appConfig.api + 'logout', {
-            email: theUser.email
-        }).done(function(data) {});
-    });
-
-    function getFreeDays() {
-        $.get(appConfig.url + appConfig.api + 'legalFreeHolidays', function(data) {
-            for (var i = 0; i < data.length; i++) {
-                if (data[i].type == 'public') {
-                    dates.push(moment(data[i].date).format("YYYY/MM/DD"));
-                }
-            }
-        });
-    };
-
-    function addHoliday(options) {
-        $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
-            vacationtype: options.vacationtype,
-            comment: options.comment,
-            stdate: moment(options.stdate).format("YYYY/MM/DD"),
-            enddate: moment(options.enddate).format("YYYY/MM/DD"),
-            userID: theUser.userID,
-            days: options.duration,
-            approverID: options.manag
-        }, function(data) {
-            out(data.code);
-            // Insert event into calendar.
-            var event = {
-                title: 'pending: ' + options.comment,
-                start: moment(options.stdate).format("YYYY-MM-DD"),
-                end: moment(options.enddate).format("YYYY-MM-DD"),
-            };
-            $('#calendar').fullCalendar('renderEvent', event, true);
-            e.preventDefault();
-        });
-        $('.modal-body> div:first-child').css('display', 'block');
-        $('.modal-body> div:nth-child(2)').css('display', 'none');
-        $('.modal-body> div:nth-child(3)').css('display', 'none');
-
-        $("div #info").css('display', 'none');
-        $("div #danger").css('display', 'none');
-        reloadJs('../js/calendar.js');
-    }
-
-    function check(startString, endString, options, callback) {
-        var start = moment(startString).format("YYYY/MM/DD"),
-            end = moment(endString).format("YYYY/MM/DD");
-        $.get(appConfig.url + appConfig.api + 'getFreeDaysApproved?token=' + token + '&userID=' + theUser.userID, function(data) {
-            out(data.code);
-            if (data.length > 0) {
+        function getFreeDays() {
+            var dates = new Array();
+            $.get(appConfig.url + appConfig.api + 'getLegalFreeDays?token=' + token, function(data) {
                 for (var i = 0; i < data.length; i++) {
-                    var st = moment(data[i].startDate).format("YYYY/MM/DD"),
-                        ends = moment(data[i].endDate).format("YYYY/MM/DD"),
-                        start2 = start,
-                        end2 = end,
-                        dateArray = new Array(),
-                        currentDay = (moment().format('YYYY/MM/DD'));
-                    if (moment(start).isBetween(st, ends) || moment(end).isBetween(st, ends) || start == st || start == ends || end == st || end == ends || start > end ) {
-                        $('.modal-body> div:first-child').css('display', 'none');
-                        $('.modal-body> div:nth-child(2)').css('display', 'none');
-                        $('.modal-body> div:nth-child(3)').css('display', 'block');
-                        $("div #info").css('display', 'none');
-                        $("div #danger").css('display', 'none');
-                        isOk = false;
-                        break;
-                    }
-                    else {
-                        isOk = true;
-                    }
+                    dates.push(moment(data[i].startDate).format("YYYY/MM/DD"));
+                }
+            });
+            return dates;
+        };
 
-                    dateArray = arrayFromStToEnd(start2, end2);
+        function addHoliday(options) {
+            $.get(appConfig.url + appConfig.api + 'updatedate?token=' + token, {
+                vacationtype: options.vacationtype,
+                comment: options.comment,
+                stdate: moment(options.stdate).format("YYYY/MM/DD"),
+                enddate: moment(options.enddate).format("YYYY/MM/DD"),
+                userID: theUser.userID,
+                days: options.duration,
+                approverID: options.manag
+            }, function(data) {
+                out(data.code);
+                // Insert event into calendar.
+                var event = {
+                    title: 'pending: ' + options.comment,
+                    start: moment(options.stdate).format("YYYY-MM-DD"),
+                    end: moment(options.enddate).format("YYYY-MM-DD"),
+                };
+                $('#calendar').fullCalendar('renderEvent', event, true);
+                e.preventDefault();
+            });
+            $('.modal-body> div:first-child').css('display', 'block');
+            $('.modal-body> div:nth-child(2)').css('display', 'none');
+            $('.modal-body> div:nth-child(3)').css('display', 'none');
 
-                    for (var j = 0; j < dateArray.length; j++) {
-                        if (dateArray[j] == st || dateArray[j] == ends) {
+            $("div #info").css('display', 'none');
+            $("div #danger").css('display', 'none');
+            reloadJs('../js/calendar.js');
+        }
+
+        function check(startString, endString, options, callback) {
+            var start = moment(startString).format("YYYY/MM/DD"),
+                end = moment(endString).format("YYYY/MM/DD");
+            $.get(appConfig.url + appConfig.api + 'getFreeDaysApproved?token=' + token + '&userID=' + theUser.userID, function(data) {
+                out(data.code);
+                if (data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        var st = moment(data[i].startDate).format("YYYY/MM/DD"),
+                            ends = moment(data[i].endDate).format("YYYY/MM/DD"),
+                            start2 = start,
+                            end2 = end,
+                            dateArray = new Array(),
+                            currentDay = (moment().format('YYYY/MM/DD'));
+                        if (moment(start).isBetween(st, ends) || moment(end).isBetween(st, ends) || start == st || start == ends || end == st || end == ends || start > end) {
                             $('.modal-body> div:first-child').css('display', 'none');
                             $('.modal-body> div:nth-child(2)').css('display', 'none');
                             $('.modal-body> div:nth-child(3)').css('display', 'block');
+                            $("div #info").css('display', 'none');
+                            $("div #danger").css('display', 'none');
                             isOk = false;
                             break;
-                        }
-                        else {
+                        } else {
                             isOk = true;
                         }
-                    }
-                }
-                if (isOk) {
-                    callback(options);
 
+                        dateArray = arrayFromStToEnd(start2, end2);
+
+                        for (var j = 0; j < dateArray.length; j++) {
+                            if (dateArray[j] == st || dateArray[j] == ends) {
+                                $('.modal-body> div:first-child').css('display', 'none');
+                                $('.modal-body> div:nth-child(2)').css('display', 'none');
+                                $('.modal-body> div:nth-child(3)').css('display', 'block');
+                                isOk = false;
+                                break;
+                            } else {
+                                isOk = true;
+                            }
+                        }
+                    }
+                    if (isOk) {
+                        callback(options);
+
+                        $("div #info").css('display', 'none');
+                        $("div #danger").css('display', 'none');
+                        location.reload();
+                    }
+                } else {
                     $("div #info").css('display', 'none');
                     $("div #danger").css('display', 'none');
-                    location.reload();
+                    callback(options);
                 }
-            } else {
-                $("div #info").css('display', 'none');
-                $("div #danger").css('display', 'none');
-                callback(options);
-            }
 
-            if (data.length > 0 && isOk) {
-                var dataId = data[0].id;
-                var tr = $("<tr>");
-                tr.addClass("danger");
-                var index = parseInt($("#userTable tbody tr").last().find("td").first().text()) + 1;
-                tr.append("<td class='sorting_1'>" + index + "</td>").css("backgroundColor", "rgb(242, 222, 222)");
-                tr.append("<td>" + options.managerName + "</td>");
-                tr.append("<td>" + options.duration + "</td>");
-                tr.append("<td>" + moment(options.stdate).format("DD/MM/YYYY") + "</td>");
-                tr.append("<td>" + moment(options.enddate).format("DD/MM/YYYY") + "</td>");
-                tr.append("<td>" + options.vacationtype + "</td>");
-                tr.append("<td>" + options.comment + "</td>");
-                tr.append("<td>" + 'Pending' + "</td>");
-                tr.append("<td>" + '<i class="fa fa-times"></i>' + "</td>");
-                $("#userTable tbody").append(tr);
-            } else if (data.length == 0 && isOk) {
-                $(".dataTables_empty").css("display", "none");
-                var tr = $("<tr>");
-                tr.addClass("danger");
-                var index = parseInt($("#userTable tbody tr").last().find("td").first().text());
-                tr.append("<td class='sorting_1'>" + 1 + "</td>").css("backgroundColor", "rgb(242, 222, 222)");
-                tr.append("<td>" + options.managerName + "</td>");
-                tr.append("<td>" + options.duration + "</td>");
-                tr.append("<td>" + moment(options.stdate).format("DD/MM/YYYY") + "</td>");
-                tr.append("<td>" + moment(options.enddate).format("DD/MM/YYYY") + "</td>");
-                tr.append("<td>" + options.vacationtype + "</td>");
-                tr.append("<td>" + options.comment + "</td>");
-                tr.append("<td>" + 'Pending' + "</td>");
-                tr.append("<td>" + '<i class="fa fa-times"></i>' + "</td>");
-                $("#userTable tbody").append(tr);
-            }
-        });
-    }
-
-
-    function arrayFromStToEnd (st, end) {
-        var datesArr = new Array();
-        while (st <= end) {
-            datesArr.push(st);
-            var duration = moment.duration({
-                'days' : 1
+                if (data.length > 0 && isOk) {
+                    var dataId = data[0].id;
+                    var tr = $("<tr>");
+                    tr.addClass("danger");
+                    var index = parseInt($("#userTable tbody tr").last().find("td").first().text()) + 1;
+                    tr.append("<td class='sorting_1'>" + index + "</td>").css("backgroundColor", "rgb(242, 222, 222)");
+                    tr.append("<td>" + options.managerName + "</td>");
+                    tr.append("<td>" + options.duration + "</td>");
+                    tr.append("<td>" + moment(options.stdate).format("DD/MM/YYYY") + "</td>");
+                    tr.append("<td>" + moment(options.enddate).format("DD/MM/YYYY") + "</td>");
+                    tr.append("<td>" + options.vacationtype + "</td>");
+                    tr.append("<td>" + options.comment + "</td>");
+                    tr.append("<td>" + 'Pending' + "</td>");
+                    tr.append("<td>" + '<i class="fa fa-times"></i>' + "</td>");
+                    $("#userTable tbody").append(tr);
+                } else if (data.length == 0 && isOk) {
+                    $(".dataTables_empty").css("display", "none");
+                    var tr = $("<tr>");
+                    tr.addClass("danger");
+                    var index = parseInt($("#userTable tbody tr").last().find("td").first().text());
+                    tr.append("<td class='sorting_1'>" + 1 + "</td>").css("backgroundColor", "rgb(242, 222, 222)");
+                    tr.append("<td>" + options.managerName + "</td>");
+                    tr.append("<td>" + options.duration + "</td>");
+                    tr.append("<td>" + moment(options.stdate).format("DD/MM/YYYY") + "</td>");
+                    tr.append("<td>" + moment(options.enddate).format("DD/MM/YYYY") + "</td>");
+                    tr.append("<td>" + options.vacationtype + "</td>");
+                    tr.append("<td>" + options.comment + "</td>");
+                    tr.append("<td>" + 'Pending' + "</td>");
+                    tr.append("<td>" + '<i class="fa fa-times"></i>' + "</td>");
+                    $("#userTable tbody").append(tr);
+                }
             });
-            st = moment(st, 'YYYY/MM/DD').add(duration).format('YYYY/MM/DD');
         }
-        return datesArr;
-    }
 
-    function arratOfLegalHolidays () {
 
-    }
+        function arrayFromStToEnd(st, end) {
+            var datesArr = new Array();
+            while (st <= end) {
+                datesArr.push(st);
+                var duration = moment.duration({
+                    'days': 1
+                });
+                st = moment(st, 'YYYY/MM/DD').add(duration).format('YYYY/MM/DD');
+            }
+            return datesArr;
+        }
 
-    function checkArrays(arr1, arr2, options) {
-      // Remove duplicates from public hollidays array.
-      var unique_arr2 = [];
-      $.each(arr2, function(i, el){
-          if($.inArray(el, unique_arr2) === -1){
-            unique_arr2.push(el);
-          }
-      });
-        for (var l = 0; l < arr1.length; l++) {
-            for (var d = 0; d < unique_arr2.length; d++) {
-                if (arr1[l] == unique_arr2[d]) {
-                    options--;
+        function arratOfLegalHolidays() {
+
+        }
+
+        function checkArrays(arr1, arr2, options) {
+            // Remove duplicates from public hollidays array.
+            var unique_arr2 = [];
+            $.each(arr2, function(i, el) {
+                if ($.inArray(el, unique_arr2) === -1) {
+                    unique_arr2.push(el);
+                }
+            });
+            for (var l = 0; l < arr1.length; l++) {
+                for (var d = 0; d < unique_arr2.length; d++) {
+                    if (arr1[l] == unique_arr2[d]) {
+                        options--;
+                    }
+                }
+            }
+            return options;
+        }
+
+        function out(data) {
+            if (data == 110) {
+                if (!appConfig.sessionInvalid) {
+                    appConfig.sessionInvalid = true;
+                    alert('Session expired');
+                    $.post(appConfig.url + appConfig.api + 'logout', {
+                        email: theUser.email
+                    });
+                    window.location.href = 'login.html';
                 }
             }
         }
-        return options;
-    }
+    };
 
-    function out(data) {
-        if (data == 110) {
-            if (!appConfig.sessionInvalid) {
-                appConfig.sessionInvalid = true;
-                alert('Session expired');
-                $.post(appConfig.url + appConfig.api + 'logout', {
-                    email: theUser.email
-                });
-                window.location.href = 'login.html';
-            }
-        }
-    }
-};
     function displayForm() {
         $("#myModal").load("addholiday.html", function() {
             addholidayForm();
