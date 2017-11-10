@@ -1,13 +1,4 @@
 $(document).ready(function() {
-
-  $('#addhol').click(function() {
-      // setTimeout(function() {
-          // $("#calendar").empty();
-          // reloadJs('../js/calendar.js');
-          console.log("aa");
-      // }, 400);
-  });
-
     var theUser = JSON.parse(sessionStorage.getItem('user')),
         token = sessionStorage.getItem('token');
 
@@ -64,7 +55,6 @@ $(document).ready(function() {
                 var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
                 var name = formWrapper.find("input[name ='newholiday']").val();
                 var startDate = formWrapper.find("input[name = 'stholi']").val();
-                console.log("aa");
                 $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function(data) {
                     out(data.code);
                 });
@@ -120,7 +110,6 @@ $(document).ready(function() {
                   $('#myModalOncePerYear').modal('hide');
             }
             e.preventDefault();
-            getAllHolidays();
         });
         getAllHolidays();
     };
@@ -172,30 +161,32 @@ $(document).ready(function() {
     };
 
     function getAllHolidays() {
-        $.get(appConfig.url + appConfig.api + 'getAllHolidays?token=' + token, function(data) {
-            out(data.code);
-            var holidaytable = $('#example').DataTable();
-            var j = 1;
-            for (var i = 0; i < data.length; i++) {
-                holidaytable.row.add([
-                    j,
-                    moment(data[i].startDate).format("YYYY-MM-DD"),
-                    data[i].name,
-                    data[i].type
-                ]).draw(false);
-                j++;
-            };
+      $.ajax({
+               type: 'GET',
+               url: appConfig.url + appConfig.api + 'getAllHolidays?token=' + token,
+               success: function(data){
+                 var holidaytable = $('#example').DataTable();
+                    var j = 1;
+                    for (var i = 0; i < data.length; i++) {
+                        holidaytable.row.add([
+                            j,
+                            moment(data[i].startDate).format("YYYY-MM-DD"),
+                            data[i].name,
+                            data[i].type
+                        ]).draw(false);
+                        j++;
+                    };
 
-
-            $('#example tbody').on('click', 'tr', function() {
-                id = $(this).find("td:nth-child(1)").html();
-                var data = $(this).find("td:nth-child(2)").html();
-                var name = $(this).find("td:nth-child(3)").html();
-                var type = $(this).find("td:nth-child(4)").html();
-
-                displayFormOnUpdateClick(id, name, data, type);
-            });
-        });
+                    $('#example tbody').on('click', 'tr', function() {
+                        id = $(this).find("td:nth-child(1)").html();
+                        var data = $(this).find("td:nth-child(2)").html();
+                        var name = $(this).find("td:nth-child(3)").html();
+                        var type = $(this).find("td:nth-child(4)").html();
+                         displayFormOnUpdateClick(id, name, data, type);
+                      });
+              },
+               async:false
+          });
     };
 
     function prepareUserForm() {
@@ -255,14 +246,12 @@ $(document).ready(function() {
     };
 
     function displayFormOnUpdateClick(id, name, data, type) {
-
         $("#myModalOncePerYear").load("editholiday.html", function() {
             $("#nume").val(name);
             $("#type").val(type);
-            $("#dateval").val(data);
+            $("div > #dateval").val(data);
             updateHolidayForm();
             $('#myModalOncePerYear').modal('show');
-
         });
     };
 
