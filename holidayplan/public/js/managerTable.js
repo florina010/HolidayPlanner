@@ -165,7 +165,7 @@ if (theUser.admin >= 0) {
             }
 
 
-            var bonus = userInfo.eq(9).text();
+            var bonus = userInfo.eq(10).text();
             editUserForm.find("input[name='bonus']").val(bonus);
 
             if (position == "Manager") {
