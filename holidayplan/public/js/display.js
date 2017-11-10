@@ -39,7 +39,6 @@ var holidaysNoCount = [{
         days: 730
     }
 ]
-
 $('#tabClickCalendar').click(function() {
     setTimeout(function() {
         reloadJs('../js/calendar.js');
