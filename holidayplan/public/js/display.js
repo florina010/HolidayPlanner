@@ -1,5 +1,4 @@
 "use strict";
-window.appNameSpace = window.appNameSpace || {};
 window.sessionInvalid = false;
 
 function weekend(d1, d2) {
@@ -58,6 +57,7 @@ $(document).ready(function() {
             for (var i in data) {
                 datesEnabled.push(data[i].startDate.toString().substring(0, 10));
             }
+
             $('#datepicker').datepicker({
                 multidate: 2,
                 multidateSeparator: ";",
@@ -84,7 +84,10 @@ $(document).ready(function() {
                         return true;
                     };
                 }
-            });
+            }).on('changeDate', function(e) {
+            // Revalidate the date field
+            $('#eventForm').formValidation('revalidateField', 'dates');
+        });;
 
         });
     };
@@ -293,18 +296,29 @@ $(document).ready(function() {
                             }
                         }
                     },
-
                     comment: {
                         validators: {
                             notEmpty: {
                                 message: 'The comment is required'
                             }
                         }
+                    },
+                    dates: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The date is required'
+                            }
+                            // date: {
+                            // //    format: 'YYYY-MM-DD',
+                            //     message: 'The date is not a valid'
+                            // }
+                        }
                     }
                 }
             }).on('change', function(e, data) {
+                $( "#datepicker" ).datepicker( "refresh" );
                 if ($(".date").val()) {
-
+                    $( "#datepicker" ).datepicker( "refresh" );
                     $("div #info").empty();
                     $("div #danger").empty();
                     var date = $(".date").val().split(";"),
@@ -359,6 +373,7 @@ $(document).ready(function() {
                 else {
                     $("div #info").css('display', 'none');
                 }
+
             }).on('submit', function(e, data) {
                 if (!e.isDefaultPrevented()) {
                     if (formValid) {
@@ -377,8 +392,10 @@ $(document).ready(function() {
                         }
 
                         if (duration == 0) {
-                            alert('Please select another interval.');
-                            $('#myModal').find('form')[0].reset();
+                            $('.modal-body> div:first-child').css('display', 'none');
+                            $('.modal-body> div:nth-child(2)').css('display', 'none');
+                            $('.modal-body> div:nth-child(3)').css('display', 'block');
+                            resetFormAddH();
                         } else {
                             check(from, to, holidayOptions, addHoliday);
                             $("div #info").css('display', 'none');
@@ -428,6 +445,8 @@ $(document).ready(function() {
             $('.modal-body> div:first-child').css('display', 'block');
             $('.modal-body> div:nth-child(2)').css('display', 'none');
             $('.modal-body> div:nth-child(3)').css('display', 'none');
+            resetFormAddH();
+
 
             $("div #info").css('display', 'none');
             $("div #danger").css('display', 'none');
@@ -454,6 +473,8 @@ $(document).ready(function() {
                             $("div #info").css('display', 'none');
                             $("div #danger").css('display', 'none');
                             isOk = false;
+                            resetFormAddH();
+
                             break;
                         } else {
                             isOk = true;
@@ -466,7 +487,7 @@ $(document).ready(function() {
                                 $('.modal-body> div:first-child').css('display', 'none');
                                 $('.modal-body> div:nth-child(2)').css('display', 'none');
                                 $('.modal-body> div:nth-child(3)').css('display', 'block');
-                                isOk = false;
+                                resetFormAddH();
                                 break;
                             } else {
                                 isOk = true;
@@ -533,10 +554,6 @@ $(document).ready(function() {
             return datesArr;
         }
 
-        function arratOfLegalHolidays() {
-
-        }
-
         function checkArrays(arr1, arr2, options) {
             // Remove duplicates from public hollidays array.
             var unique_arr2 = [];
@@ -574,6 +591,14 @@ $(document).ready(function() {
             addholidayForm();
         });
     };
+
+    function resetFormAddH () {
+        $("#eventForm")[0].reset();
+        $("#eventForm").formValidation('revalidateField', 'vacationtype');
+        $("#eventForm").formValidation('revalidateField', 'comment');
+        $(".input-daterange").next().removeClass('glyphicon-ok').addClass('glyphicon-remove');
+        $("#eventForm div").first().removeClass('has-success').addClass('has-error');
+    }
 
     $("#dropdownMenu2").click(function() {
         $("div #info").css('display', 'none');
