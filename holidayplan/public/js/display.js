@@ -210,6 +210,7 @@ $(document).ready(function() {
             thM = $("<th>Manager</th>"),
             thAc = $("<th>Active</th>"),
             thAg = $("<th>Age</th>"),
+            thAv = $("<th>Available free days</th>"),
             thBo = $("<th>Bonus</th>"),
             thAct = $("<th>Actions</th>");
         $(tr).append($(th));
@@ -221,6 +222,7 @@ $(document).ready(function() {
         $(tr).append($(thM));
         $(tr).append($(thAc));
         $(tr).append($(thAg));
+        $(tr).append($(thAv));
         $(tr).append($(thBo));
         $(tr).append($(thAct));
         $(thead).append($(tr));

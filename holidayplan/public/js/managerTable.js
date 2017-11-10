@@ -820,6 +820,7 @@ if (theUser.admin >= 0) {
                         result,
                         active,
                         moment().diff(users[i].age, 'years', false),
+                        users[i].avfreedays,
                         users[i].bonus,
                         '<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
                         //"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
@@ -886,6 +887,7 @@ if (theUser.admin >= 0) {
                     theUser.name,
                     active,
                     moment().diff(users[i].age, 'years', false),
+                    users[i].avfreedays,
                     users[i].bonus,
                     '<a class="btn btn-default fa fa-edit" href="#" data-toggle="modal" data-target="#myModalUser" name="editUser" onclick="managerEditUser(this ,' + users[i].userID + ')"></a>'
                     //"<span class='fa fa-edit' onclick='managerEditUser(this ," + users[i].userID + ")'></span>"
