@@ -444,7 +444,7 @@ $(document).ready(function() {
             $('.modal-body> div:first-child').css('display', 'block');
             $('.modal-body> div:nth-child(2)').css('display', 'none');
             $('.modal-body> div:nth-child(3)').css('display', 'none');
-            resetFormAddH();
+//            resetFormAddH();
 
 
             $("div #info").css('display', 'none');

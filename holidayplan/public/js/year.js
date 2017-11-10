@@ -156,7 +156,8 @@ $(document).ready(function() {
             setTimeout(function() {
                 $('#myModalOncePerYear').modal('hide');
             }, 1000);
-
+            getAllHolidays();
+            deleteLegalHoliday();
         });
     };
 
@@ -267,23 +268,23 @@ $(document).ready(function() {
         }
     };
 var holidayId;
+deleteLegalHoliday();
     function deleteLegalHoliday(){
       $.ajax({
                type: 'GET',
                url: appConfig.url + appConfig.api + 'getAllHolidays?token=' + token,
                success: function(data){
-                 console.log(data);
-                    $('#example tbody').on('click', 'tr', function() {
+                  console.log(data);
+                    $('#myModalOncePerYear tbody').on('click', 'tr', function() {
                       holidayId = $(this).find("td:nth-child(1)").html();
-                        console.log(holidayId);
+                        console.log(data[holidayId]);
                         $.post(appConfig.url + appConfig.api + 'deleteLegalHoliday?token=' + token, {
                             id: holidayId,
                         }).done(function(data) {
-
                         });
                     });
               },
                async:false
           });
-    }
+    };
 });
