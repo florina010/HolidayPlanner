@@ -62,7 +62,6 @@ function fillDate() {
                     };
 
                     Array.prototype.push.apply(d, dd);
-                    console.log(d);
                     main();
                     colorEvents();
                 });

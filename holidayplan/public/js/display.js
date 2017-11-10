@@ -325,7 +325,7 @@ function addholidayForm() {
                 var isWeekend = weekend(moment(from), moment(to));
                 var arrayOfSelectedDays = arrayFromStToEnd(from, to);
                 nrOfDays = checkArrays(arrayOfSelectedDays, dates, isWeekend);
-                console.log(dates);
+                // console.log(dates);
                 var type = $('#vacationtype').val();
                 for (var j in holidaysNoCount) {
                     if (type == holidaysNoCount[j].type) {
