@@ -448,7 +448,6 @@ $(document).ready(function() {
             $('.modal-body> div:nth-child(2)').css('display', 'none');
             $('.modal-body> div:nth-child(3)').css('display', 'none');
 
-
             $("div #info").css('display', 'none');
             $("div #danger").css('display', 'none');
             reloadJs('../js/calendar.js');
@@ -459,6 +458,7 @@ $(document).ready(function() {
                 end = moment(endString).format("YYYY/MM/DD");
             $.get(appConfig.url + appConfig.api + 'getFreeDaysApproved?token=' + token + '&userID=' + theUser.userID, function(data) {
                 out(data.code);
+                console.log(data.length);
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
                         var st = moment(data[i].startDate).format("YYYY/MM/DD"),
@@ -505,6 +505,7 @@ $(document).ready(function() {
                     $("div #info").css('display', 'none');
                     $("div #danger").css('display', 'none');
                     callback(options);
+                    location.reload();
                 }
 
                 if (data.length > 0 && isOk) {
