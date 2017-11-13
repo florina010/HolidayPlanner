@@ -307,10 +307,6 @@ $(document).ready(function() {
                             notEmpty: {
                                 message: 'The date is required'
                             }
-                            // date: {
-                            // //    format: 'YYYY-MM-DD',
-                            //     message: 'The date is not a valid'
-                            // }
                         }
                     }
                 }
@@ -322,7 +318,8 @@ $(document).ready(function() {
                     $("div #danger").empty();
                     var date = $(".date").val().split(";"),
                         stdate = date[0],
-                        enddate = date[1]
+                        enddate = date[1],
+                        type = $('#vacationtype').val();
                     from = moment(stdate).format('YYYY/MM/DD');
                     if (!enddate) {
                         to = moment(stdate).format('YYYY/MM/DD');
@@ -341,7 +338,15 @@ $(document).ready(function() {
                     var isWeekend = weekend(moment(from), moment(to));
                     var arrayOfSelectedDays = arrayFromStToEnd(from, to);
                     nrOfDays = checkArrays(arrayOfSelectedDays, legalH, isWeekend);
-                    var type = $('#vacationtype').val();
+                    if(type) {
+                        if (type == 'Maternitate/Paternitate') {
+                            var nr = 730 - nrOfDays;
+                            console.log(nr);
+                            to = moment(from, "YYYY/MM/DD").add(nr, 'days');
+                            nrOfDays = 730;
+                            $("#datepicker").val(stdate + ";" + moment(to).format('YYYY-MM-DD'));
+                        }
+                    }
                     for (var j in holidaysNoCount) {
                         if (type == holidaysNoCount[j].type) {
                             if (nrOfDays != holidaysNoCount[j].days) {
@@ -376,8 +381,6 @@ $(document).ready(function() {
             }).on('submit', function(e, data) {
                 if (!e.isDefaultPrevented()) {
                     if (formValid) {
-                        var duration;
-                        duration = nrOfDays;
 
                         var holidayOptions = {
                             managerName: manager,
@@ -387,10 +390,10 @@ $(document).ready(function() {
                             avDays: theUser.avfreedays,
                             stdate: from,
                             enddate: to,
-                            duration: duration
+                            duration: nrOfDays
                         }
 
-                        if (duration == 0) {
+                        if (nrOfDays == 0) {
                             $('.modal-body> div:first-child').css('display', 'none');
                             $('.modal-body> div:nth-child(2)').css('display', 'none');
                             $('.modal-body> div:nth-child(3)').css('display', 'block');
@@ -444,7 +447,6 @@ $(document).ready(function() {
             $('.modal-body> div:first-child').css('display', 'block');
             $('.modal-body> div:nth-child(2)').css('display', 'none');
             $('.modal-body> div:nth-child(3)').css('display', 'none');
-            resetFormAddH();
 
 
             $("div #info").css('display', 'none');
@@ -473,7 +475,6 @@ $(document).ready(function() {
                             $("div #danger").css('display', 'none');
                             isOk = false;
                             resetFormAddH();
-
                             break;
                         } else {
                             isOk = true;
