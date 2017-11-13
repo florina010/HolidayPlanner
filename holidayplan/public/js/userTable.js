@@ -76,9 +76,18 @@ function displayDeleteModal(event, elem, id, approved) {
     var deleteModal = $("#delete-modal");
     deleteModal.modal('show');
 
+
     $("#delete-modal-btn-yes").one('click', function() {
         event.stopPropagation();
         deleteHolidayModal(elem, id, approved);
+        var events = ($("#calendar").fullCalendar( 'getEventSources' ));
+        for(var i = 0; i < events[0]['rawEventDefs'].length; i++) {
+            if (events[0]['rawEventDefs'][i]['id'] == id) {
+                events[0]['rawEventDefs'].splice(i,1);
+                $("#calendar").fullCalendar('removeEvents');
+                $("#calendar").fullCalendar( 'addEventSource', events[0]['rawEventDefs'])
+            }
+        }
         $("#delete-modal").modal('hide');
     });
     $("#delete-modal-btn-no").click(function() {
@@ -93,6 +102,7 @@ function deleteHolidayModal(elem, id, approved) {
         }).done(function(data) {
             $("#userTable").DataTable().clear();
             getHolidays();
+        //    $("#calendar").fullCalendar( 'removeEventSource', id )
         });
     } else {
         alert("You can not delete this. Please contact your manager.");

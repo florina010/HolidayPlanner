@@ -40,7 +40,7 @@ var holidaysNoCount = [{
 ]
 $('#tabClickCalendar').click(function() {
     setTimeout(function() {
-        reloadJs('../js/calendar.js');
+        //reloadJs('../js/calendar.js');
         // location.reload();
 
     }, 50);

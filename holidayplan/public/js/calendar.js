@@ -29,6 +29,7 @@ function fillDate() {
             for (var i = 0; i < data.length; i++) {
                 if (data[i].userID == theUser.userID && data[i].approved == '1') {
                     d.push({
+                        id: data[i].id,
                         start: new Date(data[i].startDate),
                         end: new Date(data[i].endDate),
                         title: 'approved: ' + data[i].type
@@ -36,6 +37,7 @@ function fillDate() {
                 }
                 if (data[i].userID == theUser.userID && data[i].approved == '0') {
                     d.push({
+                        id: data[i].id,
                         start: new Date(data[i].startDate),
                         end: new Date(data[i].endDate),
                         title: 'pending: ' + data[i].type
@@ -55,6 +57,7 @@ function fillDate() {
                     for (var i in data) {
                         if (data[i].type == "public") {
                             d.push({
+                                id: data[i].id,
                                 start: new Date(data[i].start),
                                 title: '+ ' + data[i].name
                             });
