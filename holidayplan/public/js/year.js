@@ -55,7 +55,6 @@ $(document).ready(function() {
                 var avfreedays = formWrapper.find("input[name = 'avfreedays']").val();
                 var name = formWrapper.find("input[name ='newholiday']").val();
                 var startDate = formWrapper.find("input[name = 'stholi']").val();
-                console.log("aa");
                 $.get(appConfig.url + appConfig.api + 'updateAllFreeDays?token=' + token + '&avfreedays=' + avfreedays, function(data) {
                     out(data.code);
                 });
@@ -114,7 +113,6 @@ $(document).ready(function() {
         });
         getAllHolidays();
     };
-    var id;
 
     function updateHolidayForm() {
         //Update holidays
@@ -147,7 +145,6 @@ $(document).ready(function() {
             if (!e.isDefaultPrevented()) {
                 var formWrapper = $("#edit-holiday-form");
                 var name = formWrapper.find("input[name ='name']").val();
-                var type = formWrapper.find("input[name ='typeh']").val();
                 var startDate = formWrapper.find("input[name = 'stholi']").val();
 
                 $.get(appConfig.url + appConfig.api + 'updateAllHolidays?token=' + token + '&id=' + id + '&startDate=' + startDate + '&name=' + name + '&type=public', function(datah) {});
@@ -158,7 +155,7 @@ $(document).ready(function() {
                 $('#myModalOncePerYear').modal('hide');
             }, 1000);
 
-        });
+        })
     };
 
     function getAllHolidays() {
@@ -168,13 +165,15 @@ $(document).ready(function() {
                success: function(data){
                  var holidaytable = $('#example').DataTable();
                     var j = 1;
-                    for (var i = 0; i < data.length; i++) {
+                    for (var i in data) {
                         holidaytable.row.add([
                             j,
                             moment(data[i].startDate).format("YYYY-MM-DD"),
-                            data[i].name,
-                            data[i].type
-                        ]).draw(false);
+                            data[i].name
+                        ]).draw(false)
+                        .nodes()
+                        .to$()
+                        .attr("holiday-id", +data[i].id);
                         j++;
                     };
 
@@ -182,8 +181,8 @@ $(document).ready(function() {
                         id = $(this).find("td:nth-child(1)").html();
                         var data = $(this).find("td:nth-child(2)").html();
                         var name = $(this).find("td:nth-child(3)").html();
-                        var type = $(this).find("td:nth-child(4)").html();
-                         displayFormOnUpdateClick(id, name, data, type);
+                        var holidayid = $(this).attr("holiday-id");
+                         displayFormOnUpdateClick(id, name, data, holidayid);
                       });
               },
                async:false
@@ -246,12 +245,25 @@ $(document).ready(function() {
         });
     };
 
-    function displayFormOnUpdateClick(id, name, data, type) {
-      console.log(data);
+    function displayFormOnUpdateClick(id, name, data, holidayid) {
         $("#myModalOncePerYear").load("editholiday.html", function() {
             $("#nume").val(name);
-            $("#type").val(type);
             $("div > #dateval").val(data);
+
+            $("#delete-holiday").click( function(){
+                $('#myModalOncePerYear').modal('hide');
+                $("#delete-modal-holiday").modal('show');
+
+                $("#delete-modal-holiday-btn-yes").one('click', function() {
+                         deleteLegalHolidays(holidayid);
+                        $("#delete-modal-holiday").modal('hide');
+                });
+
+                $("#delete-modal-holiday-btn-no").click(function() {
+                  $('#myModalOncePerYear').modal('show');
+                        $("#delete-modal-holiday").modal('hide');
+                });
+            });
             updateHolidayForm();
             $('#myModalOncePerYear').modal('show');
         });
@@ -269,4 +281,20 @@ $(document).ready(function() {
             }
         }
     };
+
+function deleteLegalHolidays(holidayid){
+      $.ajax({
+               type: 'GET',
+               url: appConfig.url + appConfig.api + 'getAllHolidays?token=' + token,
+               success: function(data){
+                          $.post(appConfig.url + appConfig.api + 'deleteLegalHoliday?token=' + token, {
+                              id: holidayid,
+                          }).done(function(data) {
+                            $("#example").DataTable().clear();
+                            getHolidays();
+                          });
+              },
+               async:false
+          });
+};
 });
