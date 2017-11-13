@@ -173,7 +173,7 @@ $(document).ready(function() {
                             j,
                             moment(data[i].startDate).format("YYYY-MM-DD"),
                             data[i].name,
-                            '<div id="btndelete" onclick= "displayDeleteModalHoliday(this, ' + data[i].id + ')"><i class="fa fa-times"</i></div>'
+                            '<div onclick= "displayDeleteModalHoliday(this, ' + data[i].id + ')"><i class="fa fa-times"</i></div>'
                         ]).draw(false);
                         // $("#btndelete").one("click",function(){
                         //   console.log("111");
