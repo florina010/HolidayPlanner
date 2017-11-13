@@ -20,20 +20,31 @@
 				</div>
 
 				<div class="form-group">
-					<label for="typeh"><i class="fa fa-envelope" aria-hidden="true"></i> Type</label>
-					<input type="text" class="form-control" name="typeh" id="type" placeholder="Enter Type" required>
-				</div>
-
-				<div class="form-group">
 					<label for="stholi"><i class="fa fa-calendar" aria-hidden="true"></i> Start date</label><br>
 					<div class="input-group input-append date" id="stholi">
 						<input id="dateval" type="text" class="form-control" name="stholi" id="dataa" placeholder="yyyy-mm-dd" style="width: 460px;" />
 						<span class="input-group-addon add-on"><span class="glyphicon glyphicon-calendar"></span></span>
 					</div>
 				</div>
+
 				<button type="submit" class="btn btn-success"><span class="glyphicon" id="edit"></span> Edit </button>
-			 <button type="submit" class="btn btn-success"><span class="glyphicon" id="delete"></span> Delete </button>
+			 <!-- <button type="delete" class="btn btn-success"><span class="glyphicon" id="delete"></span> Delete </button> -->
 			</form>
+			<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" id="delete-modal-holiday">
+					<div class="modal-dialog modal-sm">
+							<div class="modal-content">
+									<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h4 class="modal-title" >Are you sure ?</h4>
+									</div>
+									<div class="modal-footer">
+											<input type="button" class="btn btn-default" id="delete-modal-holiday-btn-yes" value="Yes">
+											<input type="button" class="btn btn-primary" id="delete-modal-holiday-btn-no" value="No">
+									</div>
+							</div>
+					</div>
+			</div>
 		</div>
 	</div>
 </div>
+    <script type="text/javascript" src="../js/year.js"></script>

@@ -31,14 +31,16 @@ function fillDate() {
                     d.push({
                         start: new Date(data[i].startDate),
                         end: new Date(data[i].endDate),
-                        title: 'approved: ' + data[i].type
+                        title: 'approved: ' + data[i].type,
+                        id: data[i].id
                     });
                 }
                 if (data[i].userID == theUser.userID && data[i].approved == '0') {
                     d.push({
                         start: new Date(data[i].startDate),
                         end: new Date(data[i].endDate),
-                        title: 'pending: ' + data[i].type
+                        title: 'pending: ' + data[i].type,
+                        id: data[i].id
                     });
                 }
             }
@@ -47,7 +49,8 @@ function fillDate() {
                       if((i >= 11) && (i <= data.length)){
                         dd.push({
                           start:new Date(data[i].startDate),
-                          title:'+ '+ data[i].name
+                          title:'+ '+ data[i].name,
+                          id: data[i].id
                         });
                       };
                  };
@@ -56,12 +59,14 @@ function fillDate() {
                         if (data[i].type == "public") {
                             d.push({
                                 start: new Date(data[i].start),
-                                title: '+ ' + data[i].name
+                                title: '+ ' + data[i].name,
+                                id: data[i].id
                             });
                         };
                     };
 
                     Array.prototype.push.apply(d, dd);
+
                     main();
                     colorEvents();
                 });

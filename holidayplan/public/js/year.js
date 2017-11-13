@@ -112,7 +112,7 @@ $(document).ready(function() {
             e.preventDefault();
         });
         getAllHolidays();
-        deleteLegalHoliday();
+        // deleteLegalHoliday();
     };
     var id;
 
@@ -157,8 +157,8 @@ $(document).ready(function() {
                 $('#myModalOncePerYear').modal('hide');
             }, 1000);
             getAllHolidays();
-            deleteLegalHoliday();
-        });
+            // deleteLegalHoliday();
+        })
     };
 
     function getAllHolidays() {
@@ -173,16 +173,21 @@ $(document).ready(function() {
                             j,
                             moment(data[i].startDate).format("YYYY-MM-DD"),
                             data[i].name,
-                            data[i].type
+                            '<div id="btndelete" onclick= "displayDeleteModalHoliday(this, ' + data[i].id + ')"><i class="fa fa-times"</i></div>'
                         ]).draw(false);
+                        // $("#btndelete").one("click",function(){
+                        //   console.log("111");
+                        //   displayDeleteModalHoliday(event, this, ' + data[i].id + ');
+                        // });
                         j++;
                     };
-                    $('#example tbody').on('click', 'tr', function() {
+
+                    $('#example tbody').on('click', 'td:not(:last-child)', function() {
                         id = $(this).find("td:nth-child(1)").html();
                         var data = $(this).find("td:nth-child(2)").html();
                         var name = $(this).find("td:nth-child(3)").html();
-                        var type = $(this).find("td:nth-child(4)").html();
-                         displayFormOnUpdateClick(id, name, data, type);
+                        // var type = $(this).find("td:nth-child(4)").html();
+                         displayFormOnUpdateClick(id, name, data);
                       });
               },
                async:false
@@ -245,10 +250,9 @@ $(document).ready(function() {
         });
     };
 
-    function displayFormOnUpdateClick(id, name, data, type) {
+    function displayFormOnUpdateClick(id, name, data) {
         $("#myModalOncePerYear").load("editholiday.html", function() {
             $("#nume").val(name);
-            $("#type").val(type);
             $("div > #dateval").val(data);
             updateHolidayForm();
             $('#myModalOncePerYear').modal('show');
@@ -268,23 +272,38 @@ $(document).ready(function() {
         }
     };
 var holidayId;
-deleteLegalHoliday();
-    function deleteLegalHoliday(){
+
+function displayDeleteModalHoliday(elem, id) {
+    var deletehol = $("#delete-modal-holiday");
+    deletehol.modal('show');
+
+    $("#delete-modal-holiday-btn-yes").one('click', function() {
+        deleteLegalHoliday(elem, id);
+        $("#delete-modal-holiday").modal('hide');
+    });
+
+    $("#delete-modal-btn-no").click(function() {
+        $("#delete-modal-holiday").modal('hide');
+    });
+};
+
+function deleteLegalHoliday(elem, id){
       $.ajax({
                type: 'GET',
                url: appConfig.url + appConfig.api + 'getAllHolidays?token=' + token,
                success: function(data){
-                  console.log(data);
-                    $('#myModalOncePerYear tbody').on('click', 'tr', function() {
-                      holidayId = $(this).find("td:nth-child(1)").html();
-                        console.log(data[holidayId]);
+                     $('#delete-modal-holiday-btn-yes').on('click',function() {
+                      var i = 1;
                         $.post(appConfig.url + appConfig.api + 'deleteLegalHoliday?token=' + token, {
-                            id: holidayId,
+                            id: id,
                         }).done(function(data) {
+                          $("#example").DataTable().clear();
+                          getHolidays();
                         });
-                    });
+                     });
               },
                async:false
           });
-    };
+};
+
 });
