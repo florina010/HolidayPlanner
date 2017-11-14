@@ -11,7 +11,7 @@ function getHolidays() {
     $.get(appConfig.url + appConfig.api + 'getFreeDaysApprover?token=' + token, function(data) {
         $("#userTable").DataTable().clear();
         out(data.code);
-        
+
         var table = $('#userTable').DataTable({
             "aoColumnDefs": [{
                 bSortable: false,
@@ -49,17 +49,6 @@ function getHolidays() {
                 .addClass(colorClass);
             j++;
         }
-        // console.log(data.length);
-        // for (var i = 0; i < data.length; i++) {
-        //     var appr = $("#userTable>tbody>tr:nth-child(" + (i + 1) + ")>td:nth-last-child(2)");
-        //     console.log(appr.html());
-        //     if (appr.html() == "Approved") {
-        //         $("#userTable>tbody>tr:nth-child(" + (i + 1) + ")").css('backgroundColor', "#d9edf7")
-        //     } else {
-        //         $("#userTable>tbody>tr:nth-child(" + (i + 1) + ")").css('backgroundColor', "#f2dede")
-        //     }
-        //
-        // }
     });
 }
 

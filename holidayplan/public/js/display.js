@@ -318,10 +318,6 @@ $(document).ready(function() {
                             notEmpty: {
                                 message: 'The comment is required'
                             },
-                            stringLength: {
-                                max: 20,
-                                message: 'The full name must be less than 20 characters'
-                            },
                         },
                     },
                     dates: {
