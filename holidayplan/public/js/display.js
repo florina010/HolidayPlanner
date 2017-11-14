@@ -243,6 +243,12 @@ $(document).ready(function() {
         $("[name=addUser]").parent().css('display', 'block');
         $("#tabs li:not(:last)").css('display', 'none');
         $("#calendar").css('display', 'none');
+        $("#you").css('display', 'none');
+        $("#user-days-disp").css('display', 'none');
+        $("#fd").css('display', 'none');
+        $("#hi").css('left', '737px');
+        $("#user-name-disp").css('left', '750px');
+        $("#user-name-disp").css('width', '51%');
         $("[name=mName]").val('admin');
         $("[name=avDays]").val(0);
     } else if (theUser.admin != 2) {
