@@ -7,6 +7,7 @@ textarea{
   width: 262px;
   height: 191px;
   resize: none;
+  
 }
 td.day.disabled {
   color: red !important;
