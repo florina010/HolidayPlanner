@@ -11,9 +11,8 @@ function getHolidays() {
     $.get(appConfig.url + appConfig.api + 'getFreeDaysApprover?token=' + token, function(data) {
         $("#userTable").DataTable().clear();
         out(data.code);
-
+        
         var table = $('#userTable').DataTable({
-
             "aoColumnDefs": [{
                 bSortable: false,
                 aTargets: [-1]
@@ -22,7 +21,7 @@ function getHolidays() {
                 orderable: false,
                 targets: -1
             }],
-            "bDestroy": true
+            "bDestroy": true,
         });
         var j = 1;
         for (var i = 0; i < data.length; i++) {
@@ -41,7 +40,7 @@ function getHolidays() {
                     moment(data[i].startDate).format("DD/MM/YYYY"),
                     moment(data[i].endDate).format("DD/MM/YYYY"),
                     data[i].type,
-                    data[i].comment,
+                    '<div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px;">'+ data[i].comment+ "</div>",
                     acc,
                     '<div onclick="displayDeleteModal(event, this, ' + data[i].id + ',' + data[i].approved + ')"><i class="fa fa-times"</i></div>'
                 ]).draw(false)
