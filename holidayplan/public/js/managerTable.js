@@ -767,7 +767,7 @@ if (theUser.admin >= 0) {
                         moment(freeDays[i].endDate).format("DD/MM/Y"),
                         freeDays[i].days,
                         freeDays[i].type,
-                        freeDays[i].comment,
+                        '<div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">'+ freeDays[i].comment + "</div>",
                         freeDays[i].avfreedays,
                         freeDaysStatus,
                         approveButtons

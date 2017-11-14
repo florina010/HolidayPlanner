@@ -4,6 +4,14 @@ window.sessionInvalid = false;
 $(document).ready(function() {
     var token = sessionStorage.getItem('token');
     getHolidays();
+    $('#userTable tbody').on('click', 'td:nth-child(7)', function() {
+        var data = $(this).text();
+        var name = $(this).parent().find("td:nth-child(2)").text();
+        $("#dialog-comment .modal-title").text("To: " + name);
+        $("#dialog-comment textarea").text(data);
+        $("#dialog-comment textarea").text(data);
+        $("#dialog-comment").modal('show');
+      });
 });
 
 function getHolidays() {
