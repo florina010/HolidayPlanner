@@ -722,6 +722,16 @@ if (theUser.admin >= 0) {
                 var colorClass = colorTableRow(freeDays[i].approved);
                 var freeDaysStatus = "";
                 var approveButtons = "";
+
+                $('#manager-table tbody').on('click', 'td:nth-child(9)', function() {
+                    var data = $(this).text();
+                    var name = $(this).parent().find("td:nth-child(2)").text();
+                    $("#dialog-comment .modal-title").text("From: " + name);
+                    $("#dialog-comment textarea").text(data);
+                    $("#dialog-comment textarea").text(data);
+                    $("#dialog-comment").modal('show');
+                  });
+
                 switch (freeDays[i].approved) {
                     case 1:
                         freeDaysStatus = "Approved";
