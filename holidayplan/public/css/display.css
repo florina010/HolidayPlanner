@@ -1,14 +1,3 @@
-@-moz-document url-prefix() {
-  #user-name-disp{
-    position: relative;
-    width: 30%;
-    border: none;
-    bottom: 64px;
-    background-color: rgba(230, 231, 231, 0);
-    left: 238px;
-    display: inline-block;
-  }
-}
 td.day.disabled {
   color: red !important;
 }

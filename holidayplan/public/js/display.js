@@ -251,7 +251,19 @@ $(document).ready(function() {
         $("#user-name-disp").css('width', '51%');
         $("[name=mName]").val('admin');
         $("[name=avDays]").val(0);
+        var f = navigator.userAgent.search("Firefox");
+        if (f > -1) {
+          $("#user-name-disp").css("left"," 795px");
+          $("#user-name-disp").css("bottom"," 65px");
+        }
     } else if (theUser.admin != 2) {
+        var f = navigator.userAgent.search("Firefox");
+        if (f > -1) {
+          $("#user-name-disp").css("left"," 238px");
+          $("#user-name-disp").css("bottom","40px");
+          $("#user-days-disp").attr("type"," ");
+          $("#user-days-disp").css("left","312");
+        }
         $("#forAdmin").css("display", 'none');
         $("#holiday").css('display', 'block');
         $("[name=addUser]").parent().css('display', 'block');
