@@ -6,12 +6,17 @@ var bcrypt = require('bcryptjs');
 var sha256 = require('js-sha256');
 var Holidays = require('date-holidays');
 var year = new Date().getFullYear();
+var nextyear = year + 1;
 var fileUpload = require('express-fileupload');
 var moment = require('moment');
 hd = new Holidays('RO');
 
-// get all holidays for the year 2017
 hd.getHolidays(year);
+hd.getHolidays(nextyear);
+
+var legalhol = hd.getHolidays(year).concat(hd.getHolidays(nextyear));
+
+
 var pool = mysql.createPool({
     connectionLimit: 100, //important
     host: 'localhost',
@@ -22,9 +27,11 @@ var pool = mysql.createPool({
 });
 
 function legalFreeHolidays(req, res) {
-    hd = new Holidays('RO');
-    hd.getHolidays(year);
-    res.json(hd.getHolidays(year));
+  hd = new Holidays('RO');
+  hd.getHolidays(year);
+  hd.getHolidays(nextyear);
+  legalhol = hd.getHolidays(year).concat(hd.getHolidays(nextyear));
+    res.json(legalhol);
     return;
 };
 
@@ -40,13 +47,15 @@ function legalHolidaysToDb(req, res) {
 
         hd = new Holidays('RO');
         hd.getHolidays(year);
-        res.json(hd.getHolidays(year));
+        hd.getHolidays(nextyear);
+        legalhol = hd.getHolidays(year).concat(hd.getHolidays(nextyear));
+          res.json(legalhol);
 
-        for (var i in hd.getHolidays(year)) {
-            if (hd.getHolidays(year)[i].type == 'public') {
-                var date = moment(hd.getHolidays(year)[i].date).format('YYYY-MM-DD');
+        for (var i in legalhol) {
+            if (legalhol[i].type == 'public') {
+                var date = moment(legalhol[i].date).format('YYYY-MM-DD');
                 connection.query("INSERT INTO legalholidays(startDate, name, type) VALUES ('" + date + "', '" +
-                    hd.getHolidays(year)[i].name + "','" + hd.getHolidays(year)[i].type + "')",
+                    legalhol[i].name + "','" + legalhol[i].type + "')",
                     function(err, rows) {});
             };
         };
