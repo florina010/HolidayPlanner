@@ -385,7 +385,7 @@ if (theUser.admin >= 0) {
 
                 if (e.isDefaultPrevented()) {
 
-                } else if (isOkAge == true && isOkSt == true) {
+                } else if (isOkAge == true && isOkSt == true && $("#add-user-form").data('formValidation').isValid()) {
                   $('#register').attr('disabled', 'disabled');
                   var formWrapper = $("#add-user-form");
                     if (theUser.admin != 2) {
