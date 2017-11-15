@@ -35,21 +35,23 @@
                 <div id="navbar1" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><img alt="Avatar" id="avatar" /></li>
-                        <li>
-                            <a class="btn btn-default dropdown-toggle" href="#" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-chevron-circle-down" aria-hidden="true"> Menu </i></a>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <ul>
-                                    <li id='holiday'><a class="btn btn-default" href="#" data-toggle="modal" data-target="#myModal" name="add"><i class="fa fa-plus-circle" aria-hidden="true"> Add Holiday</i></a></li>
-                                    <li><a class="btn btn-default" href="#" data-toggle="modal" data-target="#myModalUser" name="addUser"><i class="fa fa-plus-circle" aria-hidden="true"> Add User</i></a></li>
-                                    <li><a class="btn btn-default" href="#" data-toggle="modal" data-target="#myModalUpdateUser" name="updateUser"><i class="fa fa-plus-circle" aria-hidden="true"> Update Profile</i></a></li>
-                                    <li id="newyear"><a class="btn btn-default" href="#" data-toggle="modal" data-target="#myModalOncePerYear" name="udpateinfo"><i class="fa fa-plus-circle" aria-hidden="true"> Holidays </i></a></li>
+                        <li class="dropdown open">
+                            <a class="dropdown-toggle" href="#" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-chevron-circle-down" aria-hidden="true"> Menu </i></a>
+                            <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenu2"> -->
+                                <ul class="dropdown-menu">
+                                    <li id='holiday'><a  href="#" data-toggle="modal" data-target="#myModal" name="add"><i style="position: relative; padding: 20px;" class="fa fa-plus-circle" aria-hidden="true"> Add Holiday</i></a></li>
+                                    <li><a  href="#" data-toggle="modal" data-target="#myModalUser" name="addUser"><i style="position: relative; padding: 20px;" class="fa fa-plus-circle" aria-hidden="true"> Add User</i></a></li>
+                                    <li><a  href="#" data-toggle="modal" data-target="#myModalUpdateUser" name="updateUser"><i style="position: relative; padding: 20px;" class="fa fa-plus-circle" aria-hidden="true"> Update Profile</i></a></li>
+                                    <li id="newyear"><a href="#" data-toggle="modal" data-target="#myModalOncePerYear" name="udpateinfo"><i style="position: relative; padding: 20px;" class="fa fa-plus-circle" aria-hidden="true"> Holidays </i></a></li>
+                                    <li role="separator" class="divider">
                                     <li>
-                                        <label class="btn btn-default">
-                                       <i class="fa fa-camera" aria-hidden="true"> Upload photo <input type="file" style="display: none;" id="fileupload"name="profileImage"/></i>
-                                   </label>
+                                    <label>
+                                       <i style="left: 20px; position: relative; padding: 20px" class="fa fa-camera" aria-hidden="true"> Upload photo <input type="file" style="display: none;" id="fileupload"name="profileImage"/></i>
+                                    </label>
+
                                     </li>
                                 </ul>
-                            </div>
+                            <!-- </div> -->
                         </li>
                         <li><a class="btn btn-default" href="#" id="logout" name="logout"><i class="fa fa-sign-out" aria-hidden="true"> Logout</i></a></li>
                     </ul>
