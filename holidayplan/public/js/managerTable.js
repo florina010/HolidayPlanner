@@ -137,7 +137,6 @@ if (theUser.admin >= 0) {
 
             var editUserForm = $("#edit-user-form");
             editUserForm.attr("user-id", userId);
-            console.log(editUserForm.attr("user-id"));
             // Add user details into edit form.
 
             editUserForm.find("input[name='userId']").val(userId);
@@ -551,7 +550,8 @@ if (theUser.admin >= 0) {
         if (userArray['userActive'] == 0) {
             var newManager = userArray["new_manager"];
             if (newManager == null) {
-                newManager = JSON.parse(sessionStorage.getItem('user')).userID;
+                 newManager = 1 ;
+                 //newManager = JSON.parse(sessionStorage.getItem('user')).userID;
             }
             $.ajax({
                      type: 'GET',
@@ -565,8 +565,8 @@ if (theUser.admin >= 0) {
                                   url: appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params,
                                   async:false
                                 });
-                            }else if(newManager == users[i].userID){
-                              var params = '&managerId= Avangarde software' + "&userId=" + userArray['userId'] +  "&userID=" + users[i].userID;
+                            }else if (newManager == users[i].userID) {
+                              var params = '&managerId= 1' + "&userId=" + userArray['userId'] +  "&userID=" + users[i].userID;
                               $.ajax({
                                   type: 'POST',
                                   url: appConfig.url + appConfig.api + 'updateRelationsManagement?token=' + token + params,
@@ -577,8 +577,8 @@ if (theUser.admin >= 0) {
                    },
                      async:false
             });
+      };
         // Change manager.
-      }//else if (userArray['userActive'] == 1) {
               var changeManagerId = userArray["change_manager"];
               if (changeManagerId > 0) {
                   var params = '&managerId=' + changeManagerId + "&userId=" + userArray['userId'];
@@ -588,14 +588,6 @@ if (theUser.admin >= 0) {
                       async:false
                     });
               };
-
-            if (userArray['userActive'] == 1) {
-              // $.ajax({
-              //     type: 'POST',
-              //     url: appConfig.url + appConfig.api + 'updateUserManager?token=' + token + params,
-              //     async:false
-              //   });
-            };
     };
 
     function updateUser() {

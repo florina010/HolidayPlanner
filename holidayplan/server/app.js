@@ -827,6 +827,7 @@ function updateUserManager(req, res) {
             });
             return;
         }
+        console.log(params);
         connection.query("UPDATE management SET managerID = '" + params.managerId + "' WHERE userID = '" + params.userId + "';", function(err, rows) {
             connection.release();
             if (!err) {
@@ -1010,7 +1011,6 @@ function getAllActiveUsers(req, res) {
             });
             return;
         }
-        var managerId = req.body.managerId;
         connection.query("SELECT * FROM user WHERE isActive = 1", function(err, rows) {
             connection.release();
             if (!err) {
