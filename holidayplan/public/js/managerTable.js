@@ -320,33 +320,22 @@ if (theUser.admin >= 0) {
                             message: 'Please select a position.'
                         }
                     }
-                }
-                    // ageUser: {
-                    //     validators: {
-                    //         notEmpty: {
-                    //             message: 'The birthday is required'
-                    //         },
-                    //         date: {
-                    //             format: 'YYYY-MM-DD',
-                    //             message: 'The value is not a valid birth day',
-                    //             max: validAge
-                    //         }
-                    //     }
-                    // },
-                    // stwork: {
-                    //     validators: {
-                    //         notEmpty: {
-                    //             message: 'The started working is required'
-                    //         },
-                    //         date: {
-                    //             format: 'YYYY-MM-DD',
-                    //             message: 'The value is not a valid date',
-                    //             min: minStWork,
-                    //             max: currentDay
-                    //         }
-                    //     }
-                    //
-                    // }
+                },
+                    ageUser: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The birthday is required'
+                            }
+                        }
+                    },
+                    stwork: {
+                        validators: {
+                            notEmpty: {
+                                message: 'The started working is required'
+                            }
+                        }
+
+                    }
                 }
             // }).on('change', '[name="Ro"]', function(e) {
               //  $('#add-user-form').formValidation('revalidateField', 'phoneUser');
@@ -367,6 +356,16 @@ if (theUser.admin >= 0) {
               // }
 
               $( '#register', $this ).attr( 'disabled', !formIsValid );
+          }).on('change', function(e, data) {
+              $("#add-user-form").formValidation('revalidateField', 'ageUser');
+              $("#add-user-form").formValidation('revalidateField', 'stwork');
+              if($("#add-user-form").data('formValidation').isValid()) {
+                  if ($("[name=ageUser]")) {
+                      if ($("[name=stwork]")) {
+                          $( '#register').attr( 'disabled', false);
+                      }
+                  }
+              }
           }).on('submit', function(e, data) {
                 var birthday = "'" + moment($("#add-user-form").find("input[name = 'ageUser']").val()).format("YYYY-MM-DD") + "'",
                 startWork = "'" +  moment($("#add-user-form").find("[name = 'stwork']").val()).format("YYYY-MM-DD") + "'", isOkAge = true, isOkSt = true;
@@ -451,12 +450,28 @@ if (theUser.admin >= 0) {
                     e.preventDefault();
                     if (isOkSt) {
                         alert('Age is not valid.')
+                        $('#register').attr( 'disabled', true);
+                        $("#birth").next().removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                        $("#birth").parent().removeClass('has-success').addClass('has-error');
+                        $(".datepicker-days > table td").removeClass('active');
+                        $('#birth').datepicker('setDate', null);
                     }
                     else if(isOkAge) {
                         alert("Started working is not valid.");
+                        $('#register').attr( 'disabled', true);
+                        $("#dateval").next().removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                        $("#dateval").parent().removeClass('has-success').addClass('has-error');
+                        $("#dateval").datepicker('setDate', null);
                     }
                     else {
                         alert("Age and started working are not valid.");
+                        $('#register').attr( 'disabled', true);
+                        $("#birth").next().removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                        $("#dateval").next().removeClass('glyphicon-ok').addClass('glyphicon-remove');
+                        $("#dateval").parent().removeClass('has-success').addClass('has-error');
+                        $("#birth").parent().removeClass('has-success').addClass('has-error');
+                        $("#birth").datepicker('setDate', null);
+                        $("#dateval").datepicker('setDate', null);
                     }
 
                 }
