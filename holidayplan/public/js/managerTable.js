@@ -580,7 +580,6 @@ if (theUser.admin >= 0) {
         // Change manager.
       }//else if (userArray['userActive'] == 1) {
               var changeManagerId = userArray["change_manager"];
-              console.log(changeManagerId);
               if (changeManagerId > 0) {
                   var params = '&managerId=' + changeManagerId + "&userId=" + userArray['userId'];
                   $.ajax({
@@ -777,7 +776,8 @@ if (theUser.admin >= 0) {
                         moment(freeDays[i].endDate).format("DD/MM/Y"),
                         freeDays[i].days,
                         freeDays[i].type,
-                        '<div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">'+ freeDays[i].comment + "</div>",
+                        '<div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">'+
+                        freeDays[i].comment + "</div>",
                         freeDays[i].avfreedays,
                         freeDaysStatus,
                         approveButtons

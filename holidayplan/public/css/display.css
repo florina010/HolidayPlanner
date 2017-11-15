@@ -1,3 +1,9 @@
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 1px;
+    text-overflow: '';
+}
 #dialog-comment{
   display: none;
 }
@@ -7,7 +13,9 @@ textarea{
   width: 262px;
   height: 191px;
   resize: none;
-  
+  background-color: lightblue;
+  padding: 7px;
+  margin:auto;
 }
 td.day.disabled {
   color: red !important;
